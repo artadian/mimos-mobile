@@ -223,7 +223,7 @@ class DatabaseProvider {
         "price INTEGER, "
         ")");
 
-    /// table material Frontliner
+    /// table brand competitor Frontliner
     await database.execute("CREATE TABLE competitor ("
         "sobid TEXT, "
         "salesofficeid TEXT, "

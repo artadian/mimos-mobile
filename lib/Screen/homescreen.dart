@@ -14,13 +14,16 @@ class HomeScreen extends StatefulWidget {
   final String userRoleID;
   final String roleName;
   final String salesOfficeId;
+  final String salesOfficeName;
+
   HomeScreen(
       {Key key,
       this.userName,
       this.userId,
       this.userRoleID,
       this.roleName,
-      this.salesOfficeId})
+      this.salesOfficeId,
+      this.salesOfficeName})
       : super(key: key);
   // HomeScreen({Key key, this.userName, this.userId}) : super(key: key);
   @override
@@ -151,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             // padding: EdgeInsets.all(10),
             // margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-            height: xTinggi - 30,
+            height: xTinggi - 10,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                   colors: [Colors.blue, Colors.blue],
@@ -252,6 +255,26 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 13,
                           ),
                           Text(widget.roleName.toString(),
+                              style: new TextStyle(
+                                fontSize: 18,
+                                // fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              )),
+                          // Text(
+                          //     "Sales Office ID " + widget.salesOfficeId.toString()),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_city,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          SizedBox(
+                            width: 13,
+                          ),
+                          Text(widget.salesOfficeName.toString(),
                               style: new TextStyle(
                                 fontSize: 18,
                                 // fontWeight: FontWeight.bold,

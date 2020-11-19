@@ -304,12 +304,15 @@ class _LogInScreenState extends State<LogInScreen>
           "salesofficetype", userdata[0]['salesofficetype'].toString());
       sharedPreferencesLogin.setString(
           "salesofficetypename", userdata[0]['salesofficetypename'].toString());
+      sharedPreferencesLogin.setString(
+          "salesofficename", userdata[0]['salesofficename'].toString());
       var root = MaterialPageRoute(
           builder: (context) => new HomeScreen(
               userName: userdata[0]['username'].toString(),
               userId: userdata[0]['userid'].toString(),
               userRoleID: userdata[0]['userroleid'].toString(),
               roleName: userdata[0]['rolename'].toString(),
+              salesOfficeName: userdata[0]['salesofficename'].toString(),
               salesOfficeId: userdata[0]['salesofficeid'].toString()));
       //new HomeScreen(userName :userdata[0].userName.toString(),userId:userdata[0].userId.toString()));
       Navigator.pushReplacement(context, root);
