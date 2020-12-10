@@ -220,7 +220,7 @@ class DatabaseProvider {
         "materialgroupid TEXT, "
         "materialgroupdescription TEXT, "
         "priceid TEXT, "
-        "price INTEGER, "
+        "price INTEGER "
         ")");
 
     /// table brand competitor Frontliner

@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
               //Text("data"),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: _buildHeaderMenu(heightScreen / 3, widthScreen),
+                child: _buildHeaderMenu(heightScreen / 2.42, widthScreen),
               ),
               _buildMenuItem(heightScreen / 3 * 2),
             ],
@@ -347,9 +347,9 @@ class _HomeScreenState extends State<HomeScreen> {
               }
             },
             child: new Container(
-              height: 120,
+              height: 100,
               width: 120,
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(8.0),
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),

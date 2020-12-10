@@ -63,6 +63,8 @@ class _SplashScreenState extends State<SplashScreen>
                 userRoleID:
                     sharedPreferences.getString("userroleid").toString(),
                 roleName: sharedPreferences.getString("rolename").toString(),
+                salesOfficeName:
+                    sharedPreferences.getString("salesofficename").toString(),
                 salesOfficeId:
                     sharedPreferences.getString("salesofficeid").toString(),
               ));

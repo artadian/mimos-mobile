@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
 import 'package:mimos/Constant/listmenu.dart';
 import 'package:mimos/FL/Component/menucard.dart';
+import 'package:mimos/FL/Dao/BrandCompetitorDao.dart';
+import 'package:mimos/FL/Dao/MaterialFLDao.dart';
 import 'package:mimos/Screen/homescreen.dart';
 import 'package:mimos/Screen/homescreen_old.dart';
 import 'package:mimos/TF/Dao/lookupdao.dart';
@@ -22,6 +24,10 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
   SharedPreferences sharedPreferences;
   DatabaseProvider _dbprovider = DatabaseProvider();
   int _nDataLookup;
+  int _nDataMaterialFL;
+  int _nDataCompetitor;
+  String salesofficeid;
+
   goToHome() async {
     sharedPreferences = await SharedPreferences.getInstance();
     var root = MaterialPageRoute(
@@ -32,13 +38,17 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
               roleName: sharedPreferences.getString("rolename").toString(),
               salesOfficeId:
                   sharedPreferences.getString("salesofficeid").toString(),
+              salesOfficeName:
+                  sharedPreferences.getString("salesofficename").toString(),
             ));
     Navigator.pushReplacement(context, root);
   }
 
   Future<String> _getSalesofficeid() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    return pref.getString("usersalesofficeidid") ?? "No Salesofficeid";
+    salesofficeid = pref.getString("salesofficeid") ?? "No Salesofficeid";
+    // print(salesofficeid);
+    return salesofficeid;
   }
 
   LookupDao _lookupDao = LookupDao();
@@ -46,12 +56,30 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
     return _lookupDao.countDataLookup();
   }
 
+  BrandCompetitorDao _brandCompetitorDao = BrandCompetitorDao();
+  _getdatacompetitor() {
+    return _brandCompetitorDao.countDataCompetitor();
+  }
+
+  MaterialFLDao _materialflDao = MaterialFLDao();
+  _getDataMaterialFL() {
+    return _materialflDao.countDataMaterial();
+  }
+
   @override
   void initState() {
     super.initState();
+    _getSalesofficeid();
     _getDataLookup().then((vallookup) => setState(() {
           _nDataLookup = vallookup;
         }));
+    _getDataMaterialFL().then((valmaterial) => setState(() {
+          _nDataMaterialFL = valmaterial;
+        }));
+    _getdatacompetitor().then((valcompetitor) => setState(() {
+          _nDataCompetitor = valcompetitor;
+        }));
+    // print(salesofficeid);
   }
 
   var listItemDownload = listMenuItemDownload;
@@ -71,6 +99,7 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
           FloatingActionButton(
             backgroundColor: Colors.blue,
             onPressed: () async {
+              print(salesofficeid);
               pr.style(
                 message: 'Downloading file...',
                 // message:
@@ -112,16 +141,25 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
                 );
 
                 Future.delayed(Duration(seconds: 2)).then((value) {
-                  pr.update(progress: 50, message: "Few more seconds...");
+                  _downloadDataCompetitor(salesofficeid);
+                  pr.update(
+                      progress: 50, message: "Downloading Brand Competitor");
                   // print(percentage);
                   Future.delayed(Duration(seconds: 2)).then((value) {
-                    pr.update(progress: 75, message: "Almost done...");
+                    _downloadDataMaterial(salesofficeid);
+                    pr.update(progress: 75, message: "Downloading Material");
                     // print(percentage);
 
                     Future.delayed(Duration(seconds: 2)).then((value) {
-                      pr.hide().whenComplete(() {
-                        // print(pr.isShowing());
+                      _refreshtotaldata();
+                      pr.update(progress: 90, message: "Calculating Data");
+                      Future.delayed(Duration(seconds: 2)).then((value) {
+                        pr.hide().whenComplete(() {
+                          // print(pr.isShowing());
+                        });
+                        // percentage = 0.0;
                       });
+
                       // percentage = 0.0;
                     });
                   });
@@ -163,12 +201,10 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
 
               if (listItemDownload[index].urut.toString() == "1") {
                 //_nData = _getnCust();
-                // _nData = _nDataCust;
+                _nData = _nDataCompetitor;
               } else if (listItemDownload[index].urut.toString() == "2") {
-                // _nData = _nDataMaterial;
+                _nData = _nDataMaterialFL;
               } else if (listItemDownload[index].urut.toString() == "3") {
-                // _nData = _nDataHarga;
-              } else if (listItemDownload[index].urut.toString() == "4") {
                 _nData = _nDataLookup;
               }
               return new GestureDetector(
@@ -221,6 +257,19 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
     return result;
   }
 
+  _deleteAllDataMaterialFL() async {
+    Database db = await _dbprovider.database;
+    var result = await db.rawDelete("DELETE FROM materialfl ");
+    return result;
+  }
+
+  _deleteAllDataBrandCompetitor() async {
+    Database db = await _dbprovider.database;
+    var result = await db.rawDelete("DELETE FROM competitor ");
+    return result;
+  }
+
+  // download data lookup
   _downloadDataLookup() async {
     var apiResult = await http
         //.post("http://172.27.11.41/apimimos/index.php/api/Umum/lookup", body: data);
@@ -247,7 +296,83 @@ class _DownloadScreenFLState extends State<DownloadScreenFL> {
       }
     }
   }
+
   //=========== end lookup
+  // download data material FL
+  _downloadDataMaterial(String salesofficeid) async {
+    Map data = {
+      'salesofficeid': salesofficeid,
+    };
+    var apiResult = await http
+        //.post("http://172.27.11.41/apimimos/index.php/api/Umum/lookup", body: data);
+        .post(apiURL + "/Material/materialFL", body: data);
+    var jsonObject = json.decode(apiResult.body);
+    var getDataApi = jsonObject['data'];
+    // var xmgs = jsonObject['message'];
+    print(getDataApi);
+    var xstatus = jsonObject['status'];
+    if (xstatus) {
+      _deleteAllDataMaterialFL();
+      for (var item in getDataApi) {
+        Database db = await _dbprovider.database;
+        await db.rawInsert(
+            "INSERT INTO materialfl(materialid,materialname,materialgroupid,materialgroupdescription,priceid,price) VALUES(?,?,?,?,?,?)",
+            [
+              item['materialid'],
+              item['materialname'],
+              item['materialgroupid'],
+              item['materialgroupdescription'],
+              item['priceid'],
+              item['price']
+            ]);
+      }
+    }
+  }
+  //=========== end material
+
+  // download data Competitor
+  _downloadDataCompetitor(String salesofficeid) async {
+    Map data = {
+      'salesofficeid': salesofficeid,
+    };
+    var apiResult = await http
+        //.post("http://172.27.11.41/apimimos/index.php/api/Umum/lookup", body: data);
+        .post(apiURL + "/Frontliner/brandcompetitor", body: data);
+    var jsonObject = json.decode(apiResult.body);
+    var getDataApi = jsonObject['data'];
+    // var xmgs = jsonObject['message'];
+    // print(getDataApi);
+    var xstatus = jsonObject['status'];
+    if (xstatus) {
+      _deleteAllDataBrandCompetitor();
+      for (var item in getDataApi) {
+        Database db = await _dbprovider.database;
+        await db.rawInsert(
+            "INSERT INTO competitor(sobid,salesofficeid,materialgroupid,competitorbrand) VALUES(?,?,?,?)",
+            [
+              item['sobid'],
+              item['salesofficeid'],
+              item['materialgroupid'],
+              item['competitorbrand']
+            ]);
+      }
+    }
+  }
+  //=========== end competitor
+
+  // == refresh data
+  _refreshtotaldata() {
+    _getDataLookup().then((vallookup) => setState(() {
+          _nDataLookup = vallookup;
+        }));
+    _getDataMaterialFL().then((valmaterial) => setState(() {
+          _nDataMaterialFL = valmaterial;
+        }));
+    _getdatacompetitor().then((valcompetitor) => setState(() {
+          _nDataCompetitor = valcompetitor;
+        }));
+  }
+  // == end refresh data
 }
 
 const List<ListItem> listMenuItemDownload = const <ListItem>[
@@ -262,10 +387,5 @@ const List<ListItem> listMenuItemDownload = const <ListItem>[
       urut: '2',
       ndata: ' data 0'),
   const ListItem(
-      judul: 'Data Harga',
-      lambang: Icons.attach_money,
-      urut: '3',
-      ndata: ' data 0'),
-  const ListItem(
-      judul: 'Data Lookup', lambang: Icons.chat, urut: '4', ndata: ' data 0'),
+      judul: 'Data Lookup', lambang: Icons.chat, urut: '3', ndata: ' data 0'),
 ];
