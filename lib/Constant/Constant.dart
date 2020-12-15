@@ -30,6 +30,21 @@ const UPLOAD_SCREEN_FL = '/UploadScreenFL';
 const PROSES_DOWNLOAD_DATA_FL = '/ProsesDownloadScreenFL';
 
 ///=========== end FL
+
+/// ========== PR
+const DOWNLOAD_SCREEN_PR = '/downloadPR';
+const VISIT_SCREEN_PR = '/visitPR';
+const VISIT_FORM_FORM_SCREEN_PR = '/visitFormPR';
+const UPLOAD_SCREEN_PR = '/uploadPR';
+const DISPLAY_SCREEN_PR = '/displayPR';
+const TRIAL_SCREEN_PR = '/trialPR';
+const TRIAL_FROM_SCREEN_PR = '/trialFormPR';
+const STOK_SCREEN_PR = '/stokPR';
+const PENJUALAN_SCREEN_PR = '/penjualanPR';
+const POSM_SCREEN_PR = '/posmPR';
+const STOK_FROM_SCREEN_PR = '/stokFormPR';
+///=========== end PR
+///
 ///
 const Color warnaAwalGradien = Color(0xff0096ff);
 const Color warnaAkhirGradien = Color(0xff6610f2);

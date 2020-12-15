@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
+import 'package:mimos/PR/screen/home/home_screen.dart';
 //import 'package:mimos/Screen/cekupload.dart';
 //import 'package:mimos/Screen/downloadscreen.dart';
 import 'package:mimos/Screen/loginscreen.dart';
@@ -77,6 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 warna: MyPalette.merah,
                 judul: "LOGOUT",
                 itemid: "0"));
+
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.home,
+                warna: MyPalette.biruBar,
+                judul: "NEW HOME",
+                itemid: "1000"));
           } else if (userRoleID == "5") {
             //listMenuHome = listMenuItemTF;
           } else if (userRoleID == "2") {
@@ -342,7 +349,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.of(context).pushNamed(TRIAL_SCREEN_FL);
               } else if (mymenuitem.itemid.toString() == "33") {
                 Navigator.of(context).pushNamed(UPLOAD_SCREEN_FL);
-              } else {
+              } else if (mymenuitem.itemid.toString() == "1000") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreenNew()),
+                );
+              }else {
                 _logOut();
               }
             },
