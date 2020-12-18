@@ -1,55 +1,55 @@
-import 'package:mimos/PR/model/material_pr.dart';
+import 'package:mimos/PR/model/sellin_detail.dart';
 import 'package:mimos/db/base_dao.dart';
 import 'package:sqflite/sqflite.dart';
 
-class MaterialPRDao extends BaseDao {
-  MaterialPRDao()
+class SellinDetailDao extends BaseDao {
+  SellinDetailDao()
       : super(
-    table: "materialfl",
-    primaryKey: "matid",
+    table: "sellin_detail",
+    primaryKey: "id",
   );
 
-  Future<int> insert(MaterialPR data) async {
+  Future<int> insert(SellinDetail data) async {
     var row = data.toJson();
     return await super.queryInsert(row);
   }
 
-  Future<int> insertIgnore(MaterialPR data) async {
+  Future<int> insertIgnore(SellinDetail data) async {
     var row = data.toJson();
     return await super
         .queryInsert(row, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
-  Future<List<int>> insertAll(List<MaterialPR> data) async {
+  Future<List<int>> insertAll(List<SellinDetail> data) async {
     var row = data.map((v) => v.toJson()).toList();
     return await super.queryInsertAll(row);
   }
 
-  Future<List<int>> insertIgnoreAll(List<MaterialPR> data) async {
+  Future<List<int>> insertIgnoreAll(List<SellinDetail> data) async {
     var row = data.map((v) => v.toJson()).toList();
     return await super
         .queryInsertAll(row, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
-  Future<int> update(MaterialPR data) async {
+  Future<int> update(SellinDetail data) async {
     var row = data.toJson();
     return await super.queryUpdate(row);
   }
 
-  Future<List<int>> updateAll(List<MaterialPR> data) async {
+  Future<List<int>> updateAll(List<SellinDetail> data) async {
     var row = data.map((v) => v.toJson()).toList();
     return await super.queryUpdateAll(row);
   }
 
-  Future<List<MaterialPR>> getAll() async {
+  Future<List<SellinDetail>> getAll() async {
     var maps = await super.queryAllData();
-    List<MaterialPR> list = maps.isNotEmpty
-        ? maps.map((item) => MaterialPR.fromJson(item)).toList()
+    List<SellinDetail> list = maps.isNotEmpty
+        ? maps.map((item) => SellinDetail.fromJson(item)).toList()
         : [];
     return list;
   }
 
-  Future<MaterialPR> getById(int id) async {
-    return MaterialPR.fromJson(await super.queryGetById(id));
+  Future<SellinDetail> getById(int id) async {
+    return SellinDetail.fromJson(await super.queryGetById(id));
   }
 }

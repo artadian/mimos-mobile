@@ -1,55 +1,55 @@
-import 'package:mimos/PR/model/material_pr.dart';
+import 'package:mimos/PR/model/stock.dart';
 import 'package:mimos/db/base_dao.dart';
 import 'package:sqflite/sqflite.dart';
 
-class MaterialPRDao extends BaseDao {
-  MaterialPRDao()
+class StockDao extends BaseDao {
+  StockDao()
       : super(
-    table: "materialfl",
-    primaryKey: "matid",
+    table: "stock",
+    primaryKey: "id",
   );
 
-  Future<int> insert(MaterialPR data) async {
+  Future<int> insert(Stock data) async {
     var row = data.toJson();
     return await super.queryInsert(row);
   }
 
-  Future<int> insertIgnore(MaterialPR data) async {
+  Future<int> insertIgnore(Stock data) async {
     var row = data.toJson();
     return await super
         .queryInsert(row, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
-  Future<List<int>> insertAll(List<MaterialPR> data) async {
+  Future<List<int>> insertAll(List<Stock> data) async {
     var row = data.map((v) => v.toJson()).toList();
     return await super.queryInsertAll(row);
   }
 
-  Future<List<int>> insertIgnoreAll(List<MaterialPR> data) async {
+  Future<List<int>> insertIgnoreAll(List<Stock> data) async {
     var row = data.map((v) => v.toJson()).toList();
     return await super
         .queryInsertAll(row, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
-  Future<int> update(MaterialPR data) async {
+  Future<int> update(Stock data) async {
     var row = data.toJson();
     return await super.queryUpdate(row);
   }
 
-  Future<List<int>> updateAll(List<MaterialPR> data) async {
+  Future<List<int>> updateAll(List<Stock> data) async {
     var row = data.map((v) => v.toJson()).toList();
     return await super.queryUpdateAll(row);
   }
 
-  Future<List<MaterialPR>> getAll() async {
+  Future<List<Stock>> getAll() async {
     var maps = await super.queryAllData();
-    List<MaterialPR> list = maps.isNotEmpty
-        ? maps.map((item) => MaterialPR.fromJson(item)).toList()
+    List<Stock> list = maps.isNotEmpty
+        ? maps.map((item) => Stock.fromJson(item)).toList()
         : [];
     return list;
   }
 
-  Future<MaterialPR> getById(int id) async {
-    return MaterialPR.fromJson(await super.queryGetById(id));
+  Future<Stock> getById(int id) async {
+    return Stock.fromJson(await super.queryGetById(id));
   }
 }

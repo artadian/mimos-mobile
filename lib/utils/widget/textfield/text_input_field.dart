@@ -20,6 +20,8 @@ class TextInputField extends StatelessWidget {
   final bool readOnly;
   final bool filled;
   final Function onTap;
+  final Widget prefix;
+  final Widget prefixIcon;
 
   TextInputField({
     this.controller,
@@ -39,6 +41,8 @@ class TextInputField extends StatelessWidget {
     this.readOnly = false,
     this.filled = false,
     this.onTap,
+    this.prefix,
+    this.prefixIcon,
   });
 
   @override
@@ -58,6 +62,8 @@ class TextInputField extends StatelessWidget {
             ]
           : inputFormatters,
       decoration: InputDecoration(
+          prefix: prefix,
+          prefixIcon: prefixIcon,
           filled: filled,
           labelText: labelText,
           prefixText: prefixText,

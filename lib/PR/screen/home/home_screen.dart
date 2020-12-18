@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreenNew> {
             shrinkWrap: true,
             itemCount: _myServiceList.length,
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: width ~/ 100),
+                crossAxisCount: width ~/ 110),
             itemBuilder: (context, position) {
               return _rowService(_myServiceList[position]);
             }));
@@ -283,7 +283,7 @@ class _HomeScreenState extends State<HomeScreenNew> {
       ),
       childBottom: Text(
         mymenuitem.judul,
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
       ),
       onPressed: () {
         if (mymenuitem.itemid.toString() == "99") {

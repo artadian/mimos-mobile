@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
+import 'package:mimos/PR/model/customer_pr.dart';
 import 'package:mimos/PR/screen/transaction/transaction_pr_screen.dart';
 import 'package:mimos/PR/screen/visit/item/visit_item.dart';
 import 'package:mimos/PR/screen/visit/visit_pr_vm.dart';
@@ -9,6 +10,7 @@ import 'package:mimos/utils/widget/dialog/default_dialog.dart';
 import 'package:mimos/utils/widget/text_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:mimos/helper/extension.dart';
 
 class VisitPRScreen extends StatefulWidget {
   @override
@@ -29,7 +31,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
 
   Widget _initProvider() {
     return ChangeNotifierProvider<VisitPRVM>(
-      create: (_) => VisitPRVM(),
+      create: (_) => VisitPRVM()..init(),
       child: Consumer<VisitPRVM>(
         builder: (c, vm, _) {
           return _initWidget(vm);
@@ -44,9 +46,12 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
+            controller: vm.etSearch,
             decoration: InputDecoration(
                 hintText: "Search", suffixIcon: Icon(Icons.search)),
-            onChanged: (val) {},
+            onChanged: (val){
+              vm.loadListVisit(search: val);
+            },
           ),
         ),
         Expanded(
@@ -59,8 +64,9 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
               onRefresh: vm.onRefresh,
               child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                  itemCount: 10,
+                  itemCount: vm.listCustomer.length,
                   itemBuilder: (c, i) {
+                    var data = vm.listCustomer[i];
                     return VisitItem(
                       leading: Container(
                           padding: EdgeInsets.symmetric(horizontal: 10),
@@ -69,13 +75,13 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
                             color: Colors.blue,
                             size: 32,
                           )),
-                      title: "ANDITA",
-                      subtitle1: "3320000013 [Z2]",
-                      subtitle2: "Senin, 20 Desember 2020",
-                      footer1: "perum Wisma Kedungasem H/1",
-                      footer2: "SURABAYA",
+                      title: data.name,
+                      subtitle1: "${data.customerno} [${data.priceid}]",
+                      subtitle2: data.tanggalkunjungan.dateView(),
+                      footer1: data.address,
+                      footer2: data.city,
                       onTap: () {
-                        _dialogCreateVisit(context);
+                        _dialogCreateVisit(vm, data);
                       },
                     );
                   })),
@@ -84,7 +90,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
     );
   }
 
-  _dialogCreateVisit(BuildContext context) {
+  _dialogCreateVisit(VisitPRVM vm, CustomerPR data) {
     var alert = DefaultDialog(
       title: "Mulai Kunjungan",
       content: Container(
@@ -94,20 +100,20 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextIcon(
-                text: "ANDITA",
+                text: data.name,
                 icon: Icons.store,
                 fontWeight: FontWeight.bold,
               ),
               TextIcon(
-                text: "3320000013 [Z2]",
+                text: "${data.customerno} [${data.priceid}]",
                 icon: Icons.padding,
               ),
               TextIcon(
-                text: "Senin, 20 Desember 2020",
+                text: data.tanggalkunjungan.dateView(),
                 icon: Icons.calendar_today_rounded,
               ),
               TextIcon(
-                text: "Perum Wisma Kedungasem H/1 SURABAYA",
+                text: "${data.address} ${data.city}",
                 icon: Icons.location_on,
               ),
               SizedBox(
@@ -134,7 +140,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
-                        _dialogReasonChoice(context);
+                        _dialogReasonChoice(vm);
                       },
                     ),
                   ),
@@ -181,7 +187,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
     );
   }
 
-  _dialogReasonChoice(BuildContext context) {
+  _dialogReasonChoice(VisitPRVM vm) {
     AlertDialog alert = AlertDialog(
       title: Text("Pilih Alasan"),
       content: Column(
@@ -189,10 +195,11 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
         children: [
           ListView.builder(
               shrinkWrap: true,
-              itemCount: 5,
+              itemCount: vm.listReason.length,
               itemBuilder: (c, i) {
+                var reason = vm.listReason[i].lookupdesc;
                 return ListTile(
-                  title: Text("Toko Sudah tidak ada $i"),
+                  title: Text(reason),
                   onTap: () {},
                 );
               })

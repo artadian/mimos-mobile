@@ -230,5 +230,92 @@ class DatabaseProvider {
         "materialgroupid TEXT, "
         "competitorbrand TEXT "
         ")");
+
+    /// ============================== PR
+    await database.execute('''CREATE TABLE IF NOT EXISTS visit (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userid TEXT, 
+        customerno TEXT, 
+        visitdate TEXT, 
+        notvisitreason TEXT, 
+        notbuyreason TEXT, 
+        regionid INTEGER, 
+        salesofficeid INTEGER, 
+        salesgroupid INTEGER, 
+        salesdistrictid INTEGER, 
+        cycle INTEGER, 
+        week INTEGER, 
+        year INTEGER, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS stock (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userid TEXT, 
+        customerno TEXT, 
+        stockdate TEXT, 
+        regionid INTEGER, 
+        salesofficeid INTEGER, 
+        salesgroupid INTEGER, 
+        salesdistrictid INTEGER, 
+        cycle INTEGER, 
+        week INTEGER, 
+        year INTEGER, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS sellin (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userid TEXT, 
+        customerno TEXT,
+        sellinno TEXT,  
+        sellindate TEXT, 
+        regionid INTEGER, 
+        salesofficeid INTEGER, 
+        salesgroupid INTEGER, 
+        salesdistrictid INTEGER, 
+        cycle INTEGER, 
+        week INTEGER, 
+        year INTEGER, 
+        export INTEGER, 
+        notes TEXT, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS sellin_detail (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        sellinid INTEGER, 
+        materialid TEXT, 
+        bal INTEGER, 
+        slof INTEGER, 
+        pac INTEGER, 
+        qty INTEGER, 
+        qtyintrodeal INTEGER, 
+        price REAL, 
+        sellinvalue REAL, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS stock_detail (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        stockid INTEGER, 
+        materialid TEXT, 
+        bal INTEGER, 
+        slof INTEGER, 
+        pac INTEGER, 
+        qty INTEGER, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
   }
+
 }

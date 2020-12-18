@@ -1,17 +1,17 @@
-class LookupPR {
+class Lookup {
   String lookupid;
   String lookupvalue;
   String lookupdesc;
   String lookupkey;
 
-  LookupPR({
+  Lookup({
     this.lookupid,
     this.lookupvalue,
     this.lookupdesc,
     this.lookupkey,
   });
 
-  LookupPR.fromJson(Map<String, dynamic> json) {
+  Lookup.fromJson(Map<String, dynamic> json) {
     lookupid = json['lookupid'].toString();
     lookupvalue = json['lookupvalue'].toString();
     lookupdesc = json['lookupdesc'].toString();

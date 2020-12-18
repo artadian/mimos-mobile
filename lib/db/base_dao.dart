@@ -111,12 +111,10 @@ abstract class BaseDao {
     return await db.rawUpdate(query, args);
   }
 
-  Future<int> countBy({String column, String value, bool all = false}) async {
+  Future<int> countBy({String column, String value}) async {
     var db = await instance.database;
-    var del = "AND isDelete = 0";
-    if (all) del = "";
     return Sqflite.firstIntValue(await db
-        .rawQuery("SELECT COUNT(*) FROM $table WHERE $column = '$value' $del"));
+        .rawQuery("SELECT COUNT(*) FROM $table WHERE $column = '$value'"));
   }
 
   Future<int> count() async {
@@ -133,11 +131,6 @@ abstract class BaseDao {
   Future truncate() async {
     final db = await instance.database;
     return await db.delete(table);
-  }
-
-  Future truncateSync() async {
-    final db = await instance.database;
-    return await db.delete(table, where: "needSync = 0");
   }
 
   Future close() async {

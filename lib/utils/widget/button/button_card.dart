@@ -34,7 +34,7 @@ class ButtonCard extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: Container(
-          padding: EdgeInsets.all(padding ?? 10.0),
+          padding: EdgeInsets.all(padding ?? 8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

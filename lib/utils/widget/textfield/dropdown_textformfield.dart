@@ -8,6 +8,8 @@ class DropdownTextFormField extends StatelessWidget {
   final Function validator;
   final String valueId;
   final Function onSaved;
+  final Widget prefix;
+  final Widget prefixIcon;
 
   DropdownTextFormField({
     this.enabled = true,
@@ -17,6 +19,8 @@ class DropdownTextFormField extends StatelessWidget {
     this.validator,
     this.valueId,
     this.onSaved,
+    this.prefix,
+    this.prefixIcon,
   });
 
   @override
@@ -28,6 +32,8 @@ class DropdownTextFormField extends StatelessWidget {
       onSaved: onSaved,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
+          prefix: prefix,
+          prefixIcon: prefixIcon,
           labelText: labelText ?? "", suffixIcon: Icon(Icons.arrow_drop_down)),
       validator: validator,
       onTap: onTap,

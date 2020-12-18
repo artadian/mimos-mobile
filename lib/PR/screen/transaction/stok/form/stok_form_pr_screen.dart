@@ -80,6 +80,7 @@ class _StokFormPRScreenState extends State<StokFormPRScreen> {
         DropdownTextFormField(
 //          controller: vm.product,
           labelText: "Pilih Barang",
+          prefixIcon: Icon(Icons.shopping_basket),
 //          onSaved: (val) => vm.model.NAMA_PRODUK = val,
           validator: (val) {
             if (val.length < 1)
@@ -87,21 +88,17 @@ class _StokFormPRScreenState extends State<StokFormPRScreen> {
             else
               return null;
           },
-          onTap: () {},
-        ),
-        TextInputField(
-          readOnly: true,
-//          controller: vm.tglBeli,
-//          onSaved: (val) => vm.model.TGL_PEMBELIAN = val,
-          labelText: "Tanggal Beli",
-          onTap: () {},
+          onTap: () {
+
+          },
         ),
         TextInputField(
 //          controller: vm.hargaBeliPokok,
           keyboardType: TextInputType.number,
 //          onSaved: (val) => vm.model.HARGA_BELI_POKOK = val,
-          labelText: "Jumlah Bal",
-          suffixText: "Bal",
+          labelText: "Jumlah Pac",
+          suffixText: "Pac",
+          prefixIcon: Icon(Icons.ad_units),
           validator: (String val) {
 //            int numb = val.clearMoneyInt();
 //            if (val.length < 1 || val.toString() == "0")
@@ -120,6 +117,15 @@ class _StokFormPRScreenState extends State<StokFormPRScreen> {
 //          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
           labelText: "Jumlah Slof",
           suffixText: "Slof",
+          prefixIcon: Icon(Icons.apps),
+        ),
+        TextInputField(
+//          controller: vm.volumeJual,
+          keyboardType: TextInputType.number,
+//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
+          labelText: "Jumlah Bal",
+          suffixText: "Bal",
+          prefixIcon: Icon(Icons.archive),
         ),
       ],
     );

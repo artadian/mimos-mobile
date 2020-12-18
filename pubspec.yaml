@@ -22,7 +22,8 @@ dependencies:
   bloc: ^6.0.0
   flutter_bloc: ^6.0.0
   provider: ^4.3.2+3
-
+  dio: ^3.0.10
+  connectivity: ^2.0.0
   cupertino_icons: ^0.1.2
   datetime_picker_formfield: null
   flutter_cupertino_date_picker: ^1.0.12
