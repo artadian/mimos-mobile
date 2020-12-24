@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreenNew> {
         } else if (mymenuitem.itemid.toString() == "104") {
           Navigator.of(context).pushNamed(DOWNLOAD_SCREEN_TF);
         } else if (mymenuitem.itemid.toString() == "105") {
-          Navigator.of(context).pushNamed(RINGKASAN_SCREEN_TF);
+          Navigator.of(context).pushNamed(UPLOAD_SCREEN_PR);
         } else {
           _logOut();
         }

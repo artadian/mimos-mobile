@@ -5,9 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:mimos/helper/session_manager.dart';
 import 'package:mimos/network/api/api_service.dart';
 
-
 class ApiClient {
-  static Dio _dio = Dio();
+  static Dio _dio;
   static const connectTimeout = 15000;
   static const receiveTimeout = 15000;
 
@@ -22,7 +21,8 @@ class ApiClient {
     _dio.interceptors.add(LogInterceptor(responseBody: true));
     _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
-      options.contentType = ContentType.json.toString();
+      options.contentType =
+          ContentType.parse("application/x-www-form-urlencoded").toString();
       options.connectTimeout = connectTimeout;
       options.receiveTimeout = receiveTimeout;
 
@@ -44,17 +44,22 @@ class ApiClient {
   }
 
   Dio _initialize() {
+    Dio _dio = Dio();
     _dio.interceptors.add(LogInterceptor(responseBody: true));
     _dio.interceptors
         .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
-
       options.baseUrl = BASE_URL_API;
-      options.contentType = ContentType.json.toString();
+      options.headers["user"] = await session.getUserId();
+      options.contentType =
+          ContentType.parse("application/x-www-form-urlencoded").toString();
       options.connectTimeout = connectTimeout;
       options.receiveTimeout = receiveTimeout;
 
       return options;
     }, onResponse: (Response response) {
+      print("DioResponse Ori: ");
+      print(response);
+      print("----------------");
       try {
         response.data = removeAllHtml(response.data);
       } catch (e) {
@@ -75,8 +80,8 @@ class ApiClient {
       RegExp exp = RegExp(r"<[^>].*>", multiLine: true, caseSensitive: true);
       var res = data.toString().replaceAll(exp, '');
       return json.decode(res);
-    }catch(e){
-      print("ApiClient: $e");
+    } catch (e) {
+      print("ApiClient removeAllHtml: $e");
       return data;
     }
   }

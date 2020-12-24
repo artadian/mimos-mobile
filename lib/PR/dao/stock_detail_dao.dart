@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mimos/PR/model/stock_detail.dart';
 import 'package:mimos/db/base_dao.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,9 +6,9 @@ import 'package:sqflite/sqflite.dart';
 class StockDetailDao extends BaseDao {
   StockDetailDao()
       : super(
-    table: "stock_detail",
-    primaryKey: "id",
-  );
+          table: "stock_detail",
+          primaryKey: "id",
+        );
 
   Future<int> insert(StockDetail data) async {
     var row = data.toJson();
@@ -51,5 +52,37 @@ class StockDetailDao extends BaseDao {
 
   Future<StockDetail> getById(int id) async {
     return StockDetail.fromJson(await super.queryGetById(id));
+  }
+
+  Future<List<StockDetail>> getByParent({@required int stockid}) async {
+    var db = await instance.database;
+    var query = '''
+      SELECT * FROM $table
+      WHERE stockid = $stockid
+      AND isDelete = 0
+    ''';
+
+    var maps = await db.rawQuery(query);
+    List<StockDetail> list = maps.isNotEmpty
+        ? maps.map((item) => StockDetail.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<StockDetail>> getByParentAndMaterial(
+      {@required int stockid, @required String materialid}) async {
+    var db = await instance.database;
+    var query = """
+      SELECT * FROM $table
+      WHERE stockid = $stockid
+      AND materialid = '$materialid'
+      AND isDelete = 0
+    """;
+
+    var maps = await db.rawQuery(query);
+    List<StockDetail> list = maps.isNotEmpty
+        ? maps.map((item) => StockDetail.fromJson(item)).toList()
+        : [];
+    return list;
   }
 }

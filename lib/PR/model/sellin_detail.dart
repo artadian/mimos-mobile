@@ -4,6 +4,7 @@ class SellinDetail {
   int id;
   int sellinid;
   String materialid;
+  String materialname;
   int bal;
   int slof;
   int pac;
@@ -15,10 +16,28 @@ class SellinDetail {
   bool isDelete;
   bool isLocal;
 
+  SellinDetail({
+    this.id,
+    this.sellinid,
+    this.materialid,
+    this.materialname,
+    this.bal,
+    this.slof,
+    this.pac,
+    this.qty,
+    this.qtyintrodeal,
+    this.price,
+    this.sellinvalue,
+    this.needSync,
+    this.isDelete,
+    this.isLocal,
+  });
+
   SellinDetail.fromJson(Map<String, dynamic> map)
       : id = map["id"].toString().toInt(),
         sellinid = map["sellinid"].toString().toInt(),
         materialid = map["materialid"].toString().clean(),
+        materialname = map["materialname"].toString().clean(),
         bal = map["bal"].toString().toInt(),
         slof = map["slof"].toString().toInt(),
         pac = map["pac"].toString().toInt(),
@@ -35,6 +54,7 @@ class SellinDetail {
     data['id'] = id;
     data['sellinid'] = sellinid;
     data['materialid'] = materialid;
+    data['materialname'] = materialname;
     data['bal'] = bal;
     data['slof'] = slof;
     data['pac'] = pac;
@@ -42,9 +62,9 @@ class SellinDetail {
     data['qtyintrodeal'] = qtyintrodeal;
     data['price'] = price;
     data['sellinvalue'] = sellinvalue;
-		data['needSync'] = needSync;
-		data['isDelete'] = isDelete;
-		data['isLocal'] = isLocal;
+    data['needSync'] = needSync;
+    data['isDelete'] = isDelete;
+    data['isLocal'] = isLocal;
     return data;
   }
 }

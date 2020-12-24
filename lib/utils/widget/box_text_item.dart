@@ -9,8 +9,8 @@ class BoxTextItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: BoxConstraints(minWidth: 80),
-      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+      constraints: BoxConstraints(minWidth: 70),
+      padding: EdgeInsets.symmetric(vertical: 1, horizontal: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

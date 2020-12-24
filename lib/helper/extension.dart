@@ -42,6 +42,12 @@ extension StringExtension on String {
   String clean() =>
       (this != null && this != "null" && this != "") ? this : null;
 
+  int toNol() =>
+      (this != null && this != "null" && this != "") ? int.parse(this) : 0;
+
+  String toNolStr() =>
+      (this != null && this != "null" && this != "") ? this : "0";
+
   String toNull() => (this != null &&
           this != "null" &&
           this != "" &&

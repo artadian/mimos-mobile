@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mimos/PR/model/sellin_detail.dart';
 import 'package:mimos/db/base_dao.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,9 +6,9 @@ import 'package:sqflite/sqflite.dart';
 class SellinDetailDao extends BaseDao {
   SellinDetailDao()
       : super(
-    table: "sellin_detail",
-    primaryKey: "id",
-  );
+          table: "sellin_detail",
+          primaryKey: "id",
+        );
 
   Future<int> insert(SellinDetail data) async {
     var row = data.toJson();
@@ -51,5 +52,36 @@ class SellinDetailDao extends BaseDao {
 
   Future<SellinDetail> getById(int id) async {
     return SellinDetail.fromJson(await super.queryGetById(id));
+  }
+
+  Future<List<SellinDetail>> getByParent({@required int sellinid}) async {
+    var db = await instance.database;
+    var query = '''
+      SELECT * FROM $table
+      WHERE sellinid = $sellinid
+    ''';
+
+    var maps = await db.rawQuery(query);
+    List<SellinDetail> list = maps.isNotEmpty
+        ? maps.map((item) => SellinDetail.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<SellinDetail>> getByParentAndMaterial(
+      {@required int sellinid, @required String materialid}) async {
+    var db = await instance.database;
+    var query = """
+      SELECT * FROM $table
+      WHERE sellinid = $sellinid
+      AND materialid = '$materialid'
+      AND isDelete = 0
+    """;
+
+    var maps = await db.rawQuery(query);
+    List<SellinDetail> list = maps.isNotEmpty
+        ? maps.map((item) => SellinDetail.fromJson(item)).toList()
+        : [];
+    return list;
   }
 }

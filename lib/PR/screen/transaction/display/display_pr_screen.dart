@@ -111,7 +111,7 @@ class _DisplayPRScreenState extends State<DisplayPRScreen> {
     return Container(
       child: Stack(
         children: [
-          Expanded(child: _body(vm)),
+          _body(vm),
           Positioned(
             bottom: 16,
             right: 16,

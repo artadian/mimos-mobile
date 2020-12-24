@@ -81,9 +81,14 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
                             color: Colors.green,
                           )
                         : menu.status == -1
-                            ? Icon(
-                                Icons.error,
-                                color: Colors.red,
+                            ? InkWell(
+                                onTap: () {
+                                  _dialogError(menu.message ?? "Error");
+                                },
+                                child: Icon(
+                                  Icons.error,
+                                  color: Colors.red,
+                                ),
                               )
                             : SizedBox(),
               );
@@ -143,5 +148,28 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
     if (picked != null && picked != vm.selectedDate) {
       vm.etDate.text = DateFormat("dd MMMM yyyy").format(picked);
     }
+  }
+
+  _dialogError(String message) {
+    AlertDialog alert = AlertDialog(
+      title: Text("Error Download"),
+      content: Container(
+        child: Text(message),
+      ),
+      actions: [
+        FlatButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Close"))
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

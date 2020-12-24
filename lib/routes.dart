@@ -5,10 +5,10 @@ import 'package:mimos/FL/Screen/downloadscreenFL.dart';
 import 'package:mimos/FL/Screen/trialscreenFL.dart';
 import 'package:mimos/FL/Screen/uploadscreenFL.dart';
 import 'package:mimos/PR/screen/transaction/display/display_pr_screen.dart';
-import 'package:mimos/PR/screen/transaction/penjualan/penjualan_pr_screen.dart';
+import 'package:mimos/PR/screen/transaction/penjualan/penjualan_screen.dart';
 import 'package:mimos/PR/screen/transaction/posm/posm_pr_screen.dart';
-import 'package:mimos/PR/screen/transaction/stok/form/stok_form_pr_screen.dart';
-import 'package:mimos/PR/screen/transaction/stok/stok_pr_screen.dart';
+import 'package:mimos/PR/screen/transaction/stok/form/stock_form_screen.dart';
+import 'package:mimos/PR/screen/transaction/stok/stock_screen.dart';
 import 'package:mimos/PR/screen/trial/form/trial_form_pr_screen.dart';
 import 'package:mimos/PR/screen/trial/trial_pr_screen.dart';
 import 'package:mimos/Screen/splashscreen.dart';
@@ -30,7 +30,7 @@ import 'package:mimos/TF/Screen/checkvisibilityupload.dart';
 import 'package:mimos/FL/Screen/trialformscreenFL.dart';
 import 'package:mimos/PR/screen/download/download_pr_screen.dart';
 import 'package:mimos/PR/screen/upload/upload_pr_screen.dart';
-import 'package:mimos/PR/screen/visit/visit_pr_screen.dart';
+import 'package:mimos/PR/screen/visit/visit_screen.dart';
 
 class Routes {
   static Map<String, WidgetBuilder> generate() => {
@@ -71,7 +71,7 @@ class Routes {
         //-------- PR
         // HOME
         DOWNLOAD_SCREEN_PR: (BuildContext context) => new DownloadPRScreen(),
-        VISIT_SCREEN_PR: (BuildContext context) => new VisitPRScreen(),
+        VISIT_SCREEN_PR: (BuildContext context) => new VisitScreen(),
         VISIT_FORM_FORM_SCREEN_PR: (BuildContext context) =>
             new DownloadPRScreen(),
         UPLOAD_SCREEN_PR: (BuildContext context) => new UploadPRScreen(),
@@ -79,10 +79,9 @@ class Routes {
         TRIAL_FROM_SCREEN_PR: (BuildContext context) => new TrialFormPRScreen(),
         // TRANSACTION
         DISPLAY_SCREEN_PR: (BuildContext context) => new DisplayPRScreen(),
-        STOK_SCREEN_PR: (BuildContext context) => new StokPRScreen(),
-        PENJUALAN_SCREEN_PR: (BuildContext context) => new PenjualanPRScreen(),
+        STOK_SCREEN_PR: (BuildContext context) => new StokScreen(),
+        PENJUALAN_SCREEN_PR: (BuildContext context) => new PenjualanScreen(),
         POSM_SCREEN_PR: (BuildContext context) => new PosmPRScreen(),
-        STOK_FROM_SCREEN_PR: (BuildContext context) => new StokFormPRScreen(),
         //------ END PR
       };
 }

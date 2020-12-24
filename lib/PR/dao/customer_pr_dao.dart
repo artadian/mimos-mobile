@@ -57,16 +57,17 @@ class CustomerPRDao extends BaseDao {
       where = "AND c.name LIKE '%$search%'";
 
     var query = '''
-      SELECT DISTINCT c.priceid, c.address, c.city, c.customerno, c.tanggalkunjungan, c.name,
-        v.visittrxid, v.nonota, v.notvisitreason, v.notbuyreason, vl.lookupdesc as lookupdescvisitreason,
-        bl.lookupdesc as lookupdescbuyreason, c.wspclass 
-      FROM customer AS c 
-      LEFT JOIN visittf as v ON c.customerno = v.customerno 
-        AND c.tanggalkunjungan = v.tglkunjungan 
+      SELECT DISTINCT c.*, c.tanggalkunjungan as visitdate,
+        v.id as idvisit, v.notvisitreason, v.notbuyreason,
+        vl.lookupdesc as lookupdescvisitreason,
+        bl.lookupdesc as lookupdescbuyreason
+      FROM $table AS c 
+      LEFT JOIN visit as v ON c.customerno = v.customerno 
+        AND c.tanggalkunjungan = v.visitdate 
         AND c.userid = v.userid 
       LEFT JOIN lookup AS vl ON v.notvisitreason = vl.lookupvalue AND vl.lookupkey = 'not_visit_reason' 
       LEFT JOIN lookup AS bl ON v.notbuyreason = bl.lookupvalue AND bl.lookupkey = 'not_buy_reason' 
-        WHERE c.tanggalkunjungan = '${DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()}' 
+      WHERE c.tanggalkunjungan = '${DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()}' 
       $where
       ORDER BY c.name 
     ''';

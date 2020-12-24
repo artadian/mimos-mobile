@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mimos/PR/screen/transaction/stok/stok_pr_vm.dart';
+import 'package:mimos/PR/screen/transaction/stok/stock_vm.dart';
+import 'package:mimos/PR/screen/trial/form/trial_form_vm.dart';
 import 'package:mimos/utils/widget/button/bottom_action.dart';
 import 'package:mimos/utils/widget/textfield/dropdown_textformfield.dart';
 import 'package:mimos/utils/widget/textfield/text_input_field.dart';
@@ -24,15 +25,15 @@ class _TrialFormPRScreenState extends State<TrialFormPRScreen> {
   }
 
   Widget _initProvider() {
-    return ChangeNotifierProvider<StokPRVM>(
-      create: (_) => StokPRVM(),
-      child: Consumer<StokPRVM>(
+    return ChangeNotifierProvider<TrialFormVM>(
+      create: (_) => TrialFormVM(),
+      child: Consumer<TrialFormVM>(
         builder: (c, vm, _) => _initWidget(vm),
       ),
     );
   }
 
-  Widget _initWidget(StokPRVM vm) {
+  Widget _initWidget(TrialFormVM vm) {
     return Form(
       key: vm.keyForm,
       child: Stack(

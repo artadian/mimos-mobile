@@ -29,6 +29,13 @@ class _UploadPRScreenState extends State<UploadPRScreen> {
   }
 
   Widget _initWidget(UploadPRVM vm) {
-    return Container();
+    return Container(
+      child: RaisedButton(
+        child: Text("Upload"),
+        onPressed: (){
+          vm.uploadVisit();
+        },
+      ),
+    );
   }
 }

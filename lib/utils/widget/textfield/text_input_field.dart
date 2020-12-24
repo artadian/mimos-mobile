@@ -37,7 +37,7 @@ class TextInputField extends StatelessWidget {
     this.suffixStyle,
     this.prefixText,
     this.prefixStyle,
-    this.emptyValidator = true,
+    this.emptyValidator = false,
     this.readOnly = false,
     this.filled = false,
     this.onTap,
@@ -80,7 +80,9 @@ class TextInputField extends StatelessWidget {
                   else
                     return null;
                 }
-              : null,
+              : (String val) {
+                  return null;
+                },
       onTap: onTap,
     );
   }

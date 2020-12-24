@@ -1,3 +1,5 @@
+import 'package:mimos/helper/extension.dart';
+
 class CustomerPR {
   int id;
   String customerno;
@@ -20,6 +22,7 @@ class CustomerPR {
   String salesofficename;
   String usersfaid;
   String userroleid;
+  int regionid;
   String tanggalkunjungan;
   String notvisitreason;
   String notbuyreason;
@@ -27,12 +30,12 @@ class CustomerPR {
   String lookupdescbuyreason;
   String nonota;
   String amountnota;
-  String visittrxid;
+  int idvisit;
   String wspclass;
   String ycw;
-  String year;
-  String cycle;
-  String week;
+  int year;
+  int cycle;
+  int week;
 
   CustomerPR({
     this.id,
@@ -56,6 +59,7 @@ class CustomerPR {
     this.salesofficename,
     this.usersfaid,
     this.userroleid,
+    this.regionid,
     this.tanggalkunjungan,
     this.notvisitreason,
     this.notbuyreason,
@@ -63,7 +67,7 @@ class CustomerPR {
     this.lookupdescbuyreason,
     this.nonota,
     this.amountnota,
-    this.visittrxid,
+    this.idvisit,
     this.wspclass,
     this.ycw,
     this.year,
@@ -94,6 +98,7 @@ class CustomerPR {
       salesofficename: _map["salesofficename"].toString(),
       usersfaid: _map["usersfaid"].toString(),
       userroleid: _map["userroleid"].toString(),
+      regionid: _map["regionid"].toString().toInt(),
       tanggalkunjungan: _map["tanggalkunjungan"].toString(),
       notvisitreason: _map["notvisitreason"].toString(),
       notbuyreason: _map["notbuyreason"].toString(),
@@ -101,20 +106,20 @@ class CustomerPR {
       lookupdescbuyreason: _map["lookupdescbuyreason"].toString(),
       nonota: _map["nonota"].toString(),
       amountnota: _map["amountnota"].toString(),
-      visittrxid: _map["visittrxid"].toString(),
+      idvisit: _map["idvisit"].toString().toInt(),
       wspclass: _map["wspclass"].toString(),
-      year: _map["year"].toString(),
-      cycle: _map["cycle"].toString(),
-      week: _map["week"].toString(),
+      year: _map["year"].toString().toInt(),
+      cycle: _map["cycle"].toString().toInt(),
+      week: _map["week"].toString().toInt(),
     );
   }
 
   factory CustomerPR.fromJson(Map<String, dynamic> _map) {
     print('customer: ${_map["ycw"]}');
     List<String> arr = _map["ycw"].toString().split(';');
-    String _year = arr[0];
-    String _cycle = arr[1];
-    String _week = arr[2];
+    int _year = arr[0].toString().toInt();
+    int _cycle = arr[1].toString().toInt();
+    int _week = arr[2].toString().toInt();
     return CustomerPR(
       id: _map["id"],
       customerno: _map["customerno"].toString(),
@@ -137,6 +142,7 @@ class CustomerPR {
       salesofficename: _map["salesofficename"].toString(),
       usersfaid: _map["usersfaid"].toString(),
       userroleid: _map["userroleid"].toString(),
+      regionid: _map["regionid"].toString().toInt(),
       tanggalkunjungan: _map["tanggalkunjungan"].toString(),
       notvisitreason: _map["notvisitreason"].toString(),
       notbuyreason: _map["notbuyreason"].toString(),
@@ -144,7 +150,7 @@ class CustomerPR {
       lookupdescbuyreason: _map["lookupdescbuyreason"].toString(),
       nonota: _map["nonota"].toString(),
       amountnota: _map["amountnota"].toString(),
-      visittrxid: _map["visittrxid"].toString(),
+      idvisit: _map["idvisit"].toString().toInt(),
       wspclass: _map["wspclass"].toString(),
       ycw: _map["ycw"].toString(),
       year: _year,
@@ -154,10 +160,6 @@ class CustomerPR {
   }
 
   Map<String, dynamic> toJson() {
-    List<String> arr = this.ycw.split(';');
-    String _year = arr[0];
-    String _cycle = arr[1];
-    String _week = arr[2];
     return {
       "customerno": this.customerno,
       "userid": this.userid,
@@ -179,10 +181,11 @@ class CustomerPR {
       "salesofficename": this.salesofficename,
       "usersfaid": this.usersfaid,
       "userroleid": this.userroleid,
+      "regionid": this.regionid,
       "tanggalkunjungan": this.tanggalkunjungan,
-      "year": _year,
-      "cycle": _cycle,
-      "week": _week,
+      "year": this.year,
+      "cycle": this.cycle,
+      "week": this.week,
     };
   }
 }

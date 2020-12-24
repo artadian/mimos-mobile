@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:mimos/Constant/Constant.dart';
 import 'package:mimos/PR/model/customer_pr.dart';
-import 'package:mimos/PR/screen/transaction/transaction_pr_screen.dart';
+import 'package:mimos/PR/screen/transaction/transaction_screen.dart';
 import 'package:mimos/PR/screen/visit/item/visit_item.dart';
-import 'package:mimos/PR/screen/visit/visit_pr_vm.dart';
+import 'package:mimos/PR/screen/visit/visit_vm.dart';
+import 'package:mimos/helper/extension.dart';
 import 'package:mimos/utils/widget/button/button_card.dart';
-import 'package:mimos/utils/widget/circle_icon.dart';
 import 'package:mimos/utils/widget/dialog/default_dialog.dart';
 import 'package:mimos/utils/widget/text_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:mimos/helper/extension.dart';
 
-class VisitPRScreen extends StatefulWidget {
+class VisitScreen extends StatefulWidget {
   @override
-  _VisitPRScreenState createState() => _VisitPRScreenState();
+  _VisitScreenState createState() => _VisitScreenState();
 }
 
-class _VisitPRScreenState extends State<VisitPRScreen> {
+class _VisitScreenState extends State<VisitScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,9 +28,9 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
   }
 
   Widget _initProvider() {
-    return ChangeNotifierProvider<VisitPRVM>(
-      create: (_) => VisitPRVM()..init(),
-      child: Consumer<VisitPRVM>(
+    return ChangeNotifierProvider<VisitVM>(
+      create: (_) => VisitVM()..init(),
+      child: Consumer<VisitVM>(
         builder: (c, vm, _) {
           return _initWidget(vm);
         },
@@ -40,7 +38,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
     );
   }
 
-  Widget _initWidget(VisitPRVM vm) {
+  Widget _initWidget(VisitVM vm) {
     return Column(
       children: [
         Padding(
@@ -49,7 +47,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
             controller: vm.etSearch,
             decoration: InputDecoration(
                 hintText: "Search", suffixIcon: Icon(Icons.search)),
-            onChanged: (val){
+            onChanged: (val) {
               vm.loadListVisit(search: val);
             },
           ),
@@ -72,7 +70,12 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           child: Icon(
                             Icons.person_pin,
-                            color: Colors.blue,
+                            color: data.idvisit != null
+                                ? (data.notvisitreason != null &&
+                                        data.notvisitreason != "0")
+                                    ? Colors.red
+                                    : Colors.green
+                                : Colors.blue,
                             size: 32,
                           )),
                       title: data.name,
@@ -81,7 +84,20 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
                       footer1: data.address,
                       footer2: data.city,
                       onTap: () {
-                        _dialogCreateVisit(vm, data);
+                        if (data.idvisit != null) {
+                          if (data.notvisitreason != null &&
+                              data.notvisitreason != "0") {
+                            _dialogCreateVisit(vm, data);
+                          } else {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        TransactionScreen(data)));
+                          }
+                        } else {
+                          _dialogCreateVisit(vm, data);
+                        }
                       },
                     );
                   })),
@@ -90,7 +106,8 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
     );
   }
 
-  _dialogCreateVisit(VisitPRVM vm, CustomerPR data) {
+  _dialogCreateVisit(VisitVM vm, CustomerPR data) {
+    print(data.toJson());
     var alert = DefaultDialog(
       title: "Mulai Kunjungan",
       content: Container(
@@ -140,7 +157,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
-                        _dialogReasonChoice(vm);
+                        _dialogReasonChoice(vm, data);
                       },
                     ),
                   ),
@@ -161,12 +178,13 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
+                        vm.saveVisit(data);
                         Navigator.of(context).pop();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TransactionPRScreen()),
+                              builder: (context) => TransactionScreen(data)),
                         );
                       },
                     ),
@@ -187,7 +205,7 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
     );
   }
 
-  _dialogReasonChoice(VisitPRVM vm) {
+  _dialogReasonChoice(VisitVM vm, CustomerPR data) {
     AlertDialog alert = AlertDialog(
       title: Text("Pilih Alasan"),
       content: Column(
@@ -197,10 +215,14 @@ class _VisitPRScreenState extends State<VisitPRScreen> {
               shrinkWrap: true,
               itemCount: vm.listReason.length,
               itemBuilder: (c, i) {
-                var reason = vm.listReason[i].lookupdesc;
+                var reason = vm.listReason[i];
                 return ListTile(
-                  title: Text(reason),
-                  onTap: () {},
+                  title: Text(reason.lookupdesc),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    vm.saveVisit(data, idReason: reason.lookupid);
+                  },
                 );
               })
         ],

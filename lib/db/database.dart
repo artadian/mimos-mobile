@@ -292,6 +292,7 @@ class DatabaseProvider {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         sellinid INTEGER, 
         materialid TEXT, 
+        materialname TEXT, 
         bal INTEGER, 
         slof INTEGER, 
         pac INTEGER, 
@@ -308,6 +309,7 @@ class DatabaseProvider {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         stockid INTEGER, 
         materialid TEXT, 
+        materialname TEXT, 
         bal INTEGER, 
         slof INTEGER, 
         pac INTEGER, 
@@ -315,6 +317,25 @@ class DatabaseProvider {
         needSync INTEGER NOT NULL DEFAULT 0,
         isDelete INTEGER NOT NULL DEFAULT 0,
         isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS material_price (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        materialname TEXT, 
+        materialgroupid TEXT, 
+        bal INTEGER, 
+        slof INTEGER, 
+        pac INTEGER, 
+        year INTEGER,
+        materialpriceid TEXT,
+        materialid TEXT,
+        priceid TEXT,
+        price REAL,
+        validfrom TEXT,
+        validto TEXT,
+        materialgroup TEXT,
+        groupdesc TEXT,
+        salesofficeid INTEGER
         )''');
   }
 

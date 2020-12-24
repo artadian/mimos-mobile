@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mimos/PR/model/stock.dart';
 import 'package:mimos/db/base_dao.dart';
 import 'package:sqflite/sqflite.dart';
@@ -5,9 +6,9 @@ import 'package:sqflite/sqflite.dart';
 class StockDao extends BaseDao {
   StockDao()
       : super(
-    table: "stock",
-    primaryKey: "id",
-  );
+          table: "stock",
+          primaryKey: "id",
+        );
 
   Future<int> insert(Stock data) async {
     var row = data.toJson();
@@ -51,5 +52,26 @@ class StockDao extends BaseDao {
 
   Future<Stock> getById(int id) async {
     return Stock.fromJson(await super.queryGetById(id));
+  }
+
+  Future<Stock> getByVisit({
+    @required String userid,
+    @required String customerno,
+    @required String stockdate,
+  }) async {
+    var db = await instance.database;
+    var query = '''
+      SELECT * FROM $table 
+      WHERE customerno = '$customerno'
+        AND userid = '$userid'
+        AND stockdate = '$stockdate'
+    ''';
+
+    var maps = await db.rawQuery(query);
+    if(maps.length > 0) {
+      return Stock.fromJson(maps.first);
+    }else{
+      return null;
+    }
   }
 }

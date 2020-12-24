@@ -26,7 +26,8 @@ class ButtonIconRounded extends StatelessWidget {
       padding: padding ?? EdgeInsets.fromLTRB(16, 10, 22, 10),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius ?? 50)),
-      color: Colors.blue,
+      color: color ?? Colors.blue,
+      disabledColor: Colors.grey,
       onPressed: onPressed,
       child: Row(
         children: [

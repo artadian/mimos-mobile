@@ -35,7 +35,7 @@ class DisplayItem extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 3, bottom: 5),
+                    padding: EdgeInsets.only(top: 1, bottom: 3),
                     child: Text(subtitle),
                   ),
                   Row(

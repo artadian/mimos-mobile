@@ -70,12 +70,25 @@ abstract class BaseDao {
     var db = await instance.database;
     var data =
     await db.query(table, where: '$primaryKey = ?', whereArgs: ['$id']);
-    return data.first;
+    if(data.isNotEmpty){
+      return data.first;
+    }else{
+      return null;
+    }
   }
 
   Future<List<Map<String, dynamic>>> queryAllData() async {
     var db = await instance.database;
     return await db.query(table);
+  }
+
+  Future<List<int>> getAllPrimaryKey() async {
+    var db = await instance.database;
+    var maps = await db.rawQuery("SELECT $primaryKey FROM $table");
+    List<int> list = maps.isNotEmpty
+        ? maps.map((item) => item[primaryKey] as int).toList()
+        : [];
+    return list;
   }
 
   Future<List<Map<String, dynamic>>> rawSelect(
@@ -101,6 +114,71 @@ abstract class BaseDao {
         distinct: distinct ?? false);
   }
 
+  Future<List<Map<String, dynamic>>> needSync() async {
+    var db = await instance.database;
+    var args = [1, 0, 1];
+    var data = await db.query(table,
+        where: 'needSync = ? AND isDelete = ? AND isLocal = ?',
+        whereArgs: args);
+    return data;
+  }
+
+  Future<List<Map<String, dynamic>>> needUpdate() async {
+    var db = await instance.database;
+    var args = [1, 0, 0];
+    var data = await db.query(table,
+        where: 'needSync = ? AND isDelete = ? AND isLocal = ?',
+        whereArgs: args);
+    return data;
+  }
+
+  Future<List<Map<String, dynamic>>> needDelete() async {
+    var db = await instance.database;
+    var args = [1, 1, 0];
+    var data = await db.query(table,
+        where: 'needSync = ? AND isDelete = ? AND isLocal = ?',
+        whereArgs: args);
+    return data;
+  }
+
+  Future<List<int>> needDeleteId() async {
+    var db = await instance.database;
+    var maps = await db.rawQuery("""
+      SELECT $primaryKey FROM $table
+      WHERE needSync = 1 AND isDelete = 1 AND isLocal = 0
+    """);
+
+    List<int> list = maps.isNotEmpty
+        ? maps.map((item) => item[primaryKey] as int).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<Map<String, dynamic>>> needSyncOnly() async {
+    var db = await instance.database;
+    var data = await db.query(table, where: 'needSync = 1');
+    return data;
+  }
+
+  Future<int> resetNeedUpdate(int id) async {
+    var db = await instance.database;
+    return await db.rawUpdate(
+        "UPDATE $table SET needSync = 0 WHERE $primaryKey = ?",
+        ['$id']);
+  }
+
+  Future<int> countNeedSync() async {
+    var db = await instance.database;
+    return Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM $table WHERE needSync = 1'));
+  }
+
+  Future<int> countNeedSyncIns() async {
+    var db = await instance.database;
+    return Sqflite.firstIntValue(await db.rawQuery(
+        'SELECT COUNT(*) FROM $table WHERE needSync = 1 AND isLocal = 1'));
+  }
+
   Future<int> rawInsert(String query, List<dynamic> args) async {
     final db = await instance.database;
     return await db.rawInsert(query, args);
@@ -123,9 +201,27 @@ abstract class BaseDao {
         await db.rawQuery('SELECT COUNT(*) FROM $table'));
   }
 
-  Future<int> delete(int id) async {
+  Future<int> _deleteLocal(int id) async {
     var db = await instance.database;
     return await db.delete(table, where: '$primaryKey = ?', whereArgs: ['$id']);
+  }
+
+  Future<int> _deleteServer(int id) async {
+    var db = await instance.database;
+    return await db.rawUpdate(
+        "UPDATE $table SET isDelete = 1, needSync = 1 WHERE $primaryKey = ?",
+        ['$id']);
+  }
+
+  Future<int> delete(int id, {local = false}) async {
+    var db = await instance.database;
+    if (local) return await _deleteLocal(id);
+    var select = await db.query(table,
+        where: '$primaryKey = ? AND isLocal = 1', whereArgs: ['$id']);
+    if (select.isNotEmpty)
+      return await _deleteLocal(id);
+    else
+      return await _deleteServer(id);
   }
 
   Future truncate() async {
