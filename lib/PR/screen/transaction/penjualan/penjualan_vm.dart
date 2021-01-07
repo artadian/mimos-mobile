@@ -4,6 +4,7 @@ import 'package:mimos/PR/dao/sellin_detail_dao.dart';
 import 'package:mimos/PR/model/customer_pr.dart';
 import 'package:mimos/PR/model/sellin.dart';
 import 'package:mimos/PR/model/sellin_detail.dart';
+import 'package:mimos/utils/widget/my_toast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class PenjualanVM with ChangeNotifier {
@@ -16,10 +17,13 @@ class PenjualanVM with ChangeNotifier {
   // Dao
   var _sellinDao = SellinDao();
   var _sellinDetailDao = SellinDetailDao();
+  var focusNode = FocusNode();
+  BuildContext _context;
+  double amount = 0.0;
 
-  init(CustomerPR customer) async {
+  init(BuildContext context, CustomerPR customer) async {
+    this._context = context;
     this.customer = customer;
-    sellin = Sellin.createFromJson(customer.toJson());
     await loadSellinHead();
     notifyListeners();
   }
@@ -33,6 +37,7 @@ class PenjualanVM with ChangeNotifier {
   }
 
   loadSellinHead() async {
+    sellin = Sellin.createFromJson(customer.toJson());
     var res = await _sellinDao.getByVisit(
         userid: customer.userid,
         customerno: customer.customerno,
@@ -40,6 +45,7 @@ class PenjualanVM with ChangeNotifier {
     print("$runtimeType loadSellinHead: $res}");
     if (res != null) {
       sellin = res;
+      etNota.text = res.sellinno;
       loadListSellin(res.id);
     }
     notifyListeners();
@@ -51,16 +57,41 @@ class PenjualanVM with ChangeNotifier {
     res.forEach((element) {
       print(element.toJson());
     });
+    amount = listSellinDetail.fold(0.0, (sum, item) => sum + item.sellinvalue);
+    print("amount: $amount");
     notifyListeners();
   }
 
-  save() async {
+  bool notaIsEmpty(){
+    if(etNota.text.isEmpty){
+      MyToast.showToast("NOTA tidak boleh kosong",
+          backgroundColor: Colors.red);
+      focusNode.requestFocus();
+      return true;
+    }
+    return false;
+  }
 
+  save() async {
+    if(notaIsEmpty()){
+      return;
+    }
+
+    sellin.needSync = true;
+    sellin.sellinno = etNota.text;
+    var res = await _sellinDao.update(sellin);
+    if(res != null){
+      MyToast.showToast("Berhasi menyimpan data",
+          backgroundColor: Colors.green);
+    }
+    Navigator.of(_context).pop("refresh");
   }
 
   delete(int id) async {
-    await _sellinDetailDao.delete(id);
-    onRefresh();
+    await _sellinDao.delete(id);
+    await _sellinDetailDao.deleteBySellin(id.toString());
+    loadSellinHead();
+    Navigator.of(_context).pop("refresh");
   }
 
 }

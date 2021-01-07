@@ -4,9 +4,10 @@ import 'package:mimos/Constant/Constant.dart';
 import 'package:mimos/FL/Screen/downloadscreenFL.dart';
 import 'package:mimos/FL/Screen/trialscreenFL.dart';
 import 'package:mimos/FL/Screen/uploadscreenFL.dart';
-import 'package:mimos/PR/screen/transaction/display/display_pr_screen.dart';
+import 'package:mimos/PR/screen/report/report_screen.dart';
+import 'package:mimos/PR/screen/transaction/display/display_screen.dart';
 import 'package:mimos/PR/screen/transaction/penjualan/penjualan_screen.dart';
-import 'package:mimos/PR/screen/transaction/posm/posm_pr_screen.dart';
+import 'package:mimos/PR/screen/transaction/posm/posm_screen.dart';
 import 'package:mimos/PR/screen/transaction/stok/form/stock_form_screen.dart';
 import 'package:mimos/PR/screen/transaction/stok/stock_screen.dart';
 import 'package:mimos/PR/screen/trial/form/trial_form_pr_screen.dart';
@@ -78,10 +79,11 @@ class Routes {
         TRIAL_SCREEN_PR: (BuildContext context) => new TrialPRScreen(),
         TRIAL_FROM_SCREEN_PR: (BuildContext context) => new TrialFormPRScreen(),
         // TRANSACTION
-        DISPLAY_SCREEN_PR: (BuildContext context) => new DisplayPRScreen(),
+        DISPLAY_SCREEN_PR: (BuildContext context) => new DisplayScreen(),
         STOK_SCREEN_PR: (BuildContext context) => new StokScreen(),
         PENJUALAN_SCREEN_PR: (BuildContext context) => new PenjualanScreen(),
-        POSM_SCREEN_PR: (BuildContext context) => new PosmPRScreen(),
+        POSM_SCREEN_PR: (BuildContext context) => new PosmScreen(),
+    REPORT_SCREEN_PR: (BuildContext context) => new ReportScreen(),
         //------ END PR
       };
 }

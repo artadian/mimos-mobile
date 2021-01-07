@@ -83,12 +83,14 @@ class StokFormVM with ChangeNotifier {
 
   saveDetail() async {
     var materialid = this.stockDetail.materialid;
-    var cekdata = await _stockDetailDao.getByParentAndMaterial(
-        stockid: stock.id, materialid: materialid);
-    if (cekdata.isNotEmpty) {
-      MyToast.showToast("Material Sudah diinputkan",
-          backgroundColor: Colors.red);
-      return;
+    if (!edit) {
+      var cekdata = await _stockDetailDao.getByParentAndMaterial(
+          stockid: stock.id, materialid: materialid);
+      if (cekdata.isNotEmpty) {
+        MyToast.showToast("Material Sudah diinputkan",
+            backgroundColor: Colors.red);
+        return;
+      }
     }
 
     var material =

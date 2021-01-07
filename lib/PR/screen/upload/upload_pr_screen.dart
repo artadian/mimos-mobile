@@ -8,6 +8,13 @@ class UploadPRScreen extends StatefulWidget {
 }
 
 class _UploadPRScreenState extends State<UploadPRScreen> {
+  var _vm = UploadPRVM();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,19 +28,19 @@ class _UploadPRScreenState extends State<UploadPRScreen> {
 
   Widget _initProvider() {
     return ChangeNotifierProvider<UploadPRVM>(
-      create: (_) => UploadPRVM(),
+      create: (_) => _vm,
       child: Consumer<UploadPRVM>(
-        builder: (c, vm, _) => _initWidget(vm),
+        builder: (c, vm, _) => _initWidget(),
       ),
     );
   }
 
-  Widget _initWidget(UploadPRVM vm) {
+  Widget _initWidget() {
     return Container(
       child: RaisedButton(
         child: Text("Upload"),
         onPressed: (){
-          vm.uploadVisit();
+          _vm.uploadVisit();
         },
       ),
     );

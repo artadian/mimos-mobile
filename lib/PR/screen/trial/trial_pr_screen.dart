@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
 import 'package:mimos/PR/screen/trial/trial_pr_vm.dart';
+import 'package:mimos/utils/widget/button/button_icon_rounded.dart';
 import 'package:mimos/utils/widget/text_icon.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,13 @@ class TrialPRScreen extends StatefulWidget {
 }
 
 class _TrialPRScreenState extends State<TrialPRScreen> {
+  var _vm = TrialPRVM();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -19,22 +27,22 @@ class _TrialPRScreenState extends State<TrialPRScreen> {
         title: Text("Trial"),
         shadowColor: Colors.transparent,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        onPressed: () {
-          Navigator.of(context).pushNamed(TRIAL_FROM_SCREEN_PR);
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: ButtonIconRounded(
+          icon: Icons.add_circle_outline,
+          text: "Tambah Item",
+          onPressed: () {
+            Navigator.of(context).pushNamed(TRIAL_FROM_SCREEN_PR);
+          },
+        ),
       body: _initProvider(),
     ));
   }
 
   Widget _initProvider() {
     return ChangeNotifierProvider<TrialPRVM>(
-      create: (_) => TrialPRVM(),
+      create: (_) => _vm,
       child: Consumer<TrialPRVM>(
-        builder: (c, vm, _) => _initWidget(vm),
+        builder: (c, vm, _) => _initWidget(),
       ),
     );
   }
@@ -66,7 +74,7 @@ class _TrialPRScreenState extends State<TrialPRScreen> {
     );
   }
 
-  Widget _header(TrialPRVM vm) {
+  Widget _header() {
     return Container(
       padding: EdgeInsets.all(10),
       child: Container(
@@ -119,11 +127,11 @@ class _TrialPRScreenState extends State<TrialPRScreen> {
     );
   }
 
-  Widget _initWidget(TrialPRVM vm) {
+  Widget _initWidget() {
     return Container(
       child: ListView(
         children: [
-          _header(vm),
+          _header(),
           ListView.builder(
               itemCount: 15,
               shrinkWrap: true,

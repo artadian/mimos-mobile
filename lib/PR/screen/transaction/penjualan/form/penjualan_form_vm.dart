@@ -87,12 +87,14 @@ class PenjualanFormVM with ChangeNotifier {
 
   saveDetail() async {
     var materialid = this.sellinDetail.materialid;
-    var cekdata = await _sellinDetailDao.getByParentAndMaterial(
-        sellinid: sellin.id, materialid: materialid);
-    if (cekdata.isNotEmpty) {
-      MyToast.showToast("Material Sudah diinputkan",
-          backgroundColor: Colors.red);
-      return;
+    if (!edit) {
+      var cekdata = await _sellinDetailDao.getByParentAndMaterial(
+          sellinid: sellin.id, materialid: materialid);
+      if (cekdata.isNotEmpty) {
+        MyToast.showToast("Material Sudah diinputkan",
+            backgroundColor: Colors.red);
+        return;
+      }
     }
 
     var material =
@@ -116,6 +118,7 @@ class PenjualanFormVM with ChangeNotifier {
       this.sellinDetail.isLocal = true;
       await _sellinDetailDao.insert(this.sellinDetail);
     }
+    await _sellinDao.setNeedSync(sellinDetail.sellinid);
     Navigator.of(_context).pop("refresh");
   }
 

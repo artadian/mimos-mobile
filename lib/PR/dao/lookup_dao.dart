@@ -49,9 +49,45 @@ class LookupDao extends BaseDao {
     return list;
   }
 
+  Future<List<Lookup>> getType() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'posm_type'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<Lookup>> getStatus() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'posm_status'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<Lookup>> getCondition() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'posm_condition'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
   Future<List<Lookup>> getReasonNotVisit() async {
     var db = await instance.database;
     var maps = await db.query(this.table, where: "lookupkey = 'not_visit_reason'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<Lookup>> getReasonNotBuy() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'not_buy_reason'");
     List<Lookup> list = maps.isNotEmpty
         ? maps.map((item) => Lookup.fromJson(item)).toList()
         : [];

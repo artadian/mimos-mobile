@@ -57,7 +57,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
       child: ListView(
         children: [
           _header(vm),
-          _buildMenuItem(vm),
+          vm.loading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : _buildMenuItem(vm),
         ],
       ),
     );
@@ -140,8 +144,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                       _dialogCreateSellin(vm, vm.customer);
                     }
                   } else {
-                    Navigator.of(context).pushNamed(menu.route,
-                        arguments: vm.customer);
+                    Navigator.of(context)
+                        .pushNamed(menu.route, arguments: vm.customer);
                   }
                 },
               );
@@ -244,14 +248,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
   }
 
   _gotoPenjualan(TransactionVM vm) async {
-    var result = await
-    Navigator.of(context).pushNamed(PENJUALAN_SCREEN_PR,
-        arguments: vm.customer);
+    var result = await Navigator.of(context)
+        .pushNamed(PENJUALAN_SCREEN_PR, arguments: vm.customer);
 
     print("result: $result");
-    if (result != null) {
-      vm.loadSellinHead();
-    }
+    vm.loadSellinHead();
+//    if (result != null) {
+//      vm.loadSellinHead();
+//    }
   }
 
   _dialogReasonChoice(TransactionVM vm, CustomerPR data) {

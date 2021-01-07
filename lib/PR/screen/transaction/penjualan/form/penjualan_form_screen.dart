@@ -96,6 +96,7 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
         TextInputField(
           controller: vm.price,
           keyboardType: TextInputType.number,
+          enabled: false,
           onSaved: (String val) {
             if(val.isNotEmpty){
               return vm.sellinDetail.price = val.clearMoney().toDouble() ?? 0.0;
@@ -111,6 +112,7 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
         TextInputField(
           controller: vm.introdeal,
           keyboardType: TextInputType.number,
+          enabled: false,
           onSaved: (String val) {
             if(val.isNotEmpty){
               return vm.sellinDetail.qtyintrodeal = val.toInt() ?? 0;

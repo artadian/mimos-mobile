@@ -14,13 +14,18 @@ class TransactionVM with ChangeNotifier {
   var saving; // null: default, -1: error, 0: loading, 1: success
   var _lookupDao = LookupDao();
   var _sellinDao = SellinDao();
+  var loading = false;
   Sellin sellin;
 
   init(CustomerPR customer) async {
+    loading = true;
+    notifyListeners();
+
     this.customer = customer;
     await loadSellinHead();
-    await loadListReasonNotVisit();
+    await loadListReasonNotBuy();
     _generateListMenu();
+    loading = false;
     notifyListeners();
   }
 
@@ -32,12 +37,14 @@ class TransactionVM with ChangeNotifier {
     print("$runtimeType loadSellinHead: $res}");
     if (res != null) {
       sellin = res;
+    }else{
+      sellin = null;
     }
     notifyListeners();
   }
 
-  loadListReasonNotVisit() async {
-    var res = await _lookupDao.getReasonNotVisit();
+  loadListReasonNotBuy() async {
+    var res = await _lookupDao.getReasonNotBuy();
     listReason = res;
     notifyListeners();
   }
@@ -54,6 +61,7 @@ class TransactionVM with ChangeNotifier {
     notifyListeners();
 
     var res = await _sellinDao.insert(sellin);
+    loadSellinHead();
     if(res != null){
       saving = 1; // Success
       notifyListeners();

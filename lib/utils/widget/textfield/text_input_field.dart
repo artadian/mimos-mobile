@@ -22,6 +22,7 @@ class TextInputField extends StatelessWidget {
   final Function onTap;
   final Widget prefix;
   final Widget prefixIcon;
+  final bool enabled;
 
   TextInputField({
     this.controller,
@@ -43,12 +44,14 @@ class TextInputField extends StatelessWidget {
     this.onTap,
     this.prefix,
     this.prefixIcon,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: readOnly,
+      enabled: enabled,
       controller: controller,
       keyboardType: keyboardType ?? TextInputType.text,
       onSaved: onSaved,

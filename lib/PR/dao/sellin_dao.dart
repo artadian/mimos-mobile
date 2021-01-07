@@ -58,7 +58,7 @@ class SellinDao extends BaseDao {
     var db = await instance.database;
     var query = '''
         SELECT s.*,
-        (SELECT sum(sellinvalue) FROM sellin_detail WHERE sellinid = s.sellinid AND isDelete = 0) as amount
+        (SELECT sum(sellinvalue) FROM sellin_detail WHERE sellinid = s.id AND isDelete = 0) as amount
         FROM sellin s WHERE
         needSync = 1 AND isDelete = 0 AND isLocal = 1 
         ''';
@@ -66,11 +66,11 @@ class SellinDao extends BaseDao {
     return data;
   }
 
-  Future<List<Map<String, dynamic>>> needUpdate({withProgress = true}) async {
+  Future<List<Map<String, dynamic>>> needUpdate() async {
     var db = await instance.database;
     var query = '''
         SELECT s.*,
-        (SELECT sum(sellinvalue) FROM sellin_detail WHERE sellinid = s.sellinid AND isDelete = 0) as amount
+        (SELECT sum(sellinvalue) FROM sellin_detail WHERE sellinid = s.id AND isDelete = 0) as amount
         FROM sellin s WHERE
         needSync = 1 AND isDelete = 0 AND isLocal = 0
         ''';
@@ -97,5 +97,18 @@ class SellinDao extends BaseDao {
     }else{
       return null;
     }
+  }
+
+  Future<List<Sellin>> getAllByDate({@required String date}) async {
+    var db = await instance.database;
+    var query = '''
+      SELECT * FROM $table WHERE sellindate = '$date'
+    ''';
+
+    var maps = await db.rawQuery(query);
+    List<Sellin> list = maps.isNotEmpty
+        ? maps.map((item) => Sellin.fromJson(item)).toList()
+        : [];
+    return list;
   }
 }

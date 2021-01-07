@@ -14,27 +14,29 @@ class Sellin {
   int cycle;
   int week;
   int year;
+  String notes;
   bool needSync;
   bool isDelete;
   bool isLocal;
 
-
-  Sellin(
-      {this.id,
-      this.sellinno,
-      this.userid,
-      this.customerno,
-      this.sellindate,
-      this.regionid,
-      this.salesofficeid,
-      this.salesgroupid,
-      this.salesdistrictid,
-      this.cycle,
-      this.week,
-      this.year,
-      this.needSync,
-      this.isDelete,
-      this.isLocal,});
+  Sellin({
+    this.id,
+    this.sellinno,
+    this.userid,
+    this.customerno,
+    this.sellindate,
+    this.regionid,
+    this.salesofficeid,
+    this.salesgroupid,
+    this.salesdistrictid,
+    this.cycle,
+    this.week,
+    this.year,
+    this.notes,
+    this.needSync,
+    this.isDelete,
+    this.isLocal,
+  });
 
   Sellin.fromJson(Map<String, dynamic> map)
       : this.id = map["id"].toString().toInt(),
@@ -49,6 +51,7 @@ class Sellin {
         this.cycle = map["cycle"].toString().toInt(),
         this.week = map["week"].toString().toInt(),
         this.year = map["year"].toString().toInt(),
+        this.notes = map["notes"].toString().clean(),
         this.needSync = map["needSync"].toString().toBool(),
         this.isDelete = map["isDelete"].toString().toBool(),
         this.isLocal = map["isLocal"].toString().toBool();
@@ -66,6 +69,7 @@ class Sellin {
         this.cycle = map["cycle"].toString().toInt(),
         this.week = map["week"].toString().toInt(),
         this.year = map["year"].toString().toInt(),
+        this.notes = map["notes"].toString().clean(),
         this.needSync = true,
         this.isDelete = false,
         this.isLocal = true;
@@ -84,6 +88,7 @@ class Sellin {
     data['cycle'] = this.cycle;
     data['week'] = this.week;
     data['year'] = this.year;
+    data['notes'] = this.notes;
     data['needSync'] = this.needSync;
     data['isDelete'] = this.isDelete;
     data['isLocal'] = this.isLocal;

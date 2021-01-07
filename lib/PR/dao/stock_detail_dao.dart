@@ -54,6 +54,12 @@ class StockDetailDao extends BaseDao {
     return StockDetail.fromJson(await super.queryGetById(id));
   }
 
+  Future<int> updateIdParent({@required int id, @required int newId}) async {
+    var db = await instance.database;
+    return await db.update(table, {"stockid": newId},
+        where: "stockid == $id");
+  }
+
   Future<List<StockDetail>> getByParent({@required int stockid}) async {
     var db = await instance.database;
     var query = '''

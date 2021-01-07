@@ -14,8 +14,8 @@ class MaterialPrice {
   double price;
   String validfrom;
   String validto;
-  String materialgroup;
-  String groupdesc;
+  String materialgroupname;
+  String materialgroupdesc;
   int salesofficeid;
 
   MaterialPrice.fromJson(Map<String, dynamic> map)
@@ -32,8 +32,8 @@ class MaterialPrice {
         price = map["price"].toString().toDouble(),
         validfrom = map["validfrom"].toString().clean(),
         validto = map["validto"].toString().clean(),
-        materialgroup = map["materialgroup"].toString().clean(),
-        groupdesc = map["groupdesc"].toString().clean(),
+        materialgroupname = map["materialgroupname"].toString().clean(),
+        materialgroupdesc = map["materialgroupdesc"].toString().clean(),
         salesofficeid = map["salesofficeid"].toString().toInt();
 
   Map<String, dynamic> toJson() {
@@ -51,8 +51,8 @@ class MaterialPrice {
     data['price'] = price;
     data['validfrom'] = validfrom;
     data['validto'] = validto;
-    data['materialgroup'] = materialgroup;
-    data['groupdesc'] = groupdesc;
+    data['materialgroupname'] = materialgroupname;
+    data['materialgroupdesc'] = materialgroupdesc;
     data['salesofficeid'] = salesofficeid;
     return data;
   }

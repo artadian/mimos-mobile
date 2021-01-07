@@ -160,6 +160,13 @@ abstract class BaseDao {
     return data;
   }
 
+  Future<int> setNeedSync(int id) async {
+    var db = await instance.database;
+    return await db.rawUpdate(
+        "UPDATE $table SET needSync = 1 WHERE $primaryKey = ?",
+        ['$id']);
+  }
+
   Future<int> resetNeedUpdate(int id) async {
     var db = await instance.database;
     return await db.rawUpdate(
@@ -222,6 +229,28 @@ abstract class BaseDao {
       return await _deleteLocal(id);
     else
       return await _deleteServer(id);
+  }
+
+  Future<List<int>> deleteBy({@required String column, @required String value}) async {
+    var db = await instance.database;
+
+    var rows = await db.query(table, where: '$column = ?', whereArgs: ['$value']);
+
+    var result = List<int>();
+    await Future.wait(rows.map((row) async {
+      try {
+        if (row["isLocal"])
+          await _deleteLocal(row['$primaryKey']);
+        else
+          await _deleteServer(row['$primaryKey']);
+
+        result.add(1);
+      } catch (e) {
+        result.add(0);
+        print("$runtimeType deleteBy ERROR: $e");
+      }
+    }));
+    return result;
   }
 
   Future truncate() async {

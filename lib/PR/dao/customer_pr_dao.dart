@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:mimos/PR/model/customer_pr.dart';
 import 'package:mimos/db/base_dao.dart';
@@ -50,6 +51,23 @@ class CustomerPRDao extends BaseDao {
     return list;
   }
 
+  Future<CustomerPR> getById(int id) async {
+    return CustomerPR.fromTable(await super.queryGetById(id));
+  }
+
+  Future<List<CustomerPR>> getAllByDate({@required String date}) async {
+    var db = await instance.database;
+    var query = '''
+      SELECT * FROM $table WHERE tanggalkunjungan = '$date'
+    ''';
+
+    var maps = await db.rawQuery(query);
+    List<CustomerPR> list = maps.isNotEmpty
+        ? maps.map((item) => CustomerPR.fromTable(item)).toList()
+        : [];
+    return list;
+  }
+
   Future<List<CustomerPR>> getCustomerVisit({String search}) async {
     var db = await instance.database;
     String where = "";
@@ -77,9 +95,5 @@ class CustomerPRDao extends BaseDao {
         ? maps.map((item) => CustomerPR.fromTable(item)).toList()
         : [];
     return list;
-  }
-
-  Future<CustomerPR> getById(int id) async {
-    return CustomerPR.fromTable(await super.queryGetById(id));
   }
 }

@@ -8,6 +8,7 @@ import 'package:mimos/PR/screen/transaction/penjualan/penjualan_vm.dart';
 import 'package:mimos/utils/layout/add_item_screen.dart';
 import 'package:mimos/utils/layout/empty_screen.dart';
 import 'package:mimos/utils/widget/button/button_icon_rounded.dart';
+import 'package:mimos/utils/widget/my_toast.dart';
 import 'package:provider/provider.dart';
 import 'package:mimos/helper/extension.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -18,30 +19,44 @@ class PenjualanScreen extends StatefulWidget {
 }
 
 class _PenjualanScreenState extends State<PenjualanScreen> {
+  var _vm = PenjualanVM();
+
   @override
   Widget build(BuildContext context) {
     final CustomerPR customer = ModalRoute.of(context).settings.arguments;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("PENJUALAN"),
-          shadowColor: Colors.transparent,
+    _vm.init(context, customer);
+    return WillPopScope(
+      onWillPop: () async {
+        if(_vm.sellin.sellinno == null){
+          MyToast.showToast("NOTA tidak boleh kosong",
+              backgroundColor: Colors.red);
+          _vm.focusNode.requestFocus();
+          return false;
+        }
+        return true;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("PENJUALAN"),
+            shadowColor: Colors.transparent,
+          ),
+          body: _initProvider(customer),
         ),
-        body: _initProvider(customer),
       ),
     );
   }
 
   Widget _initProvider(CustomerPR customer) {
     return ChangeNotifierProvider<PenjualanVM>(
-      create: (_) => PenjualanVM()..init(customer),
+      create: (_) => _vm,
       child: Consumer<PenjualanVM>(
-        builder: (c, vm, _) => _initWidget(vm),
+        builder: (c, vm, _) => _initWidget(),
       ),
     );
   }
 
-  Widget _header(PenjualanVM vm) {
+  Widget _header() {
     return Container(
       padding: EdgeInsets.only(bottom: 15, left: 10, right: 10),
       child: Column(
@@ -49,14 +64,14 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            vm.customer.name ?? "-",
+            _vm.customer.name ?? "-",
             style: TextStyle(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 5),
             child: Text(
-              "${vm.customer.address} ${vm.customer.city}",
+              "${_vm.customer.address} ${_vm.customer.city}",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -69,7 +84,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
             padding: EdgeInsets.only(top: 5),
             width: double.maxFinite,
             child: Text(
-              vm.customer.tanggalkunjungan.dateView() ?? "-",
+              _vm.customer.tanggalkunjungan.dateView() ?? "-",
               style: TextStyle(color: Colors.white, fontSize: 14),
               textAlign: TextAlign.right,
             ),
@@ -80,7 +95,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     );
   }
 
-  Widget _nota(PenjualanVM vm) {
+  Widget _nota() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Container(
@@ -93,12 +108,14 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
             Expanded(
               child: TextFormField(
                 autofocus: false,
-                controller: vm.etNota,
+                focusNode: _vm.focusNode,
+                controller: _vm.etNota,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5)),
                   isDense: true,
+                  suffix: Icon(Icons.edit, size: 18,),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 ),
@@ -111,12 +128,12 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     );
   }
 
-  Widget _body(PenjualanVM vm) {
+  Widget _body() {
     return Column(
       children: [
-        _header(vm),
-        _nota(vm),
-        (vm.listSellinDetail.isEmpty)
+        _header(),
+        _nota(),
+        (_vm.listSellinDetail.isEmpty)
             ? Expanded(
                 child: ListView(
                   shrinkWrap: true,
@@ -124,7 +141,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                   children: [
                     AddItemScreen(
                       onTap: () {
-                        _gotoForm(vm);
+                        _gotoForm();
                       },
                     )
                   ],
@@ -137,22 +154,22 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                   header: WaterDropHeader(
                     waterDropColor: Colors.blue,
                   ),
-                  controller: vm.refreshController,
-                  onRefresh: vm.onRefresh,
-                  child: ListView.separated(
+                  controller: _vm.refreshController,
+                  onRefresh: _vm.onRefresh,
+                  child: ListView.builder(
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
-                      itemCount: vm.listSellinDetail.length,
-                      separatorBuilder: (c, i) {
-                        return Divider(
-                          color: Colors.grey,
-                          height: 1.0,
-                        );
-                      },
+                      itemCount: _vm.listSellinDetail.length,
+//                      separatorBuilder: (c, i) {
+//                        return Divider(
+//                          color: Colors.grey,
+//                          height: 1.0,
+//                        );
+//                      },
                       itemBuilder: (c, i) {
-                        SellinDetail data = vm.listSellinDetail[i];
+                        SellinDetail data = _vm.listSellinDetail[i];
                         return SellinItem(
-                          title: data.materialid,
+                          title: data.materialname,
                           subtitle: data.materialid,
                           pac: data.pac,
                           slof: data.slof,
@@ -160,10 +177,10 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                           introdeal: data.qtyintrodeal,
                           price: data.price.toString(),
                           onTap: () {
-                            _gotoForm(vm, id: data.id);
+                            _gotoForm(id: data.id);
                           },
                           onDelete: () {
-                            _dialogDeleteConfirm(vm, data);
+                            _dialogDeleteConfirm();
                           },
                         );
                       }),
@@ -173,18 +190,21 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     );
   }
 
-  Widget _initWidget(PenjualanVM vm) {
+  _clearFocus(){
+    _vm.focusNode.unfocus();
+  }
+
+  Widget _initWidget() {
     return InkWell(
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {
-        FocusScope.of(context).unfocus();
-        vm.etNota.clear();
+        _clearFocus();
       },
       child: Container(
         child: Column(
           children: [
-            Expanded(child: _body(vm)),
+            Expanded(child: _body()),
             Divider(
               height: 1,
               color: Colors.grey,
@@ -199,7 +219,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Rp. 1,280,000",
+                    _vm.amount.toString().toMoney(),
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   )
                 ],
@@ -215,7 +235,10 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                     icon: Icons.delete_forever,
                     text: "HAPUS",
                     color: Colors.red,
-                    onPressed: () {},
+                    onPressed: () {
+                      _clearFocus();
+                      _dialogDeleteConfirm();
+                    },
                   ),
                   ButtonIconRounded(
                     padding: EdgeInsets.fromLTRB(3, 5, 8, 5),
@@ -223,7 +246,8 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                     text: "ITEM",
                     color: Colors.blue,
                     onPressed: () {
-                      _gotoForm(vm);
+                      _clearFocus();
+                      _gotoForm();
                     },
                   ),
                   ButtonIconRounded(
@@ -232,7 +256,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                     text: "SIMPAN",
                     color: Colors.green,
                     onPressed: () {
-                      vm.save();
+                      _vm.save();
                     },
                   )
                 ],
@@ -244,21 +268,21 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     );
   }
 
-  _gotoForm(PenjualanVM vm, {int id}) async {
+  _gotoForm({int id}) async {
     var result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PenjualanFormScreen(
-            sellin: vm.sellin, id: id, priceid: vm.customer.priceid),
+            sellin: _vm.sellin, id: id, priceid: _vm.customer.priceid),
       ),
     );
 
     if (result != null) {
-      vm.loadSellinHead();
+      _vm.loadSellinHead();
     }
   }
 
-  _dialogDeleteConfirm(PenjualanVM vm, SellinDetail data) {
+  _dialogDeleteConfirm() {
     showDialog(
         context: context,
         builder: (c) => AlertDialog(
@@ -268,12 +292,12 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Hapus Data:"),
+                  Text("Hapus Data Penjualan:"),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
-                    "${data.materialname} ?",
+                    "${_vm.customer.name} ?",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -286,8 +310,8 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                     child: Text('Cancel')),
                 FlatButton(
                     onPressed: () {
-                      vm.delete(data.id);
                       Navigator.of(context).pop();
+                      _vm.delete(_vm.sellin.id);
                     },
                     child: Text('Delete',
                         style: TextStyle(color: Colors.red[600]))),

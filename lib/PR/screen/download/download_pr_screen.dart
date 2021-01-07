@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/screen/download/download_pr_vm.dart';
 import 'package:mimos/utils/widget/circle_icon.dart';
 import 'package:mimos/utils/widget/textfield/text_input_field.dart';
@@ -11,6 +12,14 @@ class DownloadPRScreen extends StatefulWidget {
 }
 
 class _DownloadPRScreenState extends State<DownloadPRScreen> {
+  var _vm = DownloadPRVM();
+  
+  @override
+  void initState() {
+    super.initState();
+    _vm.init();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,33 +33,33 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
 
   Widget _initProvider() {
     return ChangeNotifierProvider<DownloadPRVM>(
-      create: (_) => DownloadPRVM()..init(),
+      create: (_) => _vm,
       child: Consumer<DownloadPRVM>(
         builder: (c, vm, _) {
-          return _initWidget(vm);
+          return _initWidget();
         },
       ),
     );
   }
 
-  Widget _initWidget(DownloadPRVM vm) {
+  Widget _initWidget() {
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 16),
           child: TextInputField(
             readOnly: true,
-            controller: vm.etDate,
+            controller: _vm.etDate,
             labelText: "Pilih Tanggal Download",
             onTap: () {
-              _selectDate(vm);
+              _selectDate();
             },
           ),
         ),
         Expanded(
             child: Container(
           child: ListView.separated(
-            itemCount: vm.listItemDownload.length,
+            itemCount: _vm.downloads.length,
             separatorBuilder: (c, i) {
               return Divider(
                 color: Colors.grey,
@@ -58,39 +67,34 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
               );
             },
             itemBuilder: (c, i) {
-              print("status: ${vm.listItemDownload[i].status}");
-              var menu = vm.listItemDownload[i];
+              print("status: ${_vm.downloads[i].status}");
+              var data = _vm.downloads[i];
               return ListTile(
                 leading: CircleIcon(
-                  menu.icon,
-                  color: menu.color,
+                  data.icon,
+                  color: data.color,
                   backgroundColor: Colors.white,
                 ),
-                title: Text(menu.title),
-                subtitle: Text("Total Data: ${menu.countData}"),
-                trailing: menu.status == 0
+                title: Text(data.title),
+                subtitle: Text("Total Data: ${data.countData}"),
+                trailing: data.status == DOWNLOAD_STATUS.LOADING
                     ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ))
-                    : menu.status == 1
-                        ? Icon(
-                            Icons.check_circle,
-                            color: Colors.green,
-                          )
-                        : menu.status == -1
-                            ? InkWell(
-                                onTap: () {
-                                  _dialogError(menu.message ?? "Error");
-                                },
-                                child: Icon(
-                                  Icons.error,
-                                  color: Colors.red,
-                                ),
-                              )
-                            : SizedBox(),
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ))
+                    : data.status == DOWNLOAD_STATUS.SUCCESS
+                    ? Icon(
+                  Icons.check_circle,
+                  color: Colors.green[600],
+                )
+                    : data.status == DOWNLOAD_STATUS.FAILED
+                    ? Icon(
+                  Icons.error,
+                  color: Colors.red[600],
+                )
+                    : SizedBox(),
               );
             },
           ),
@@ -100,15 +104,15 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
           child: MaterialButton(
             padding: EdgeInsets.fromLTRB(18, 12, 22, 12),
             onPressed: () {
-              if (!vm.loading) {
-                vm.downloadAll();
+              if (!_vm.loading) {
+                _vm.downloadAll();
               }
             },
             elevation: 6,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                vm.loading
+                _vm.loading
                     ? SizedBox(
                         width: 20,
                         height: 20,
@@ -124,12 +128,12 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
                   width: 10,
                 ),
                 Text(
-                  vm.loading ? "Downloading Data..." : "Download Semua Data",
+                  _vm.loading ? "Downloading Data..." : "Download Semua Data",
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 )
               ],
             ),
-            color: vm.loading ? Colors.grey : Colors.blue,
+            color: _vm.loading ? Colors.grey : Colors.blue,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
@@ -139,14 +143,14 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
     );
   }
 
-  Future<void> _selectDate(DownloadPRVM vm) async {
+  Future<void> _selectDate() async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: vm.selectedDate,
+        initialDate: _vm.selectedDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != vm.selectedDate) {
-      vm.etDate.text = DateFormat("dd MMMM yyyy").format(picked);
+    if (picked != null && picked != _vm.selectedDate) {
+      _vm.etDate.text = DateFormat("dd MMMM yyyy").format(picked);
     }
   }
 

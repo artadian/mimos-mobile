@@ -4,6 +4,7 @@ import 'package:mimos/PR/screen/transaction/transaction_screen.dart';
 import 'package:mimos/PR/screen/visit/item/visit_item.dart';
 import 'package:mimos/PR/screen/visit/visit_vm.dart';
 import 'package:mimos/helper/extension.dart';
+import 'package:mimos/utils/layout/empty_screen.dart';
 import 'package:mimos/utils/widget/button/button_card.dart';
 import 'package:mimos/utils/widget/dialog/default_dialog.dart';
 import 'package:mimos/utils/widget/text_icon.dart';
@@ -19,12 +20,13 @@ class _VisitScreenState extends State<VisitScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        title: Text("Daftar Kunjungan"),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Daftar Kunjungan"),
+        ),
+        body: _initProvider(),
       ),
-      body: _initProvider(),
-    ));
+    );
   }
 
   Widget _initProvider() {
@@ -52,56 +54,61 @@ class _VisitScreenState extends State<VisitScreen> {
             },
           ),
         ),
-        Expanded(
-          child: SmartRefresher(
-              enablePullDown: true,
-              header: WaterDropHeader(
-                waterDropColor: Colors.blue,
+        (vm.listCustomer.isEmpty)
+            ? EmptyScreen()
+            : Expanded(
+                child: SmartRefresher(
+                  enablePullDown: true,
+                  header: WaterDropHeader(
+                    waterDropColor: Colors.blue,
+                  ),
+                  controller: vm.refreshController,
+                  onRefresh: vm.onRefresh,
+                  child: ListView.builder(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      itemCount: vm.listCustomer.length,
+                      itemBuilder: (c, i) {
+                        var data = vm.listCustomer[i];
+                        return VisitItem(
+                          leading: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: Icon(
+                                Icons.person_pin,
+                                color: data.idvisit != null
+                                    ? (data.notvisitreason != null &&
+                                            data.notvisitreason != "0")
+                                        ? Colors.red
+                                        : Colors.green
+                                    : Colors.blue,
+                                size: 32,
+                              )),
+                          title: data.name,
+                          subtitle1: "${data.customerno} [${data.priceid}]",
+                          subtitle2: data.tanggalkunjungan.dateView(),
+                          footer1: data.address,
+                          footer2: data.city,
+                          onTap: () {
+                            if (data.idvisit != null) {
+                              if (data.notvisitreason != null &&
+                                  data.notvisitreason != "0") {
+                                _dialogCreateVisit(vm, data);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          TransactionScreen(data)),
+                                );
+                              }
+                            } else {
+                              _dialogCreateVisit(vm, data);
+                            }
+                          },
+                        );
+                      }),
+                ),
               ),
-              controller: vm.refreshController,
-              onRefresh: vm.onRefresh,
-              child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                  itemCount: vm.listCustomer.length,
-                  itemBuilder: (c, i) {
-                    var data = vm.listCustomer[i];
-                    return VisitItem(
-                      leading: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Icon(
-                            Icons.person_pin,
-                            color: data.idvisit != null
-                                ? (data.notvisitreason != null &&
-                                        data.notvisitreason != "0")
-                                    ? Colors.red
-                                    : Colors.green
-                                : Colors.blue,
-                            size: 32,
-                          )),
-                      title: data.name,
-                      subtitle1: "${data.customerno} [${data.priceid}]",
-                      subtitle2: data.tanggalkunjungan.dateView(),
-                      footer1: data.address,
-                      footer2: data.city,
-                      onTap: () {
-                        if (data.idvisit != null) {
-                          if (data.notvisitreason != null &&
-                              data.notvisitreason != "0") {
-                            _dialogCreateVisit(vm, data);
-                          } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TransactionScreen(data)));
-                          }
-                        } else {
-                          _dialogCreateVisit(vm, data);
-                        }
-                      },
-                    );
-                  })),
-        ),
       ],
     );
   }
@@ -212,19 +219,20 @@ class _VisitScreenState extends State<VisitScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListView.builder(
-              shrinkWrap: true,
-              itemCount: vm.listReason.length,
-              itemBuilder: (c, i) {
-                var reason = vm.listReason[i];
-                return ListTile(
-                  title: Text(reason.lookupdesc),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                    vm.saveVisit(data, idReason: reason.lookupid);
-                  },
-                );
-              })
+            shrinkWrap: true,
+            itemCount: vm.listReason.length,
+            itemBuilder: (c, i) {
+              var reason = vm.listReason[i];
+              return ListTile(
+                title: Text(reason.lookupdesc),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  vm.saveVisit(data, idReason: reason.lookupid);
+                },
+              );
+            },
+          )
         ],
       ),
       actions: [

@@ -94,16 +94,16 @@ class _StokScreenState extends State<StokScreen> {
                   ),
                   controller: vm.refreshController,
                   onRefresh: vm.onRefresh,
-                  child: ListView.separated(
+                  child: ListView.builder(
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
                       itemCount: vm.listStockDetail.length,
-                      separatorBuilder: (c, i) {
-                        return Divider(
-                          color: Colors.grey,
-                          height: 1.0,
-                        );
-                      },
+//                      separatorBuilder: (c, i) {
+//                        return Divider(
+//                          color: Colors.grey,
+//                          height: 1.0,
+//                        );
+//                      },
                       itemBuilder: (c, i) {
                         StockDetail data = vm.listStockDetail[i];
                         return StokItem(

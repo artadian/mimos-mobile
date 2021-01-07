@@ -13,29 +13,45 @@ class TrialFormPRScreen extends StatefulWidget {
 }
 
 class _TrialFormPRScreenState extends State<TrialFormPRScreen> {
+  var _vm = TrialFormVM();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Input Trial"),
-          ),
-          body: _initProvider(),
-        ));
-  }
-
-  Widget _initProvider() {
-    return ChangeNotifierProvider<TrialFormVM>(
-      create: (_) => TrialFormVM(),
-      child: Consumer<TrialFormVM>(
-        builder: (c, vm, _) => _initWidget(vm),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Input Order"),
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop("refresh");
+                })
+          ],
+        ),
+        body: _initProvider(),
       ),
     );
   }
 
-  Widget _initWidget(TrialFormVM vm) {
+  Widget _initProvider() {
+    return ChangeNotifierProvider<TrialFormVM>(
+      create: (_) => _vm,
+      child: Consumer<TrialFormVM>(
+        builder: (c, vm, _) => _initWidget(),
+      ),
+    );
+  }
+
+  Widget _initWidget() {
     return Form(
-      key: vm.keyForm,
+      key: _vm.keyForm,
       child: Stack(
         children: [
           Column(
@@ -45,7 +61,7 @@ class _TrialFormPRScreenState extends State<TrialFormPRScreen> {
                 child: _formInput(),
               ),
               BottomAction(
-                onPressed: (){},
+                onPressed: () {},
               ),
             ],
           ),
@@ -58,9 +74,10 @@ class _TrialFormPRScreenState extends State<TrialFormPRScreen> {
     var _crossAxisSpacing = 8;
     var _screenWidth = MediaQuery.of(context).size.width;
     var _crossAxisCount = _screenWidth < 600 ? 1 : 2;
-    var _width = ( _screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) / _crossAxisCount;
+    var _width = (_screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
+        _crossAxisCount;
     var cellHeight = 60;
-    var _aspectRatio = _width /cellHeight;
+    var _aspectRatio = _width / cellHeight;
 
     return GridView.count(
       crossAxisCount: _crossAxisCount,
@@ -70,120 +87,123 @@ class _TrialFormPRScreenState extends State<TrialFormPRScreen> {
       children: [
         TextInputField(
           readOnly: true,
-//          controller: vm.tglBeli,
-//          onSaved: (val) => vm.model.TGL_PEMBELIAN = val,
-          labelText: "Tanggal Beli",
+          controller: _vm.type,
+          onSaved: (val) => _vm.model.trialtype = val,
+          prefixIcon: Icon(Icons.category),
+          labelText: "Pilih Tipe",
+          onTap: () {},
+        ),
+        TextInputField(
+          controller: _vm.location,
+          onSaved: (val) => _vm.model.location = val,
+          prefixIcon: Icon(Icons.location_on),
+          labelText: "Location",
+        ),
+        TextInputField(
+          controller: _vm.name,
+          onSaved: (val) => _vm.model.name = val,
+          prefixIcon: Icon(Icons.person),
+          labelText: "Name",
+        ),
+        TextInputField(
+          controller: _vm.phone,
+          onSaved: (val) => _vm.model.phone = val,
+          prefixIcon: Icon(Icons.phone),
+          labelText: "Phone",
+        ),
+        TextInputField(
+          controller: _vm.age,
+          onSaved: (val) => _vm.model.age = val,
+          prefixIcon: Icon(Icons.cake),
+          labelText: "Age",
+        ),
+        DropdownTextFormField(
+          controller: _vm.product,
+          onSaved: (val) => _vm.model.materialid = val,
+          labelText: "Pilih Barang",
+          prefixIcon: Icon(Icons.shopping_basket),
+//          enabled: !vm.edit,
+          validator: (val) {
+            if (val.length < 1)
+              return 'Filed is required';
+            else
+              return null;
+          },
           onTap: () {
-
+//            _dialogProductChoice(vm);
           },
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.qty,
+          onSaved: (val) => _vm.model.qty = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.margin),
+          labelText: "Qty",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.price,
+          onSaved: (val) => _vm.model.price = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.attach_money),
+          labelText: "Price",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.amount,
+          onSaved: (val) => _vm.model.amount = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.money),
+          labelText: "Total Price",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.brandBefore,
+//          onSaved: (val) => _vm.model. = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.label_important),
+          labelText: "Brand Before",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.knowProduct,
+          onSaved: (val) => _vm.model.knowing = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.ad_units),
+          labelText: "Know Product",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.taste,
+          onSaved: (val) => _vm.model.taste = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.stop_circle_sharp),
+          labelText: "Taste",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.type,
+          onSaved: (val) => _vm.model.trialtype = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.archive),
+          labelText: "Packaging",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.outletName,
+          onSaved: (val) => _vm.model.outletname = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.store),
+          labelText: "Outlet Name",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.outletAddress,
+          onSaved: (val) => _vm.model.outletaddress = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.assistant_navigation),
+          labelText: "Outlet Address",
         ),
         TextInputField(
-//          controller: vm.volumeJual,
+          controller: _vm.notes,
+          onSaved: (val) => _vm.model.notes = val,
           keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
-        ),
-        TextInputField(
-//          controller: vm.volumeJual,
-          keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
-        ),
-        TextInputField(
-//          controller: vm.volumeJual,
-          keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
-        ),
-        TextInputField(
-//          controller: vm.volumeJual,
-          keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
-        ),
-        TextInputField(
-//          controller: vm.volumeJual,
-          keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
-        ),
-        TextInputField(
-//          controller: vm.volumeJual,
-          keyboardType: TextInputType.number,
-//          onSaved: (val) => vm.model.VOLUME_PENJUALAN = val,
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
+          prefixIcon: Icon(Icons.sticky_note_2_outlined),
+          labelText: "Notes",
         ),
       ],
     );
   }
-
 }

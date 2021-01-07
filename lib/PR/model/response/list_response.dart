@@ -11,7 +11,7 @@ class ListResponse<T> {
       {@required Map<String, dynamic> response, List<T> list}) {
     this.status = response["status"].toString().toBool();
     this.message = response["message"].toString().clean();
-    this.list = list;
+    this.list = (list != null && list.isNotEmpty) ? list : null;
   }
 
   ListResponse.failed({@required Map<String, dynamic> response}) {

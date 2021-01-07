@@ -288,6 +288,40 @@ class DatabaseProvider {
         isLocal INTEGER NOT NULL DEFAULT 0
         )''');
 
+    await database.execute('''CREATE TABLE IF NOT EXISTS posm (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userid TEXT, 
+        customerno TEXT, 
+        posmdate TEXT, 
+        regionid INTEGER, 
+        salesofficeid INTEGER, 
+        salesgroupid INTEGER, 
+        salesdistrictid INTEGER, 
+        cycle INTEGER, 
+        week INTEGER, 
+        year INTEGER, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS visibility_pr (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userid TEXT, 
+        customerno TEXT, 
+        visibilitydate TEXT, 
+        regionid INTEGER, 
+        salesofficeid INTEGER, 
+        salesgroupid INTEGER, 
+        salesdistrictid INTEGER, 
+        cycle INTEGER, 
+        week INTEGER, 
+        year INTEGER, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
     await database.execute('''CREATE TABLE IF NOT EXISTS sellin_detail (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         sellinid INTEGER, 
@@ -319,6 +353,53 @@ class DatabaseProvider {
         isLocal INTEGER NOT NULL DEFAULT 0
         )''');
 
+    await database.execute('''CREATE TABLE IF NOT EXISTS posm_detail (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        posmid INTEGER, 
+        posmtypeid TEXT, 
+        materialgroupid TEXT, 
+        status TEXT, 
+        qty INTEGER, 
+        condition INTEGER, 
+        notes TEXT, 
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS visibility_detail (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        visibilityid INTEGER, 
+        materialid TEXT, 
+        materialname TEXT, 
+        pac INTEGER,
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS trial (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userid TEXT,
+        trialdate TEXT,
+        trialtype TEXT,
+        location TEXT,
+        name TEXT,
+        phone TEXT,
+        age INTEGER,
+        materialid TEXT,
+        qty INTEGER,
+        price FLOAT,
+        amount FLOAT,
+        competitorbrandid INTEGER,
+        knowing TEXT,
+        taste TEXT,
+        packaging TEXT,
+        outletname TEXT,
+        outletaddress TEXT,
+        notes TEXT 
+        )''');
+
     await database.execute('''CREATE TABLE IF NOT EXISTS material_price (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         materialname TEXT, 
@@ -333,8 +414,8 @@ class DatabaseProvider {
         price REAL,
         validfrom TEXT,
         validto TEXT,
-        materialgroup TEXT,
-        groupdesc TEXT,
+        materialgroupname TEXT,
+        materialgroupdesc TEXT,
         salesofficeid INTEGER
         )''');
   }

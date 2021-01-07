@@ -43,6 +43,7 @@ const STOK_SCREEN_PR = '/stokPR';
 const PENJUALAN_SCREEN_PR = '/penjualanPR';
 const POSM_SCREEN_PR = '/posmPR';
 const STOK_FROM_SCREEN_PR = '/stokFormPR';
+const REPORT_SCREEN_PR = '/reportPR';
 ///=========== end PR
 ///
 ///

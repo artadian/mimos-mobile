@@ -22,6 +22,12 @@ const URL_PULL_STOCK = "$BASE_URL_API/Stock/getByDate";
 const URL_PULL_STOCK_DETAIL = "$BASE_URL_API/Stock_detail/getByHead";
 const URL_PULL_SELLIN = "$BASE_URL_API/Sellin/getByDate";
 const URL_PULL_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/getByHead";
+const URL_PULL_VISIBILITY = "$BASE_URL_API/Visibility/getByDate";
+const URL_PULL_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/getByHead";
+const URL_PULL_POSM = "$BASE_URL_API/Posm/getByDate";
+const URL_PULL_POSM_DETAIL = "$BASE_URL_API/Posm_detail/getByHead";
+const URL_PULL_TRIAL = "$BASE_URL_API/Trial/getByDate";
+const URL_PULL_CUST_INTRODEAL = "$BASE_URL_API/Material/customerIntroDealTFbyUseridbyTgl";
 
 /// Upload Data
 const URL_PUSH_VISIT = "$BASE_URL_API/Visit/add";
@@ -33,6 +39,21 @@ const URL_UPDATE_STOCK_DETAIL = "$BASE_URL_API/Stock_detail/update";
 const URL_DELETE_STOCK_DETAIL = "$BASE_URL_API/Stock_detail/delete_flag";
 // Sellin
 const URL_PUSH_SELLIN = "$BASE_URL_API/Sellin/add";
+const URL_UPDATE_SELLIN = "$BASE_URL_API/Sellin/update";
 const URL_PUSH_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/add";
 const URL_UPDATE_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/update";
 const URL_DELETE_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/delete_flag";
+// POSM
+const URL_PUSH_POSM = "$BASE_URL_API/Posm/add";
+const URL_PUSH_POSM_DETAIL = "$BASE_URL_API/Posm_detail/add";
+const URL_UPDATE_POSM_DETAIL = "$BASE_URL_API/Posm_detail/update";
+const URL_DELETE_POSM_DETAIL = "$BASE_URL_API/Posm_detail/delete_flag";
+// Visibility
+const URL_PUSH_VISIBILITY = "$BASE_URL_API/Visibility/add";
+const URL_PUSH_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/add";
+const URL_UPDATE_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/update";
+const URL_DELETE_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/delete_flag";
+// Trial
+const URL_PUSH_TRIAL = "$BASE_URL_API/Trial/add";
+const URL_UPDATE_TRIAL = "$BASE_URL_API/Trial/update";
+const URL_DELETE_TRIAL = "$BASE_URL_API/Trial/delete_flag";

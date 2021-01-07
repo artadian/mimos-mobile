@@ -54,6 +54,12 @@ class SellinDetailDao extends BaseDao {
     return SellinDetail.fromJson(await super.queryGetById(id));
   }
 
+  Future<int> updateIdParent({@required int id, @required int newId}) async {
+    var db = await instance.database;
+    return await db.update(table, {"sellinid": newId},
+        where: "sellinid == $id");
+  }
+
   Future<List<SellinDetail>> getByParent({@required int sellinid}) async {
     var db = await instance.database;
     var query = '''
@@ -77,6 +83,27 @@ class SellinDetailDao extends BaseDao {
       AND materialid = '$materialid'
       AND isDelete = 0
     """;
+
+    var maps = await db.rawQuery(query);
+    List<SellinDetail> list = maps.isNotEmpty
+        ? maps.map((item) => SellinDetail.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<int>> deleteBySellin(String sellinid) async {
+    var res = await super.deleteBy(column: "sellinid", value: sellinid);
+    return res;
+  }
+
+  Future<List<SellinDetail>> getByManyParent(
+      {@required List<int> sellinids}) async {
+    var db = await instance.database;
+    var ids = sellinids.toString().replaceAll("[", "").replaceAll("]", "");
+    var query = '''
+      SELECT * FROM $table
+      WHERE sellinid IN ($ids)
+    ''';
 
     var maps = await db.rawQuery(query);
     List<SellinDetail> list = maps.isNotEmpty

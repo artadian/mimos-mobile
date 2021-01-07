@@ -49,6 +49,20 @@ class MaterialPriceDao extends BaseDao {
     return list;
   }
 
+  Future<List<MaterialPrice>> getAllMaterialOnly() async {
+    var db = await instance.database;
+    var query = """
+      SELECT * FROM $table
+      GROUP BY materialid
+    """;
+
+    var maps = await db.rawQuery(query);
+    List<MaterialPrice> list = maps.isNotEmpty
+        ? maps.map((item) => MaterialPrice.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
   Future<List<MaterialPrice>> getByPriceIdCust(String priceid) async {
     var db = await instance.database;
     var maps = await db.query(table, where: "priceid = '$priceid'");

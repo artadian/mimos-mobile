@@ -295,7 +295,7 @@ class _HomeScreenState extends State<HomeScreenNew> {
         } else if (mymenuitem.itemid.toString() == "103") {
           Navigator.of(context).pushNamed(TRIAL_SCREEN_PR);
         } else if (mymenuitem.itemid.toString() == "104") {
-          Navigator.of(context).pushNamed(DOWNLOAD_SCREEN_TF);
+          Navigator.of(context).pushNamed(REPORT_SCREEN_PR);
         } else if (mymenuitem.itemid.toString() == "105") {
           Navigator.of(context).pushNamed(UPLOAD_SCREEN_PR);
         } else {

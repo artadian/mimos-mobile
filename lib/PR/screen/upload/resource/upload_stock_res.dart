@@ -1,8 +1,10 @@
 import 'package:mimos/PR/dao/stock_dao.dart';
+import 'package:mimos/PR/dao/stock_detail_dao.dart';
 import 'package:mimos/PR/repo/upload/upload_stock_repo.dart';
 
 class UploadStockRes {
   var _dao = StockDao();
+  var _detailDao = StockDetailDao();
   var _repo = UploadStockRepo();
 
   Future<bool> needSync() async {
@@ -21,6 +23,7 @@ class UploadStockRes {
           var res = await _repo.pushStock(row);
 
           if (res.status) {
+            await _detailDao.updateIdParent(id: row["id"], newId: res.data.id);
             await _dao.delete(row["id"], local: true);
             await _dao.insert(res.data);
 

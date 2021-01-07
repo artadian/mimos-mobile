@@ -1,6 +1,4 @@
-import 'package:mimos/PR/dao/stock_dao.dart';
 import 'package:mimos/PR/dao/stock_detail_dao.dart';
-import 'package:mimos/PR/model/stock_detail.dart';
 import 'package:mimos/PR/repo/upload/upload_stock_repo.dart';
 
 class UploadStockDetailRes {
