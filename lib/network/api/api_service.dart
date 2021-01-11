@@ -30,26 +30,35 @@ const URL_PULL_TRIAL = "$BASE_URL_API/Trial/getByDate";
 const URL_PULL_CUST_INTRODEAL = "$BASE_URL_API/Material/customerIntroDealTFbyUseridbyTgl";
 
 /// Upload Data
+// Visit
 const URL_PUSH_VISIT = "$BASE_URL_API/Visit/add";
 const URL_UPDATE_VISIT = "$BASE_URL_API/Visit/update";
+const URL_DELETE_VISIT = "$BASE_URL_API/Visit/delete_flag";
 // Stock
 const URL_PUSH_STOCK = "$BASE_URL_API/Stock/add";
+const URL_UPDATE_STOCK = "$BASE_URL_API/Stock/update";
+const URL_DELETE_STOCK = "$BASE_URL_API/Stock/delete_flag";
 const URL_PUSH_STOCK_DETAIL = "$BASE_URL_API/Stock_detail/add";
 const URL_UPDATE_STOCK_DETAIL = "$BASE_URL_API/Stock_detail/update";
 const URL_DELETE_STOCK_DETAIL = "$BASE_URL_API/Stock_detail/delete_flag";
 // Sellin
 const URL_PUSH_SELLIN = "$BASE_URL_API/Sellin/add";
 const URL_UPDATE_SELLIN = "$BASE_URL_API/Sellin/update";
+const URL_DELETE_SELLIN = "$BASE_URL_API/Sellin/delete_flag";
 const URL_PUSH_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/add";
 const URL_UPDATE_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/update";
 const URL_DELETE_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/delete_flag";
 // POSM
 const URL_PUSH_POSM = "$BASE_URL_API/Posm/add";
+const URL_UPDATE_POSM = "$BASE_URL_API/Posm/update";
+const URL_DELETE_POSM = "$BASE_URL_API/Posm/delete_flag";
 const URL_PUSH_POSM_DETAIL = "$BASE_URL_API/Posm_detail/add";
 const URL_UPDATE_POSM_DETAIL = "$BASE_URL_API/Posm_detail/update";
 const URL_DELETE_POSM_DETAIL = "$BASE_URL_API/Posm_detail/delete_flag";
 // Visibility
 const URL_PUSH_VISIBILITY = "$BASE_URL_API/Visibility/add";
+const URL_UPDATE_VISIBILITY = "$BASE_URL_API/Visibility/update";
+const URL_DELETE_VISIBILITY = "$BASE_URL_API/Visibility/delete_flag";
 const URL_PUSH_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/add";
 const URL_UPDATE_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/update";
 const URL_DELETE_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/delete_flag";

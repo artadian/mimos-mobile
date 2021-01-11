@@ -51,10 +51,6 @@ class CustomerPRDao extends BaseDao {
     return list;
   }
 
-  Future<CustomerPR> getById(int id) async {
-    return CustomerPR.fromTable(await super.queryGetById(id));
-  }
-
   Future<List<CustomerPR>> getAllByDate({@required String date}) async {
     var db = await instance.database;
     var query = '''
@@ -68,7 +64,7 @@ class CustomerPRDao extends BaseDao {
     return list;
   }
 
-  Future<List<CustomerPR>> getCustomerVisit({String search}) async {
+  Future<List<CustomerPR>> getCustomerVisit({String search, @required String date}) async {
     var db = await instance.database;
     String where = "";
     if(search != null)
@@ -85,10 +81,11 @@ class CustomerPRDao extends BaseDao {
         AND c.userid = v.userid 
       LEFT JOIN lookup AS vl ON v.notvisitreason = vl.lookupvalue AND vl.lookupkey = 'not_visit_reason' 
       LEFT JOIN lookup AS bl ON v.notbuyreason = bl.lookupvalue AND bl.lookupkey = 'not_buy_reason' 
-      WHERE c.tanggalkunjungan = '${DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()}' 
+      WHERE c.tanggalkunjungan = '$date' 
       $where
       ORDER BY c.name 
     ''';
+//    WHERE c.tanggalkunjungan = '${DateFormat("yyyy-MM-dd").format(DateTime.now()).toString()}
 
     var maps = await db.rawQuery(query);
     List<CustomerPR> list = maps.isNotEmpty

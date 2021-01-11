@@ -63,6 +63,10 @@ class SessionManager {
     return prefs.setString(_userid, value);
   }
 
+  destroy() {
+    return _prefsInstance.clear();
+  }
+
 }
 
 var session = SessionManager();

@@ -25,7 +25,7 @@ class _TrialFormPRScreenState extends State<TrialFormPRScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Input Order"),
+          title: Text("Input Trial"),
           automaticallyImplyLeading: false,
           actions: [
             IconButton(

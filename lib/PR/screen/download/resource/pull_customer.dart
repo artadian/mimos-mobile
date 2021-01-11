@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/customer_pr_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/master_data_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullCustomer {
   var _dao = CustomerPRDao();
-  var _repo = DownloadRepo();
+  var _repo = MasterDataRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -27,7 +27,7 @@ class PullCustomer {
     yield _loading();
 
     var response = await _repo.pullCustomerPR(
-      userId: session.userId(),
+      userId: await session.getUserId(),
       date: date,
     );
 

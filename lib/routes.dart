@@ -11,7 +11,7 @@ import 'package:mimos/PR/screen/transaction/posm/posm_screen.dart';
 import 'package:mimos/PR/screen/transaction/stok/form/stock_form_screen.dart';
 import 'package:mimos/PR/screen/transaction/stok/stock_screen.dart';
 import 'package:mimos/PR/screen/trial/form/trial_form_pr_screen.dart';
-import 'package:mimos/PR/screen/trial/trial_pr_screen.dart';
+import 'package:mimos/PR/screen/trial/trial_screen.dart';
 import 'package:mimos/Screen/splashscreen.dart';
 import 'package:mimos/Screen/loginscreen.dart';
 import 'package:mimos/TF/Screen/downloadscreentf.dart';
@@ -29,8 +29,8 @@ import 'package:mimos/TF/Screen/checkposmupload.dart';
 import 'package:mimos/TF/Screen/checkstockupload.dart';
 import 'package:mimos/TF/Screen/checkvisibilityupload.dart';
 import 'package:mimos/FL/Screen/trialformscreenFL.dart';
-import 'package:mimos/PR/screen/download/download_pr_screen.dart';
-import 'package:mimos/PR/screen/upload/upload_pr_screen.dart';
+import 'package:mimos/PR/screen/download/download_screen.dart';
+import 'package:mimos/PR/screen/upload/upload_screen.dart';
 import 'package:mimos/PR/screen/visit/visit_screen.dart';
 
 class Routes {
@@ -71,12 +71,12 @@ class Routes {
         ANIMATED_SPLASH: (BuildContext context) => new SplashScreen(),
         //-------- PR
         // HOME
-        DOWNLOAD_SCREEN_PR: (BuildContext context) => new DownloadPRScreen(),
+        DOWNLOAD_SCREEN_PR: (BuildContext context) => new DownloadScreen(),
         VISIT_SCREEN_PR: (BuildContext context) => new VisitScreen(),
         VISIT_FORM_FORM_SCREEN_PR: (BuildContext context) =>
-            new DownloadPRScreen(),
-        UPLOAD_SCREEN_PR: (BuildContext context) => new UploadPRScreen(),
-        TRIAL_SCREEN_PR: (BuildContext context) => new TrialPRScreen(),
+            new DownloadScreen(),
+        UPLOAD_SCREEN_PR: (BuildContext context) => new UploadScreen(),
+        TRIAL_SCREEN_PR: (BuildContext context) => new TrialScreen(),
         TRIAL_FROM_SCREEN_PR: (BuildContext context) => new TrialFormPRScreen(),
         // TRANSACTION
         DISPLAY_SCREEN_PR: (BuildContext context) => new DisplayScreen(),

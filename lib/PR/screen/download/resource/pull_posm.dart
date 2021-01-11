@@ -4,13 +4,15 @@ import 'package:mimos/PR/dao/posm_dao.dart';
 import 'package:mimos/PR/dao/posm_detail_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/posm_detail_repo.dart';
+import 'package:mimos/PR/repo/posm_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullPosm {
   var _posmDao = PosmDao();
   var _posmDetailDao = PosmDetailDao();
-  var _repo = DownloadRepo();
+  var _posmRepo = PosmRepo();
+  var _posmDetailRepo = PosmDetailRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -40,7 +42,7 @@ class PullPosm {
   }
 
   Future<ListResponse> pullPosm({@required String date}) async {
-    var response = await _repo.pullPOSM(userId: session.userId(), date: date);
+    var response = await _posmRepo.pull(userId: session.userId(), date: date);
 
     if (response.status) {
       if (response.list != null) {
@@ -58,7 +60,7 @@ class PullPosm {
 
   Future<ListResponse> pullPosmDetail() async {
     var posmIds = await _posmDao.getAllPrimaryKey();
-    var response = await _repo.pullPOSMDetail(
+    var response = await _posmDetailRepo.pull(
       posmIds: posmIds,
     );
 

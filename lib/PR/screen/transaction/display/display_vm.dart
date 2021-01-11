@@ -18,7 +18,7 @@ class DisplayVM with ChangeNotifier {
 
   init(CustomerPR customer) async {
     this.customer = customer;
-    visibility = VisibilityModel.createFromJson(customer.toJson());
+    visibility = VisibilityModel.createFromJson(customer.toJsonView());
     await loadVisibilityHead();
     notifyListeners();
   }

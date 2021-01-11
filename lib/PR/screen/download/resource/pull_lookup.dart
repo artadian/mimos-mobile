@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/lookup_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/master_data_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullLookup {
   var _dao = LookupDao();
-  var _repo = DownloadRepo();
+  var _repo = MasterDataRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -27,7 +27,7 @@ class PullLookup {
     yield _loading();
 
     var response = await _repo.pullLookup(
-      userId: session.userId(),
+      userId: await session.getUserId(),
     );
 
     if (response.status) {

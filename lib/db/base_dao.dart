@@ -253,6 +253,11 @@ abstract class BaseDao {
     return result;
   }
 
+  Future truncateSync() async {
+    final db = await instance.database;
+    return await db.delete(table, where: "needSync = 0");
+  }
+
   Future truncate() async {
     final db = await instance.database;
     return await db.delete(table);

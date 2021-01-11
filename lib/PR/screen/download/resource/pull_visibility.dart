@@ -4,13 +4,15 @@ import 'package:mimos/PR/dao/visibility_dao.dart';
 import 'package:mimos/PR/dao/visibility_detail_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/visibility_detail_repo.dart';
+import 'package:mimos/PR/repo/visibility_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullVisibility {
   var _visibilityDao = VisibilityDao();
   var _visibilityDetailDao = VisibilityDetailDao();
-  var _repo = DownloadRepo();
+  var _visibilityRepo = VisibilityRepo();
+  var _visibilityDetailRepo = VisibilityDetailRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -40,7 +42,7 @@ class PullVisibility {
   }
 
   Future<ListResponse> pullVisibility({@required String date}) async {
-    var response = await _repo.pullVisibility(userId: session.userId(), date: date);
+    var response = await _visibilityRepo.pull(userId: session.userId(), date: date);
 
     if (response.status) {
       if (response.list != null) {
@@ -58,7 +60,7 @@ class PullVisibility {
 
   Future<ListResponse> pullVisibilityDetail() async {
     var visibilityIds = await _visibilityDao.getAllPrimaryKey();
-    var response = await _repo.pullVisibilityDetail(
+    var response = await _visibilityDetailRepo.pull(
       visibilityIds: visibilityIds,
     );
 

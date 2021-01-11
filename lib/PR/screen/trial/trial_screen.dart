@@ -1,24 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
-import 'package:mimos/PR/screen/trial/trial_pr_vm.dart';
+import 'package:mimos/PR/model/trial.dart';
+import 'package:mimos/PR/screen/trial/item/trial_item.dart';
+import 'package:mimos/PR/screen/trial/trial_vm.dart';
+import 'package:mimos/utils/layout/empty_screen.dart';
 import 'package:mimos/utils/widget/button/button_icon_rounded.dart';
 import 'package:mimos/utils/widget/text_icon.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class TrialPRScreen extends StatefulWidget {
+class TrialScreen extends StatefulWidget {
   @override
-  _TrialPRScreenState createState() => _TrialPRScreenState();
+  _TrialScreenState createState() => _TrialScreenState();
 }
 
-class _TrialPRScreenState extends State<TrialPRScreen> {
-  var _vm = TrialPRVM();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _TrialScreenState extends State<TrialScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,22 +24,15 @@ class _TrialPRScreenState extends State<TrialPRScreen> {
         title: Text("Trial"),
         shadowColor: Colors.transparent,
       ),
-      floatingActionButton: ButtonIconRounded(
-          icon: Icons.add_circle_outline,
-          text: "Tambah Item",
-          onPressed: () {
-            Navigator.of(context).pushNamed(TRIAL_FROM_SCREEN_PR);
-          },
-        ),
       body: _initProvider(),
     ));
   }
 
   Widget _initProvider() {
-    return ChangeNotifierProvider<TrialPRVM>(
-      create: (_) => _vm,
-      child: Consumer<TrialPRVM>(
-        builder: (c, vm, _) => _initWidget(),
+    return ChangeNotifierProvider<TrialVM>(
+      create: (_) => TrialVM(),
+      child: Consumer<TrialVM>(
+        builder: (c, vm, _) => _initWidget(vm),
       ),
     );
   }
@@ -74,7 +64,7 @@ class _TrialPRScreenState extends State<TrialPRScreen> {
     );
   }
 
-  Widget _header() {
+  Widget _header(TrialVM vm) {
     return Container(
       padding: EdgeInsets.all(10),
       child: Container(
@@ -106,7 +96,9 @@ class _TrialPRScreenState extends State<TrialPRScreen> {
                       icon: Icons.all_inbox,
                       iconColor: Colors.red),
                 ),
-                SizedBox(width: 10,),
+                SizedBox(
+                  width: 10,
+                ),
                 Expanded(
                   child: _headerItem(
                       title: "Pack Sold",
@@ -127,20 +119,59 @@ class _TrialPRScreenState extends State<TrialPRScreen> {
     );
   }
 
-  Widget _initWidget() {
+  Widget _body(TrialVM vm) {
+    return Column(
+      children: [
+        _header(vm),
+        (vm.listTrial.isEmpty)
+            ? EmptyScreen()
+            : Expanded(
+                child: SmartRefresher(
+                  physics: ScrollPhysics(),
+                  enablePullDown: true,
+                  header: WaterDropHeader(
+                    waterDropColor: Colors.blue,
+                  ),
+                  controller: vm.refreshController,
+                  onRefresh: vm.onRefresh,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemCount: vm.listTrial.length,
+//                      separatorBuilder: (c, i) {
+//                        return Divider(
+//                          color: Colors.grey,
+//                          height: 1.0,
+//                        );
+//                      },
+                      itemBuilder: (c, i) {
+                        Trial data = vm.listTrial[i];
+                        return TrialItem(
+                          title: data.name,
+                        );
+                      }),
+                ),
+              ),
+      ],
+    );
+  }
+
+  Widget _initWidget(TrialVM vm) {
     return Container(
-      child: ListView(
+      child: Stack(
         children: [
-          _header(),
-          ListView.builder(
-              itemCount: 15,
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              itemBuilder: (c, i) {
-                return ListTile(
-                  title: Text("Test $i"),
-                );
-              })
+          _body(vm),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: ButtonIconRounded(
+              icon: Icons.add_circle_outline,
+              text: "Tambah Item",
+              onPressed: () {
+                Navigator.of(context).pushNamed(TRIAL_FROM_SCREEN_PR);
+              },
+            ),
+          )
         ],
       ),
     );

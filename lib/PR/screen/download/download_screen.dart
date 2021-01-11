@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
-import 'package:mimos/PR/screen/download/download_pr_vm.dart';
+import 'package:mimos/PR/screen/download/download_vm.dart';
 import 'package:mimos/utils/widget/circle_icon.dart';
 import 'package:mimos/utils/widget/textfield/text_input_field.dart';
 import 'package:provider/provider.dart';
 
-class DownloadPRScreen extends StatefulWidget {
+class DownloadScreen extends StatefulWidget {
   @override
-  _DownloadPRScreenState createState() => _DownloadPRScreenState();
+  _DownloadScreenState createState() => _DownloadScreenState();
 }
 
-class _DownloadPRScreenState extends State<DownloadPRScreen> {
-  var _vm = DownloadPRVM();
-  
+class _DownloadScreenState extends State<DownloadScreen> {
+  var _vm = DownloadVM();
+
   @override
   void initState() {
     super.initState();
     _vm.init();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,9 +32,9 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
   }
 
   Widget _initProvider() {
-    return ChangeNotifierProvider<DownloadPRVM>(
+    return ChangeNotifierProvider<DownloadVM>(
       create: (_) => _vm,
-      child: Consumer<DownloadPRVM>(
+      child: Consumer<DownloadVM>(
         builder: (c, vm, _) {
           return _initWidget();
         },
@@ -58,47 +58,50 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
         ),
         Expanded(
             child: Container(
-          child: ListView.separated(
-            itemCount: _vm.downloads.length,
-            separatorBuilder: (c, i) {
-              return Divider(
-                color: Colors.grey,
-                height: 1.0,
-              );
-            },
-            itemBuilder: (c, i) {
-              print("status: ${_vm.downloads[i].status}");
-              var data = _vm.downloads[i];
-              return ListTile(
-                leading: CircleIcon(
-                  data.icon,
-                  color: data.color,
-                  backgroundColor: Colors.white,
+          child: _vm.downloads.isEmpty
+              ? Center(child: CircularProgressIndicator())
+              : ListView.separated(
+                  itemCount: _vm.downloads.length,
+                  separatorBuilder: (c, i) {
+                    return Divider(
+                      color: Colors.grey,
+                      height: 1.0,
+                    );
+                  },
+                  itemBuilder: (c, i) {
+                    print("status: ${_vm.downloads[i].status}");
+                    var data = _vm.downloads[i];
+                    return ListTile(
+                      leading: CircleIcon(
+                        data.icon,
+                        color: data.color,
+                        backgroundColor: Colors.white,
+                      ),
+                      title: Text(data.title),
+                      subtitle: Text("Total Data: ${data.countData}"),
+                      trailing: data.status == DOWNLOAD_STATUS.LOADING
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ))
+                          : data.status == DOWNLOAD_STATUS.SUCCESS
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green[600],
+                                )
+                              : data.status == DOWNLOAD_STATUS.FAILED
+                                  ? Icon(
+                                      Icons.error,
+                                      color: Colors.red[600],
+                                    )
+                                  : SizedBox(),
+                    );
+                  },
                 ),
-                title: Text(data.title),
-                subtitle: Text("Total Data: ${data.countData}"),
-                trailing: data.status == DOWNLOAD_STATUS.LOADING
-                    ? SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ))
-                    : data.status == DOWNLOAD_STATUS.SUCCESS
-                    ? Icon(
-                  Icons.check_circle,
-                  color: Colors.green[600],
-                )
-                    : data.status == DOWNLOAD_STATUS.FAILED
-                    ? Icon(
-                  Icons.error,
-                  color: Colors.red[600],
-                )
-                    : SizedBox(),
-              );
-            },
-          ),
         )),
+        Divider(color: Colors.grey, height: 2,),
         Container(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: MaterialButton(
@@ -149,8 +152,9 @@ class _DownloadPRScreenState extends State<DownloadPRScreen> {
         initialDate: _vm.selectedDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
+
     if (picked != null && picked != _vm.selectedDate) {
-      _vm.etDate.text = DateFormat("dd MMMM yyyy").format(picked);
+      _vm.selectDate(picked);
     }
   }
 

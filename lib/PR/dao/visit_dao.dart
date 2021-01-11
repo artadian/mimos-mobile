@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:mimos/PR/model/customer_pr.dart';
 import 'package:mimos/PR/model/visit.dart';
 import 'package:mimos/db/base_dao.dart';
 import 'package:sqflite/sqflite.dart';
@@ -6,9 +7,9 @@ import 'package:sqflite/sqflite.dart';
 class VisitDao extends BaseDao {
   VisitDao()
       : super(
-    table: "visit",
-    primaryKey: "id",
-  );
+          table: "visit",
+          primaryKey: "id",
+        );
 
   Future<int> insert(Visit data) async {
     var row = data.toJson();
@@ -52,6 +53,47 @@ class VisitDao extends BaseDao {
 
   Future<Visit> getById(int id) async {
     return Visit.fromJson(await super.queryGetById(id));
+  }
+
+  Future<CustomerPR> getByIdVisit(int id) async {
+    var db = await instance.database;
+    var query = '''
+      SELECT c.*, c.tanggalkunjungan as visitdate,
+        v.id as idvisit, v.notvisitreason, v.notbuyreason,
+        vl.lookupdesc as lookupdescvisitreason,
+        bl.lookupdesc as lookupdescbuyreason
+      FROM customer AS c 
+      LEFT JOIN visit as v ON c.customerno = v.customerno 
+        AND c.tanggalkunjungan = v.visitdate 
+        AND c.userid = v.userid 
+      LEFT JOIN lookup AS vl ON v.notvisitreason = vl.lookupvalue AND vl.lookupkey = 'not_visit_reason' 
+      LEFT JOIN lookup AS bl ON v.notbuyreason = bl.lookupvalue AND bl.lookupkey = 'not_buy_reason' 
+      WHERE v.id = $id
+    ''';
+    var maps = await db.rawQuery(query);
+    if(maps.isNotEmpty){
+      return CustomerPR.fromTable(maps.first);
+    }else{
+      return null;
+    }
+  }
+
+  Future<int> setNotVisitReason({
+    @required int id,
+    @required String notVisitReason,
+  }) async {
+    var db = await instance.database;
+    return await db.update(table, {"notvisitreason": notVisitReason},
+        where: "$primaryKey == $id");
+  }
+
+  Future<int> setNotBuyReason({
+    @required int id,
+    @required String notBuyReason,
+  }) async {
+    var db = await instance.database;
+    return await db.update(table, {"notbuyreason": notBuyReason},
+        where: "$primaryKey == $id");
   }
 
   Future<int> countVisited({@required String date}) async {

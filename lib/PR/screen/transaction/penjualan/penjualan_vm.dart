@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/sellin_dao.dart';
 import 'package:mimos/PR/dao/sellin_detail_dao.dart';
+import 'package:mimos/PR/dao/visit_dao.dart';
 import 'package:mimos/PR/model/customer_pr.dart';
 import 'package:mimos/PR/model/sellin.dart';
 import 'package:mimos/PR/model/sellin_detail.dart';
@@ -17,6 +18,7 @@ class PenjualanVM with ChangeNotifier {
   // Dao
   var _sellinDao = SellinDao();
   var _sellinDetailDao = SellinDetailDao();
+  var _visitDao = VisitDao();
   var focusNode = FocusNode();
   BuildContext _context;
   double amount = 0.0;
@@ -37,7 +39,7 @@ class PenjualanVM with ChangeNotifier {
   }
 
   loadSellinHead() async {
-    sellin = Sellin.createFromJson(customer.toJson());
+    sellin = Sellin.createFromJson(customer.toJsonView());
     var res = await _sellinDao.getByVisit(
         userid: customer.userid,
         customerno: customer.customerno,
@@ -90,6 +92,7 @@ class PenjualanVM with ChangeNotifier {
   delete(int id) async {
     await _sellinDao.delete(id);
     await _sellinDetailDao.deleteBySellin(id.toString());
+    await _visitDao.setNotBuyReason(id: id, notBuyReason: "0");
     loadSellinHead();
     Navigator.of(_context).pop("refresh");
   }

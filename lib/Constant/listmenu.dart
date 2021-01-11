@@ -6,11 +6,11 @@ const ListMenu({this.judul, this.lambang, this.tampilan});
   final String tampilan;
 }
 class MyMenuItem {
-  const MyMenuItem({this.judul, this.lambang, this.itemid, this.warna, this.route});
+  MyMenuItem({this.judul, this.lambang, this.itemid, this.warna, this.route});
   final String judul;
   final IconData lambang;
   final String itemid;
-  final Color warna;
+  Color warna;
   final String route;
 }
 class MenuItem {

@@ -397,7 +397,10 @@ class DatabaseProvider {
         packaging TEXT,
         outletname TEXT,
         outletaddress TEXT,
-        notes TEXT 
+        notes TEXT,
+        needSync INTEGER NOT NULL DEFAULT 0,
+        isDelete INTEGER NOT NULL DEFAULT 0,
+        isLocal INTEGER NOT NULL DEFAULT 0
         )''');
 
     await database.execute('''CREATE TABLE IF NOT EXISTS material_price (

@@ -188,4 +188,44 @@ class CustomerPR {
       "week": this.week,
     };
   }
+
+  Map<String, dynamic> toJsonView() {
+    return {
+      "id": this.id,
+      "customerno": this.customerno,
+      "userid": this.userid,
+      "visitday": this.visitday,
+      "visitweek": this.visitweek,
+      "name": this.name,
+      "address": this.address,
+      "city": this.city,
+      "owner": this.owner,
+      "phone": this.phone,
+      "customergroupid": this.customergroupid,
+      "customergroupname": this.customergroupname,
+      "priceid": this.priceid,
+      "salesdistrictid": this.salesdistrictid,
+      "salesdistrictname": this.salesdistrictname,
+      "salesgroupid": this.salesgroupid,
+      "salesgroupname": this.salesgroupname,
+      "salesofficeid": this.salesofficeid,
+      "salesofficename": this.salesofficename,
+      "usersfaid": this.usersfaid,
+      "userroleid": this.userroleid,
+      "regionid": this.regionid,
+      "tanggalkunjungan": this.tanggalkunjungan,
+      "notvisitreason": this.notvisitreason,
+      "notbuyreason": this.notbuyreason,
+      "lookupdescvisitreason": this.lookupdescvisitreason,
+      "lookupdescbuyreason": this.lookupdescbuyreason,
+      "nonota": this.nonota,
+      "amountnota": this.amountnota,
+      "idvisit": this.idvisit,
+      "wspclass": this.wspclass,
+      "ycw": this.ycw,
+      "year": this.year,
+      "cycle": this.cycle,
+      "week": this.week,
+    };
+  }
 }

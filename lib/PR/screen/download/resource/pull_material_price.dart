@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/material_price_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/master_data_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullMaterialPrice {
   var _dao = MaterialPriceDao();
-  var _repo = DownloadRepo();
+  var _repo = MasterDataRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {

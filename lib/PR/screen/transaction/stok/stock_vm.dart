@@ -18,7 +18,7 @@ class StokVM with ChangeNotifier {
 
   init(CustomerPR customer) async {
     this.customer = customer;
-    stock = Stock.createFromJson(customer.toJson());
+    stock = Stock.createFromJson(customer.toJsonView());
     await loadStockHead();
     notifyListeners();
   }

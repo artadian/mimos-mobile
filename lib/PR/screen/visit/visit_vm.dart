@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mimos/PR/dao/customer_pr_dao.dart';
 import 'package:mimos/PR/dao/lookup_dao.dart';
 import 'package:mimos/PR/dao/visit_dao.dart';
 import 'package:mimos/PR/model/customer_pr.dart';
 import 'package:mimos/PR/model/lookup.dart';
 import 'package:mimos/PR/model/visit.dart';
+import 'package:mimos/PR/screen/transaction/transaction_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class VisitVM with ChangeNotifier {
@@ -17,8 +19,10 @@ class VisitVM with ChangeNotifier {
   var saving; // null: default, -1: error, 0: loading, 1: success
   List<CustomerPR> listCustomer = [];
   List<Lookup> listReason = [];
+  BuildContext context;
 
-  init() async {
+  init(BuildContext context) async {
+    this.context = context;
     await loadListVisit();
     await loadListReasonNotVisit();
   }
@@ -31,7 +35,8 @@ class VisitVM with ChangeNotifier {
   }
 
   loadListVisit({String search}) async {
-    var res = await _customerDao.getCustomerVisit(search: search);
+    var date = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
+    var res = await _customerDao.getCustomerVisit(date: date, search: search);
     listCustomer = res;
     notifyListeners();
   }
@@ -43,25 +48,33 @@ class VisitVM with ChangeNotifier {
   }
 
   saveVisit(CustomerPR customer, {String idReason}) async {
+    Visit visit = Visit.createFromJson(customer.toJsonView());
     if(idReason != null){
-      customer.notvisitreason = idReason;
+      visit.notvisitreason = idReason;
     }else{
-      customer.notvisitreason = "0";
+      visit.notvisitreason = "0";
     }
-    Visit visit = Visit.createFromJson(customer.toJson());
     print(visit.toJson());
     // Loading
     saving = 0;
     notifyListeners();
 
-    var res = await _visitDao.insert(visit);
-    if(res != null){
+    var id = await _visitDao.insert(visit);
+    var data = await _visitDao.getByIdVisit(id);
+    if(id != null){
       saving = 1; // Success
     }else {
       saving = -1; // Failed
     }
     onRefresh();
     notifyListeners();
+    if(idReason == null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => TransactionScreen(data)),
+      );
+    }
   }
 
 }

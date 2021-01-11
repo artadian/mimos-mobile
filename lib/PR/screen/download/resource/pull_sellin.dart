@@ -4,13 +4,15 @@ import 'package:mimos/PR/dao/sellin_dao.dart';
 import 'package:mimos/PR/dao/sellin_detail_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/sellin_detail_repo.dart';
+import 'package:mimos/PR/repo/sellin_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullSellin {
   var _sellinDao = SellinDao();
   var _sellinDetailDao = SellinDetailDao();
-  var _repo = DownloadRepo();
+  var _sellinRepo = SellinRepo();
+  var _sellinDetailRepo = SellinDetailRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -40,7 +42,7 @@ class PullSellin {
   }
 
   Future<ListResponse> pullSellin({@required String date}) async {
-    var response = await _repo.pullSellin(userId: session.userId(), date: date);
+    var response = await _sellinRepo.pull(userId: session.userId(), date: date);
 
     if (response.status) {
       if (response.list != null) {
@@ -58,7 +60,7 @@ class PullSellin {
 
   Future<ListResponse> pullSellinDetail() async {
     var sellinIds = await _sellinDao.getAllPrimaryKey();
-    var response = await _repo.pullSellinDetail(
+    var response = await _sellinDetailRepo.pull(
       sellinIds: sellinIds,
     );
 

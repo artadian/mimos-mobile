@@ -2,55 +2,37 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:mimos/PR/model/response/base_response.dart';
-import 'package:mimos/PR/model/sellin.dart';
+import 'package:mimos/PR/model/response/list_response.dart';
 import 'package:mimos/PR/model/sellin_detail.dart';
 import 'package:mimos/network/api/api_client.dart';
 import 'package:mimos/network/api/api_service.dart' as API;
 
-class UploadSellinRepo {
-  /// Sellin Head
-  Future<BaseResponse<Sellin>> pushSellin(Map<String, dynamic> data) async {
-    print("$runtimeType datas: $data");
+class SellinDetailRepo {
+  Future<ListResponse<SellinDetail>> pull({List<int> sellinIds}) async {
+    var params = {"sellin_ids": sellinIds};
+    print("$runtimeType params: $params");
     try {
-      Response res = await client.post(API.URL_PUSH_SELLIN, data: data);
+      Response res =
+          await client.post(API.URL_PULL_SELLIN_DETAIL, data: params);
       print("$runtimeType status: " + res.toString());
 
       var response = json.decode(res.toString());
       if (response["status"]) {
-        var data =
-        response['data'] != null ? Sellin.fromJson(response['data']) : null;
-        return BaseResponse.success(response: response, data: data);
+        var data = response["data"] != null
+            ? List<SellinDetail>.from(
+                response["data"].map((it) => SellinDetail.fromJson(it)))
+            : null;
+        return ListResponse.success(response: response, list: data);
       } else {
-        return BaseResponse.failed(response: response);
+        return ListResponse.failed(response: response);
       }
     } on DioError catch (e) {
-      print("$runtimeType status: pushSellin" + e.toString());
-      return BaseResponse.dioError(error: e);
+      print("$runtimeType status: pullSellinDetail" + e.toString());
+      return ListResponse.dioError(error: e);
     }
   }
 
-  Future<BaseResponse<SellinDetail>> updateSellin(Map<String, dynamic> data) async {
-    print("$runtimeType datas: $data");
-    try {
-      Response res = await client.put(API.URL_UPDATE_SELLIN, data: data);
-      print("$runtimeType status: " + res.toString());
-
-      var response = json.decode(res.toString());
-      if (response["status"]) {
-        var data =
-        response['data'] != null ? SellinDetail.fromJson(response['data']) : null;
-        return BaseResponse.success(response: response, data: data);
-      } else {
-        return BaseResponse.failed(response: response);
-      }
-    } on DioError catch (e) {
-      print("$runtimeType status: updateSellinDetail" + e.toString());
-      return BaseResponse.dioError(error: e);
-    }
-  }
-
-  /// Sellin Detail
-  Future<BaseResponse<SellinDetail>> pushSellinDetail(Map<String, dynamic> data) async {
+  Future<BaseResponse<SellinDetail>> add(Map<String, dynamic> data) async {
     print("$runtimeType datas: $data");
     try {
       Response res = await client.post(API.URL_PUSH_SELLIN_DETAIL, data: data);
@@ -58,8 +40,9 @@ class UploadSellinRepo {
 
       var response = json.decode(res.toString());
       if (response["status"]) {
-        var data =
-        response['data'] != null ? SellinDetail.fromJson(response['data']) : null;
+        var data = response['data'] != null
+            ? SellinDetail.fromJson(response['data'])
+            : null;
         return BaseResponse.success(response: response, data: data);
       } else {
         return BaseResponse.failed(response: response);
@@ -70,7 +53,7 @@ class UploadSellinRepo {
     }
   }
 
-  Future<BaseResponse<SellinDetail>> updateSellinDetail(Map<String, dynamic> data) async {
+  Future<BaseResponse<SellinDetail>> update(Map<String, dynamic> data) async {
     print("$runtimeType datas: $data");
     try {
       Response res = await client.put(API.URL_UPDATE_SELLIN_DETAIL, data: data);
@@ -78,8 +61,9 @@ class UploadSellinRepo {
 
       var response = json.decode(res.toString());
       if (response["status"]) {
-        var data =
-        response['data'] != null ? SellinDetail.fromJson(response['data']) : null;
+        var data = response['data'] != null
+            ? SellinDetail.fromJson(response['data'])
+            : null;
         return BaseResponse.success(response: response, data: data);
       } else {
         return BaseResponse.failed(response: response);
@@ -90,11 +74,12 @@ class UploadSellinRepo {
     }
   }
 
-  Future<BaseResponse<SellinDetail>> delSellinDetail(int id) async {
-    var datas = {"id": "108"};
-    print("$runtimeType datas: $datas");
+  Future<BaseResponse<SellinDetail>> delete(int id) async {
+    var data = {"id": id};
+    print("$runtimeType datas: $data");
     try {
-      Response res = await client.delete(API.URL_DELETE_SELLIN_DETAIL, data: datas);
+      Response res =
+          await client.delete(API.URL_DELETE_SELLIN_DETAIL, data: data);
       print("$runtimeType status: " + res.toString());
 
       var response = json.decode(res.toString());

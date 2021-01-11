@@ -17,6 +17,14 @@ class VisitScreen extends StatefulWidget {
 }
 
 class _VisitScreenState extends State<VisitScreen> {
+  var _vm = VisitVM();
+
+  @override
+  void initState() {
+    super.initState();
+    _vm.init(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,30 +39,30 @@ class _VisitScreenState extends State<VisitScreen> {
 
   Widget _initProvider() {
     return ChangeNotifierProvider<VisitVM>(
-      create: (_) => VisitVM()..init(),
+      create: (_) => _vm,
       child: Consumer<VisitVM>(
         builder: (c, vm, _) {
-          return _initWidget(vm);
+          return _initWidget();
         },
       ),
     );
   }
 
-  Widget _initWidget(VisitVM vm) {
+  Widget _initWidget() {
     return Column(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: TextField(
-            controller: vm.etSearch,
+            controller: _vm.etSearch,
             decoration: InputDecoration(
                 hintText: "Search", suffixIcon: Icon(Icons.search)),
             onChanged: (val) {
-              vm.loadListVisit(search: val);
+              _vm.loadListVisit(search: val);
             },
           ),
         ),
-        (vm.listCustomer.isEmpty)
+        (_vm.listCustomer.isEmpty)
             ? EmptyScreen()
             : Expanded(
                 child: SmartRefresher(
@@ -62,25 +70,26 @@ class _VisitScreenState extends State<VisitScreen> {
                   header: WaterDropHeader(
                     waterDropColor: Colors.blue,
                   ),
-                  controller: vm.refreshController,
-                  onRefresh: vm.onRefresh,
+                  controller: _vm.refreshController,
+                  onRefresh: _vm.onRefresh,
                   child: ListView.builder(
                       padding:
                           EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                      itemCount: vm.listCustomer.length,
+                      itemCount: _vm.listCustomer.length,
                       itemBuilder: (c, i) {
-                        var data = vm.listCustomer[i];
+                        var data = _vm.listCustomer[i];
                         return VisitItem(
                           leading: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Icon(
                                 Icons.person_pin,
-                                color: data.idvisit != null
-                                    ? (data.notvisitreason != null &&
-                                            data.notvisitreason != "0")
-                                        ? Colors.red
-                                        : Colors.green
-                                    : Colors.blue,
+                                color: (data.idvisit != null &&
+                                        (data.notvisitreason != null &&
+                                            data.notvisitreason != "0"))
+                                    ? Colors.red
+                                    : data.idvisit != null
+                                        ? Colors.green
+                                        : Colors.blue,
                                 size: 32,
                               )),
                           title: data.name,
@@ -92,7 +101,7 @@ class _VisitScreenState extends State<VisitScreen> {
                             if (data.idvisit != null) {
                               if (data.notvisitreason != null &&
                                   data.notvisitreason != "0") {
-                                _dialogCreateVisit(vm, data);
+                                _dialogCreateVisit(data);
                               } else {
                                 Navigator.push(
                                   context,
@@ -102,7 +111,7 @@ class _VisitScreenState extends State<VisitScreen> {
                                 );
                               }
                             } else {
-                              _dialogCreateVisit(vm, data);
+                              _dialogCreateVisit(data);
                             }
                           },
                         );
@@ -113,8 +122,8 @@ class _VisitScreenState extends State<VisitScreen> {
     );
   }
 
-  _dialogCreateVisit(VisitVM vm, CustomerPR data) {
-    print(data.toJson());
+  _dialogCreateVisit(CustomerPR data) {
+    print(data.toJsonView());
     var alert = DefaultDialog(
       title: "Mulai Kunjungan",
       content: Container(
@@ -164,7 +173,7 @@ class _VisitScreenState extends State<VisitScreen> {
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
-                        _dialogReasonChoice(vm, data);
+                        _dialogReasonChoice(data);
                       },
                     ),
                   ),
@@ -186,13 +195,8 @@ class _VisitScreenState extends State<VisitScreen> {
                             fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       onPressed: () async {
-                        vm.saveVisit(data);
                         Navigator.of(context).pop();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TransactionScreen(data)),
-                        );
+                        _vm.saveVisit(data);
                       },
                     ),
                   )
@@ -212,7 +216,7 @@ class _VisitScreenState extends State<VisitScreen> {
     );
   }
 
-  _dialogReasonChoice(VisitVM vm, CustomerPR data) {
+  _dialogReasonChoice(CustomerPR data) {
     AlertDialog alert = AlertDialog(
       title: Text("Pilih Alasan"),
       content: Column(
@@ -220,15 +224,15 @@ class _VisitScreenState extends State<VisitScreen> {
         children: [
           ListView.builder(
             shrinkWrap: true,
-            itemCount: vm.listReason.length,
+            itemCount: _vm.listReason.length,
             itemBuilder: (c, i) {
-              var reason = vm.listReason[i];
+              var reason = _vm.listReason[i];
               return ListTile(
                 title: Text(reason.lookupdesc),
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
-                  vm.saveVisit(data, idReason: reason.lookupid);
+                  _vm.saveVisit(data, idReason: reason.lookupid);
                 },
               );
             },

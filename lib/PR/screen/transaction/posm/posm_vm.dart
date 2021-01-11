@@ -19,7 +19,7 @@ class PosmVM with ChangeNotifier {
 
   init(CustomerPR customer) async {
     this.customer = customer;
-    posm = Posm.createFromJson(customer.toJson());
+    posm = Posm.createFromJson(customer.toJsonView());
     await loadPosmHead();
     notifyListeners();
   }

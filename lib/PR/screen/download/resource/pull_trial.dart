@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/trial_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/trial_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullTrial {
   var _dao = TrialDao();
-  var _repo = DownloadRepo();
+  var _repo = TrialRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -27,7 +27,7 @@ class PullTrial {
     yield _loading();
 
     var response =
-    await _repo.pullTrial(userId: session.userId(), date: date);
+    await _repo.pull(userId: session.userId(), date: date);
 
     if (response.status) {
       if (response.list != null) {

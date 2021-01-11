@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/visit_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/visit_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullVisit {
   var _dao = VisitDao();
-  var _repo = DownloadRepo();
+  var _repo = VisitRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -27,7 +27,7 @@ class PullVisit {
     yield _loading();
 
     var response =
-    await _repo.pullVisit(userId: session.userId(), date: date);
+    await _repo.pull(userId: await session.getUserId(), date: date);
 
     if (response.status) {
       if (response.list != null) {

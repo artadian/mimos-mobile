@@ -77,7 +77,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            vm.customer.name,
+            vm.customer.name ?? "-",
             style: TextStyle(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -105,7 +105,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
             padding: EdgeInsets.only(top: 10),
             width: double.maxFinite,
             child: Text(
-              vm.customer.tanggalkunjungan.dateView(),
+              vm.customer.tanggalkunjungan != null
+                  ? vm.customer.tanggalkunjungan.dateView()
+                  : "",
               style: TextStyle(color: Colors.white, fontSize: 14),
               textAlign: TextAlign.right,
             ),
@@ -138,7 +140,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 icon: menu.lambang,
                 onPressed: () {
                   if (menu.itemid == "103") {
-                    if (vm.sellin != null) {
+                    if (vm.sellin != null && (vm.customer.notbuyreason == null ||
+                        vm.customer.notbuyreason == "0")) {
+                      print(vm.customer.notbuyreason);
                       _gotoPenjualan(vm);
                     } else {
                       _dialogCreateSellin(vm, vm.customer);
@@ -153,7 +157,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
   }
 
   _dialogCreateSellin(TransactionVM vm, CustomerPR data) {
-    print(data.toJson());
+    print(data.toJsonView());
     var alert = DefaultDialog(
       title: "Transaksi Penjualan",
       content: Container(
@@ -252,7 +256,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
         .pushNamed(PENJUALAN_SCREEN_PR, arguments: vm.customer);
 
     print("result: $result");
-    vm.loadSellinHead();
+    vm.loadSellinHead(vm.customer.idvisit);
 //    if (result != null) {
 //      vm.loadSellinHead();
 //    }

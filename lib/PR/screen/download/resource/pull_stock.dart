@@ -4,13 +4,15 @@ import 'package:mimos/PR/dao/stock_dao.dart';
 import 'package:mimos/PR/dao/stock_detail_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/stock_detail_repo.dart';
+import 'package:mimos/PR/repo/stock_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullStock {
   var _stockDao = StockDao();
   var _stockDetailDao = StockDetailDao();
-  var _repo = DownloadRepo();
+  var _stockRepo = StockRepo();
+  var _stockDetailRepo = StockDetailRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -40,7 +42,7 @@ class PullStock {
   }
 
   Future<ListResponse> pullStock({@required String date}) async {
-    var response = await _repo.pullStock(userId: session.userId(), date: date);
+    var response = await _stockRepo.pull(userId: session.userId(), date: date);
 
     if (response.status) {
       if (response.list != null) {
@@ -58,7 +60,7 @@ class PullStock {
 
   Future<ListResponse> pullStockDetail() async {
     var stockIds = await _stockDao.getAllPrimaryKey();
-    var response = await _repo.pullStockDetail(
+    var response = await _stockDetailRepo.pull(
       stockIds: stockIds,
     );
 

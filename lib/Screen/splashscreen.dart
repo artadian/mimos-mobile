@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
-import 'package:mimos/Screen/home_screen_new.dart';
+import 'package:mimos/Screen/home_screen_old.dart';
 import 'package:mimos/Screen/homescreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mimos/Screen/homescreen_old.dart';

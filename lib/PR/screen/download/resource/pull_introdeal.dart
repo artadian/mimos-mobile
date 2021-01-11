@@ -4,13 +4,13 @@ import 'package:mimos/PR/dao/customer_introdeal_dao.dart';
 import 'package:mimos/PR/dao/introdeal_pr_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
-import 'package:mimos/PR/repo/download_repo.dart';
+import 'package:mimos/PR/repo/master_data_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullIntrodeal {
   var _introdealDao = IntrodealPRDao();
   var _custIntrodealDao = CustomerIntrodealDao();
-  var _repo = DownloadRepo();
+  var _repo = MasterDataRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -41,7 +41,7 @@ class PullIntrodeal {
 
   Future<ListResponse> pullIntrodeal({@required String date}) async {
     var response = await _repo.pullIntrodealPR(
-      userId: session.userId(),
+      userId: await session.getUserId(),
       date: date,
     );
 
@@ -61,7 +61,7 @@ class PullIntrodeal {
 
   Future<ListResponse> pullCustomerIntrodeal({@required String date}) async {
     var response = await _repo.pullCustomerIntrodeal(
-      userId: session.userId(),
+      userId: await session.getUserId(),
       date: date,
     );
 
