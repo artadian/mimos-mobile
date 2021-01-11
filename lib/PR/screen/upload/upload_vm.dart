@@ -10,8 +10,11 @@ import 'package:mimos/PR/screen/upload/resource/trial_res.dart';
 import 'package:mimos/PR/screen/upload/resource/visibility_detail_res.dart';
 import 'package:mimos/PR/screen/upload/resource/visibility_res.dart';
 import 'package:mimos/PR/screen/upload/resource/visit_res.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UploadVM with ChangeNotifier {
+  RefreshController refreshController =
+  RefreshController(initialRefresh: false);
   List<UploadModel> uploads = [];
   bool loading = false;
   var _visitRes = VisitRes();
@@ -26,6 +29,7 @@ class UploadVM with ChangeNotifier {
   var _trialRes = TrialRes();
 
   init() async {
+    uploads.clear();
     uploads.add(await _visitRes.init());
     uploads.add(await _trialRes.init());
     uploads.add(await _stockRes.init());
@@ -33,6 +37,12 @@ class UploadVM with ChangeNotifier {
     uploads.add(await _posmRes.init());
     uploads.add(await _visibilityRes.init());
     notifyListeners();
+  }
+
+  onRefresh() {
+    print("onRefresh");
+    init();
+    refreshController.refreshCompleted();
   }
 
   upload() async {

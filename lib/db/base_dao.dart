@@ -186,6 +186,13 @@ abstract class BaseDao {
         'SELECT COUNT(*) FROM $table WHERE needSync = 1 AND isLocal = 1'));
   }
 
+  Future<bool> isNeedSync() async {
+    var db = await instance.database;
+    var res = Sqflite.firstIntValue(await db.rawQuery(
+        'SELECT COUNT(*) FROM $table WHERE needSync = 1 AND isLocal = 1'));
+    return res > 0;
+  }
+
   Future<int> rawInsert(String query, List<dynamic> args) async {
     final db = await instance.database;
     return await db.rawInsert(query, args);

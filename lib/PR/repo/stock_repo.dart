@@ -54,7 +54,7 @@ class StockRepo {
   Future<BaseResponse<Stock>> update(Map<String, dynamic> data) async {
     print("$runtimeType datas: $data");
     try {
-      Response res = await client.post(API.URL_UPDATE_VISIBILITY, data: data);
+      Response res = await client.post(API.URL_UPDATE_STOCK, data: data);
       print("$runtimeType status: " + res.toString());
 
       var response = json.decode(res.toString());
@@ -75,7 +75,7 @@ class StockRepo {
     var data = {"id": id};
     print("$runtimeType datas: $data");
     try {
-      Response res = await client.delete(API.URL_DELETE_VISIBILITY, data: data);
+      Response res = await client.delete(API.URL_DELETE_STOCK, data: data);
       print("$runtimeType status: " + res.toString());
 
       var response = json.decode(res.toString());

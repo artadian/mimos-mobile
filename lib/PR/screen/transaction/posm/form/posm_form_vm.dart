@@ -97,12 +97,13 @@ class PosmFormVM with ChangeNotifier {
 
   saveDetail() async {
     var materialgroupid = this.posmDetail.materialgroupid;
-    var status = this.posmDetail.status;
+    var type = this.posmDetail.posmtypeid;
+//    var status = this.posmDetail.status;
     if (!edit) {
       var cekdata = await _posmDetailDao.getByParentAndMaterial(
           posmid: posmModel.id,
           materialgroupid: materialgroupid,
-          status: status);
+          type: type);
       if (cekdata.isNotEmpty) {
         MyToast.showToast("Material Sudah diinputkan",
             backgroundColor: Colors.red);

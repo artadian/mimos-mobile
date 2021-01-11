@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/sellin_dao.dart';
+import 'package:mimos/PR/dao/sellin_detail_dao.dart';
 import 'package:mimos/PR/model/default/upload_data.dart';
 import 'package:mimos/PR/model/default/upload_model.dart';
 import 'package:mimos/PR/repo/sellin_repo.dart';
 
 class SellinRes {
   var _dao = SellinDao();
+  var _detailDao = SellinDetailDao();
   var _repo = SellinRepo();
   var _model = UploadModel(
     title: "Sellin",
@@ -18,7 +20,7 @@ class SellinRes {
   );
 
   Future<UploadModel> init() async {
-    if(await needSync()){
+    if(await needSync() || await _detailDao.isNeedSync()){
       _model.status = UPLOAD_STATUS.NEED_SYNC;
       _model.message = "Data belum di upload";
     }else{
@@ -29,7 +31,7 @@ class SellinRes {
   }
 
   Future<bool> needSync() async {
-    return await _dao.countNeedSyncIns() > 0;
+    return await _dao.isNeedSync();
   }
 
   Stream<UploadModel> insert() async* {
@@ -50,6 +52,7 @@ class SellinRes {
         var res = await _repo.add(row);
 
         if (res.status) {
+          await _detailDao.updateIdParent(id: row["id"], newId: res.data.id);
           await _dao.delete(row["id"], local: true);
           await _dao.insert(res.data);
 

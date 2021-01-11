@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
         vsync: this, duration: new Duration(seconds: 2));
     animation =
         new CurvedAnimation(parent: animationController, curve: Curves.easeOut);
-    animation.addListener(() => this.setState(() {}));
+//    animation.addListener(() => this.setState(() {}));
     animationController.forward();
 
     setState(() {

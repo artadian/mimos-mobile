@@ -109,13 +109,13 @@ class PosmDetailDao extends BaseDao {
   }
 
   Future<List<PosmDetail>> getByParentAndMaterial(
-      {@required int posmid, @required String materialgroupid, String status}) async {
+      {@required int posmid, @required String materialgroupid, String type}) async {
     var db = await instance.database;
     var query = """
       SELECT * FROM $table
       WHERE posmid = $posmid
       AND materialgroupid = '$materialgroupid'
-      AND status = '$status'
+      AND status = '$type'
       AND isDelete = 0
     """;
 

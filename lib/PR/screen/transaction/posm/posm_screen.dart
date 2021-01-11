@@ -117,7 +117,7 @@ class _PosmScreenState extends State<PosmScreen> {
                   PosmDetailView data = _vm.listPosmDetail[i];
                   return PosmItem(
                     title: data.materialgroupdesc,
-                    subtitle: "${data.typedesc} ${data.qty}",
+                    subtitle: "${data.typedesc} : ${data.qty}",
                     status: data.statusdesc,
                     qty: data.qty.toString(),
                     condition: data.conditiondesc,

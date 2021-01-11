@@ -29,7 +29,7 @@ class PosmDetailRes {
   }
 
   Future<bool> needSync() async {
-    return await _dao.countNeedSyncIns() > 0;
+    return await _dao.isNeedSync();
   }
 
   Stream<UploadModel> insert() async* {

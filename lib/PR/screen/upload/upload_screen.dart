@@ -6,6 +6,7 @@ import 'package:mimos/PR/screen/upload/upload_vm.dart';
 import 'package:mimos/utils/widget/circle_icon.dart';
 import 'package:mimos/utils/widget/textfield/text_input_field.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UploadScreen extends StatefulWidget {
   @override
@@ -50,54 +51,64 @@ class _UploadScreenState extends State<UploadScreen> {
             child: Container(
           child: _vm.uploads.isEmpty
               ? Center(child: CircularProgressIndicator())
-              : ListView.separated(
-                  itemCount: _vm.uploads.length,
-                  separatorBuilder: (c, i) {
-                    return Divider(
-                      color: Colors.grey,
-                      height: 1.0,
-                    );
-                  },
-                  itemBuilder: (c, i) {
-                    print("status: ${_vm.uploads[i].status}");
-                    var data = _vm.uploads[i];
-                    return ListTile(
-                      leading: CircleIcon(
-                        data.icon,
-                        color: data.color,
-                        backgroundColor: Colors.white,
-                      ),
-                      title: Text(data.getGroup()),
-                      subtitle: Text(
-                        data.message,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: data.status == UPLOAD_STATUS.NEED_SYNC
-                                ? Colors.red[700]
-                                : (data.status == UPLOAD_STATUS.DONE || data.status == UPLOAD_STATUS.EMPTY)
-                                    ? Colors.green[700]
-                                    : Colors.grey[700]),
-                      ),
-                      trailing: data.status == UPLOAD_STATUS.LOADING
-                          ? SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ))
-                          : data.status == UPLOAD_STATUS.SUCCESS
-                              ? Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green[600],
-                                )
-                              : data.status == UPLOAD_STATUS.FAILED
-                                  ? Icon(
-                                      Icons.error,
-                                      color: Colors.red[600],
-                                    )
-                                  : SizedBox(),
-                    );
-                  },
+              : SmartRefresher(
+                  physics: ScrollPhysics(),
+                  enablePullDown: true,
+                  header: WaterDropHeader(
+                    waterDropColor: Colors.blue,
+                  ),
+                  controller: _vm.refreshController,
+                  onRefresh: _vm.onRefresh,
+                  child: ListView.separated(
+                    itemCount: _vm.uploads.length,
+                    separatorBuilder: (c, i) {
+                      return Divider(
+                        color: Colors.grey,
+                        height: 1.0,
+                      );
+                    },
+                    itemBuilder: (c, i) {
+                      print("status: ${_vm.uploads[i].status}");
+                      var data = _vm.uploads[i];
+                      return ListTile(
+                        leading: CircleIcon(
+                          data.icon,
+                          color: data.color,
+                          backgroundColor: Colors.white,
+                        ),
+                        title: Text(data.getGroup()),
+                        subtitle: Text(
+                          data.message,
+                          style: TextStyle(
+                              fontSize: 12,
+                              color: data.status == UPLOAD_STATUS.NEED_SYNC
+                                  ? Colors.red[700]
+                                  : (data.status == UPLOAD_STATUS.DONE ||
+                                          data.status == UPLOAD_STATUS.EMPTY)
+                                      ? Colors.green[700]
+                                      : Colors.grey[700]),
+                        ),
+                        trailing: data.status == UPLOAD_STATUS.LOADING
+                            ? SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ))
+                            : data.status == UPLOAD_STATUS.SUCCESS
+                                ? Icon(
+                                    Icons.check_circle,
+                                    color: Colors.green[600],
+                                  )
+                                : data.status == UPLOAD_STATUS.FAILED
+                                    ? Icon(
+                                        Icons.error,
+                                        color: Colors.red[600],
+                                      )
+                                    : SizedBox(),
+                      );
+                    },
+                  ),
                 ),
         )),
         Divider(

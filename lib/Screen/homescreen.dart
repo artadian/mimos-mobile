@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
 import 'package:mimos/PR/dao/customer_pr_dao.dart';
+import 'package:mimos/PR/dao/db_dao.dart';
 import 'package:mimos/PR/dao/posm_dao.dart';
 import 'package:mimos/PR/dao/posm_detail_dao.dart';
 import 'package:mimos/PR/dao/sellin_dao.dart';
@@ -383,17 +384,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _clearDb() async {
-    await CustomerPRDao().truncate();
-    await VisitDao().truncate();
-    await StockDao().truncate();
-    await SellinDao().truncate();
-    await PosmDao().truncate();
-    await VisibilityDao().truncate();
-    await StockDetailDao().truncate();
-    await SellinDetailDao().truncate();
-    await PosmDetailDao().truncate();
-    await VisibilityDetailDao().truncate();
-    await TrialDao().truncate();
+    var dbDao = DbDao();
+    await dbDao.truncateAll();
   }
 
 }

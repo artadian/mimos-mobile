@@ -39,7 +39,8 @@ class PosmItem extends StatelessWidget {
                   children: [
                     Text(
                       title ?? "",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 1, bottom: 3),
@@ -76,7 +77,8 @@ class PosmItem extends StatelessWidget {
                     if (notes != null && notes.isNotEmpty)
                       Container(
                         margin: EdgeInsets.only(top: 5),
-                        padding: EdgeInsets.symmetric(vertical: 1, horizontal: 5),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 1, horizontal: 5),
                         child: Text(
                           notes ?? "",
                           style: TextStyle(color: Colors.grey[800]),

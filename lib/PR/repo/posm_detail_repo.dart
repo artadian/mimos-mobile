@@ -34,7 +34,7 @@ class PosmDetailRepo {
   Future<BaseResponse<PosmDetail>> add(Map<String, dynamic> data) async {
     print("$runtimeType datas: $data");
     try {
-      Response res = await client.post(API.URL_PUSH_STOCK_DETAIL, data: data);
+      Response res = await client.post(API.URL_PUSH_POSM_DETAIL, data: data);
       print("$runtimeType status: " + res.toString());
 
       var response = json.decode(res.toString());
@@ -55,7 +55,7 @@ class PosmDetailRepo {
   Future<BaseResponse<PosmDetail>> update(Map<String, dynamic> data) async {
     print("$runtimeType datas: $data");
     try {
-      Response res = await client.put(API.URL_UPDATE_STOCK_DETAIL, data: data);
+      Response res = await client.put(API.URL_UPDATE_POSM_DETAIL, data: data);
       print("$runtimeType status: " + res.toString());
 
       var response = json.decode(res.toString());
@@ -78,7 +78,7 @@ class PosmDetailRepo {
     print("$runtimeType datas: $data");
     try {
       Response res =
-          await client.delete(API.URL_DELETE_STOCK_DETAIL, data: data);
+          await client.delete(API.URL_DELETE_POSM_DETAIL, data: data);
       print("$runtimeType status: " + res.toString());
 
       var response = json.decode(res.toString());
