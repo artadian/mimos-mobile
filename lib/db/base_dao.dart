@@ -69,10 +69,10 @@ abstract class BaseDao {
   Future<Map<String, dynamic>> queryGetById(int id) async {
     var db = await instance.database;
     var data =
-    await db.query(table, where: '$primaryKey = ?', whereArgs: ['$id']);
-    if(data.isNotEmpty){
+        await db.query(table, where: '$primaryKey = ?', whereArgs: ['$id']);
+    if (data.isNotEmpty) {
       return data.first;
-    }else{
+    } else {
       return null;
     }
   }
@@ -93,14 +93,14 @@ abstract class BaseDao {
 
   Future<List<Map<String, dynamic>>> rawSelect(
       {List<String> selectedColumn,
-        String whereQuery,
-        List<dynamic> args,
-        String groupByColumn,
-        String orderBy,
-        String having,
-        int limitData,
-        int offsetData,
-        bool distinct}) async {
+      String whereQuery,
+      List<dynamic> args,
+      String groupByColumn,
+      String orderBy,
+      String having,
+      int limitData,
+      int offsetData,
+      bool distinct}) async {
     var db = await instance.database;
     return await db.query(table,
         columns: selectedColumn ?? null,
@@ -119,7 +119,8 @@ abstract class BaseDao {
     var args = [1, 0, 1];
     var data = await db.query(table,
         where: 'needSync = ? AND isDelete = ? AND isLocal = ?',
-        whereArgs: args);
+        whereArgs: args,
+        orderBy: '$primaryKey');
     return data;
   }
 
@@ -128,7 +129,8 @@ abstract class BaseDao {
     var args = [1, 0, 0];
     var data = await db.query(table,
         where: 'needSync = ? AND isDelete = ? AND isLocal = ?',
-        whereArgs: args);
+        whereArgs: args,
+        orderBy: '$primaryKey');
     return data;
   }
 
@@ -137,7 +139,8 @@ abstract class BaseDao {
     var args = [1, 1, 0];
     var data = await db.query(table,
         where: 'needSync = ? AND isDelete = ? AND isLocal = ?',
-        whereArgs: args);
+        whereArgs: args,
+        orderBy: '$primaryKey');
     return data;
   }
 
@@ -163,15 +166,13 @@ abstract class BaseDao {
   Future<int> setNeedSync(int id) async {
     var db = await instance.database;
     return await db.rawUpdate(
-        "UPDATE $table SET needSync = 1 WHERE $primaryKey = ?",
-        ['$id']);
+        "UPDATE $table SET needSync = 1 WHERE $primaryKey = ?", ['$id']);
   }
 
   Future<int> resetNeedUpdate(int id) async {
     var db = await instance.database;
     return await db.rawUpdate(
-        "UPDATE $table SET needSync = 0 WHERE $primaryKey = ?",
-        ['$id']);
+        "UPDATE $table SET needSync = 0 WHERE $primaryKey = ?", ['$id']);
   }
 
   Future<int> countNeedSync() async {
@@ -190,6 +191,13 @@ abstract class BaseDao {
     var db = await instance.database;
     var res = Sqflite.firstIntValue(await db.rawQuery(
         'SELECT COUNT(*) FROM $table WHERE needSync = 1 AND isLocal = 1'));
+    return res > 0;
+  }
+
+  Future<bool> isNeedSyncOnly() async {
+    var db = await instance.database;
+    var res = Sqflite.firstIntValue(await db.rawQuery(
+        'SELECT COUNT(*) FROM $table WHERE needSync = 1'));
     return res > 0;
   }
 
@@ -238,10 +246,12 @@ abstract class BaseDao {
       return await _deleteServer(id);
   }
 
-  Future<List<int>> deleteBy({@required String column, @required String value}) async {
+  Future<List<int>> deleteBy(
+      {@required String column, @required String value}) async {
     var db = await instance.database;
 
-    var rows = await db.query(table, where: '$column = ?', whereArgs: ['$value']);
+    var rows =
+        await db.query(table, where: '$column = ?', whereArgs: ['$value']);
 
     var result = List<int>();
     await Future.wait(rows.map((row) async {

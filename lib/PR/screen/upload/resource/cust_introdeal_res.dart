@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:mimos/PR/dao/sellin_detail_dao.dart';
+import 'package:mimos/PR/dao/customer_introdeal_dao.dart';
 import 'package:mimos/PR/model/default/upload_data.dart';
 import 'package:mimos/PR/model/default/upload_model.dart';
-import 'package:mimos/PR/repo/sellin_detail_repo.dart';
+import 'package:mimos/PR/repo/customer_introdeal_repo.dart';
 
-class SellinDetailRes {
-  var _dao = SellinDetailDao();
-  var _repo = SellinDetailRepo();
+class CustomerIntrodealRes {
+  var _dao = CustomerIntrodealDao();
+  var _repo = CustomerIntrodealRepo();
   var _model = UploadModel(
-    title: "Sellin Detail",
-    tag: UPLOAD_TAG.SELLIN_DETAIL,
-    group: UPLOAD_TAG.SELLIN,
+    title: "Introdeal",
+    tag: UPLOAD_TAG.CUSTOMER_INTRODEAL,
+    group: UPLOAD_TAG.CUSTOMER_INTRODEAL,
     status: UPLOAD_STATUS.INITIAL,
-    icon: Icons.shopping_cart,
-    color: Colors.blue,
+    icon: Icons.add_box,
+    color: Colors.blueGrey,
     message: "Initial",
   );
 
@@ -171,8 +171,8 @@ class SellinDetailRes {
   }
 
   UploadModel _loading(UPLOAD_TYPE type) {
-    _model.status = UPLOAD_STATUS.LOADING;
     _model.type = type;
+    _model.status = UPLOAD_STATUS.LOADING;
     _model.message = "Uploading, Please wait...";
     return _model;
   }
@@ -187,16 +187,14 @@ class SellinDetailRes {
   UploadModel _success(UPLOAD_TYPE type) {
     _model.type = type;
     _model.status = UPLOAD_STATUS.SUCCESS;
-    _model.message =
-    "${_model.getTag()}, ${_model.getType()} = ${_model.getStatus()}";
+    _model.message = "${_model.getTag()}, ${_model.getType()} = ${_model.getStatus()}";
     return _model;
   }
 
   UploadModel _failed(UPLOAD_TYPE type) {
     _model.type = type;
     _model.status = UPLOAD_STATUS.FAILED;
-    _model.message =
-    "${_model.getTag()}, ${_model.getType()} = ${_model.getStatus()}";
+    _model.message = "${_model.getTag()}, ${_model.getType()} = ${_model.getStatus()}";
     return _model;
   }
 }

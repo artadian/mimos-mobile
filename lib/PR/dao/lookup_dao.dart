@@ -49,9 +49,18 @@ class LookupDao extends BaseDao {
     return list;
   }
 
-  Future<List<Lookup>> getType() async {
+  Future<List<Lookup>> getPosmType() async {
     var db = await instance.database;
     var maps = await db.query(this.table, where: "lookupkey = 'posm_type'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<Lookup>> getTrialType() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'trial_type'");
     List<Lookup> list = maps.isNotEmpty
         ? maps.map((item) => Lookup.fromJson(item)).toList()
         : [];
@@ -94,7 +103,39 @@ class LookupDao extends BaseDao {
     return list;
   }
 
+  Future<List<Lookup>> getKnowing() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'trial_knowing'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<Lookup>> getTaste() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'trial_taste'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<Lookup>> getPackaging() async {
+    var db = await instance.database;
+    var maps = await db.query(this.table, where: "lookupkey = 'trial_packaging'");
+    List<Lookup> list = maps.isNotEmpty
+        ? maps.map((item) => Lookup.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
   Future<Lookup> getById(int id) async {
-    return Lookup.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return Lookup.fromJson(res);
+    } else {
+      return null;
+    }
   }
 }

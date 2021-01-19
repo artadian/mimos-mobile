@@ -1,9 +1,9 @@
 //import 'package:flutter/material.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:intl/intl.dart';
-//import 'package:mimos/PR/dao/brand_competitor_pr_dao.dart';
+//import 'package:mimos/PR/dao/brand_competitor_dao.dart';
 //import 'package:mimos/PR/dao/customer_pr_dao.dart';
-//import 'package:mimos/PR/dao/introdeal_pr_dao.dart';
+//import 'package:mimos/PR/dao/introdeal_dao.dart';
 //import 'package:mimos/PR/dao/lookup_dao.dart';
 //import 'package:mimos/PR/dao/material_pr_dao.dart';
 //import 'package:mimos/PR/dao/material_price_dao.dart';

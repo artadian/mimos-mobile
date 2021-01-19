@@ -6,6 +6,7 @@ import 'package:mimos/PR/screen/transaction/penjualan/form/penjualan_form_screen
 import 'package:mimos/PR/screen/transaction/penjualan/item/sellin_item.dart';
 import 'package:mimos/PR/screen/transaction/penjualan/penjualan_vm.dart';
 import 'package:mimos/utils/layout/add_item_screen.dart';
+import 'package:mimos/utils/layout/block_transparent_screen.dart';
 import 'package:mimos/utils/layout/empty_screen.dart';
 import 'package:mimos/utils/widget/button/button_icon_rounded.dart';
 import 'package:mimos/utils/widget/my_toast.dart';
@@ -27,7 +28,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     _vm.init(context, customer);
     return WillPopScope(
       onWillPop: () async {
-        if(_vm.sellin.sellinno == null){
+        if (_vm.sellin.sellinno == null) {
           MyToast.showToast("NOTA tidak boleh kosong",
               backgroundColor: Colors.red);
           _vm.focusNode.requestFocus();
@@ -41,7 +42,17 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
             title: Text("PENJUALAN"),
             shadowColor: Colors.transparent,
           ),
-          body: _initProvider(customer),
+          body: Stack(
+            children: [
+              _initProvider(customer),
+              if (!_vm.sellin.needSync)
+                BlockTransparentScreen(
+                  onTap: () {
+                    _dialogBlock();
+                  },
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -115,7 +126,10 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5)),
                   isDense: true,
-                  suffix: Icon(Icons.edit, size: 18,),
+                  suffix: Icon(
+                    Icons.edit,
+                    size: 18,
+                  ),
                   contentPadding:
                       EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 ),
@@ -141,6 +155,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                   children: [
                     AddItemScreen(
                       onTap: () {
+                        _clearFocus();
                         _gotoForm();
                       },
                     )
@@ -180,7 +195,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                             _gotoForm(id: data.id);
                           },
                           onDelete: () {
-                            _dialogDeleteConfirm();
+                            _dialogDeleteItem(data);
                           },
                         );
                       }),
@@ -190,7 +205,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     );
   }
 
-  _clearFocus(){
+  _clearFocus() {
     _vm.focusNode.unfocus();
   }
 
@@ -284,38 +299,106 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
 
   _dialogDeleteConfirm() {
     showDialog(
-        context: context,
-        builder: (c) => AlertDialog(
-              title: Text("Delete"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Hapus Data Penjualan:"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "${_vm.customer.name} ?",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Cancel')),
-                FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _vm.delete(_vm.sellin.id);
-                    },
-                    child: Text('Delete',
-                        style: TextStyle(color: Colors.red[600]))),
-              ],
-            ));
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Delete"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Hapus Data Penjualan:"),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${_vm.customer.name} ?",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _vm.deleteAll(_vm.sellin.id);
+              },
+              child: Text('Delete', style: TextStyle(color: Colors.red[600]))),
+        ],
+      ),
+    );
+  }
+
+  _dialogDeleteItem(SellinDetail data) {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Delete"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Hapus Item:"),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${data.materialname} ?",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _vm.delete(data.id);
+              },
+              child: Text('Delete', style: TextStyle(color: Colors.red[600]))),
+        ],
+      ),
+    );
+  }
+
+  _dialogBlock() {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Warning"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Tidak bisa merubah data"),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Harap hubungi admin untuk perubahan data",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Ok')),
+        ],
+      ),
+    );
   }
 }

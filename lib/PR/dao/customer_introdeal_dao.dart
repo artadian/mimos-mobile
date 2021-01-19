@@ -1,4 +1,4 @@
-
+import 'package:flutter/foundation.dart';
 import 'package:mimos/PR/model/customer_introdeal.dart';
 import 'package:mimos/db/base_dao.dart';
 import 'package:sqflite/sqflite.dart';
@@ -6,9 +6,9 @@ import 'package:sqflite/sqflite.dart';
 class CustomerIntrodealDao extends BaseDao {
   CustomerIntrodealDao()
       : super(
-    table: "customer_introdeal",
-    primaryKey: "custintroid",
-  );
+          table: "customer_introdeal_tr",
+          primaryKey: "id",
+        );
 
   Future<int> insert(CustomerIntrodeal data) async {
     var row = data.toJson();
@@ -51,6 +51,37 @@ class CustomerIntrodealDao extends BaseDao {
   }
 
   Future<CustomerIntrodeal> getById(int id) async {
-    return CustomerIntrodeal.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return CustomerIntrodeal.fromJson(res);
+    } else {
+      return null;
+    }
+  }
+
+  Future<CustomerIntrodeal> getByIntrodealCustMaterial({
+    @required String materialid,
+    @required String customerno,
+    @required int introdealid,
+  }) async {
+    var db = await instance.database;
+    var query = '''
+          SELECT *
+          FROM $table
+          WHERE materialid = '$materialid'
+          AND customerno = '$customerno'
+          AND introdealid = '$introdealid'
+        ''';
+
+    var maps = await db.rawQuery(query);
+    print("introdeal: $maps");
+    List<CustomerIntrodeal> list = maps.isNotEmpty
+        ? maps.map((item) => CustomerIntrodeal.fromJson(item)).toList()
+        : [];
+    if (maps.isNotEmpty) {
+      return list.first;
+    } else {
+      return null;
+    }
   }
 }

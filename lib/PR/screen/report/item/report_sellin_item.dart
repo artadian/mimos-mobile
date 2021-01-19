@@ -81,13 +81,6 @@ class ReportSellinItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  IconButton(
-                    onPressed: onDelete,
-                    icon: Icon(
-                      Icons.delete_forever,
-                      color: Colors.red,
-                    ),
-                  )
                 ],
               ),
               SizedBox(

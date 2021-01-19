@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-const BASE_URL = kReleaseMode
-    ? "https://api.wim-bms.com/apimimos/index.php"
-    : "http://192.168.43.225/apimimos/index.php";
+const BASE_URL =
+//    "https://api.wim-bms.com/apimimos/index.php";
+    "http://192.168.43.225/apimimos/index.php";
+//    : "http://172.27.8.241/apimimos/index.php";
 
 //const BASE_URL = kReleaseMode
 //    ? "https://api.wim-bms.com/apimimos/index.php"
@@ -12,9 +13,9 @@ const BASE_URL_API = "$BASE_URL/api";
 
 const URL_PULL_MATERIAL_PR = "$BASE_URL_API/Material/materialFL";
 const URL_PULL_CUSTOMER_PR = "$BASE_URL_API/Customer/customerbyvisitday";
-const URL_PULL_LOOKUP_PR = "$BASE_URL_API/Umum/lookup";
-const URL_PULL_INTRODEAL_PR = "$BASE_URL_API/Material/introDealTFbyUseridbyTgl";
-const URL_PULL_BRAND_COMPETITOR_PR = "$BASE_URL_API/Frontliner/brandcompetitor";
+const URL_PULL_LOOKUP_PR = "$BASE_URL_API/Lookup/getByUser";
+const URL_PULL_INTRODEAL_PR = "$BASE_URL_API/Introdeal/getBySalesOffice";
+const URL_PULL_BRAND_COMPETITOR_PR = "$BASE_URL_API/Master_data/getBrandCompBySalesOffice";
 const URL_PULL_MATERIAL_PRICE = "$BASE_URL_API/Material_price/getBySalesOffice";
 
 const URL_PULL_VISIT = "$BASE_URL_API/Visit/getByDate";
@@ -27,7 +28,7 @@ const URL_PULL_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/getByHead";
 const URL_PULL_POSM = "$BASE_URL_API/Posm/getByDate";
 const URL_PULL_POSM_DETAIL = "$BASE_URL_API/Posm_detail/getByHead";
 const URL_PULL_TRIAL = "$BASE_URL_API/Trial/getByDate";
-const URL_PULL_CUST_INTRODEAL = "$BASE_URL_API/Material/customerIntroDealTFbyUseridbyTgl";
+const URL_PULL_CUST_INTRODEAL = "$BASE_URL_API/Customer_introdeal/getByUser";
 
 /// Upload Data
 // Visit
@@ -61,8 +62,13 @@ const URL_UPDATE_VISIBILITY = "$BASE_URL_API/Visibility/update";
 const URL_DELETE_VISIBILITY = "$BASE_URL_API/Visibility/delete_flag";
 const URL_PUSH_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/add";
 const URL_UPDATE_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/update";
-const URL_DELETE_VISIBILITY_DETAIL = "$BASE_URL_API/Visibility_detail/delete_flag";
+const URL_DELETE_VISIBILITY_DETAIL =
+    "$BASE_URL_API/Visibility_detail/delete_flag";
 // Trial
 const URL_PUSH_TRIAL = "$BASE_URL_API/Trial/add";
 const URL_UPDATE_TRIAL = "$BASE_URL_API/Trial/update";
 const URL_DELETE_TRIAL = "$BASE_URL_API/Trial/delete_flag";
+// Customer Introdeal
+const URL_PUSH_CUST_INTRODEAL = "$BASE_URL_API/Customer_introdeal/add";
+const URL_UPDATE_CUST_INTRODEAL = "$BASE_URL_API/Customer_introdeal/update";
+const URL_DELETE_CUST_INTRODEAL = "$BASE_URL_API/Customer_introdeal/delete";

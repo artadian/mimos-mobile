@@ -78,7 +78,7 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
       padding: const EdgeInsets.all(10.0),
       children: [
         DropdownTextFormField(
-          controller: vm.product,
+          controller: vm.etProduct,
           labelText: "Pilih Barang",
           prefixIcon: Icon(Icons.shopping_basket),
           onSaved: (val) => vm.sellinDetail.materialname = val,
@@ -94,7 +94,7 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
           },
         ),
         TextInputField(
-          controller: vm.price,
+          controller: vm.etPrice,
           keyboardType: TextInputType.number,
           enabled: false,
           onSaved: (String val) {
@@ -110,7 +110,58 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
           prefixIcon: Icon(Icons.monetization_on_rounded),
         ),
         TextInputField(
-          controller: vm.introdeal,
+          controller: vm.etPac,
+          keyboardType: TextInputType.number,
+          onSaved: (String val) {
+            if(val.isNotEmpty){
+              return vm.sellinDetail.pac = val.toInt() ?? 0;
+            }else{
+              return vm.sellinDetail.pac = 0;
+            }
+          },
+          labelText: "Jumlah Pac",
+          suffixText: "Pac",
+          prefixIcon: Icon(Icons.ad_units),
+          onChanged: (String val){
+            vm.onChangeQty(val, tag: "PAC");
+          },
+        ),
+        TextInputField(
+          controller: vm.etSlof,
+          keyboardType: TextInputType.number,
+          onSaved: (String val) {
+            if(val.isNotEmpty){
+              return vm.sellinDetail.slof = val.toInt() ?? 0;
+            }else{
+              return vm.sellinDetail.slof = 0;
+            }
+          },
+          labelText: "Jumlah Slof",
+          suffixText: "Slof",
+          prefixIcon: Icon(Icons.apps),
+          onChanged: (String val){
+            vm.onChangeQty(val, tag: "SLOF");
+          },
+        ),
+        TextInputField(
+          controller: vm.etBal,
+          keyboardType: TextInputType.number,
+          onSaved: (String val) {
+            if(val.isNotEmpty){
+              return vm.sellinDetail.bal = val.toInt() ?? 0;
+            }else{
+              return vm.sellinDetail.bal = 0;
+            }
+          },
+          labelText: "Jumlah Bal",
+          suffixText: "Bal",
+          prefixIcon: Icon(Icons.archive),
+          onChanged: (String val){
+            vm.onChangeQty(val, tag: "BAL");
+          },
+        ),
+        TextInputField(
+          controller: vm.etIntrodeal,
           keyboardType: TextInputType.number,
           enabled: false,
           onSaved: (String val) {
@@ -124,48 +175,6 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
           prefixText: "Bonus: ",
           suffixText: "Pac",
           prefixIcon: Icon(Icons.add_box),
-        ),
-        TextInputField(
-          controller: vm.pac,
-          keyboardType: TextInputType.number,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.pac = val.toInt() ?? 0;
-            }else{
-              return vm.sellinDetail.pac = 0;
-            }
-          },
-          labelText: "Jumlah Pac",
-          suffixText: "Pac",
-          prefixIcon: Icon(Icons.ad_units),
-        ),
-        TextInputField(
-          controller: vm.slof,
-          keyboardType: TextInputType.number,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.slof = val.toInt() ?? 0;
-            }else{
-              return vm.sellinDetail.slof = 0;
-            }
-          },
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
-          prefixIcon: Icon(Icons.apps),
-        ),
-        TextInputField(
-          controller: vm.bal,
-          keyboardType: TextInputType.number,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.bal = val.toInt() ?? 0;
-            }else{
-              return vm.sellinDetail.bal = 0;
-            }
-          },
-          labelText: "Jumlah Bal",
-          suffixText: "Bal",
-          prefixIcon: Icon(Icons.archive),
         ),
       ],
     );

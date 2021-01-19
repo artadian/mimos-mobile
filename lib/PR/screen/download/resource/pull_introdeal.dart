@@ -1,16 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/customer_introdeal_dao.dart';
-import 'package:mimos/PR/dao/introdeal_pr_dao.dart';
+import 'package:mimos/PR/dao/introdeal_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
+import 'package:mimos/PR/repo/customer_introdeal_repo.dart';
 import 'package:mimos/PR/repo/master_data_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullIntrodeal {
-  var _introdealDao = IntrodealPRDao();
+  var _introdealDao = IntrodealDao();
   var _custIntrodealDao = CustomerIntrodealDao();
-  var _repo = MasterDataRepo();
+  var _introdealRepo = MasterDataRepo();
+  var _custIntrodealRepo = CustomerIntrodealRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -40,12 +42,12 @@ class PullIntrodeal {
   }
 
   Future<ListResponse> pullIntrodeal({@required String date}) async {
-    var response = await _repo.pullIntrodealPR(
-      userId: await session.getUserId(),
-      date: date,
+    var response = await _introdealRepo.pullIntrodealPR(
+      salesOfficeId: session.salesOfficeId(),
     );
 
     if (response.status) {
+      print("zain. ${response.list.length}");
       if (response.list != null) {
         _introdealDao.truncate();
         _introdealDao.insertAll(response.list);
@@ -60,9 +62,8 @@ class PullIntrodeal {
   }
 
   Future<ListResponse> pullCustomerIntrodeal({@required String date}) async {
-    var response = await _repo.pullCustomerIntrodeal(
+    var response = await _custIntrodealRepo.pull(
       userId: await session.getUserId(),
-      date: date,
     );
 
     if (response.status) {
@@ -98,3 +99,5 @@ class PullIntrodeal {
     return _model;
   }
 }
+
+

@@ -162,38 +162,38 @@ class _StokScreenState extends State<StokScreen> {
 
   _dialogDeleteConfirm(StokVM vm, StockDetail data) {
     showDialog(
-        context: context,
-        builder: (c) => AlertDialog(
-              title: Text("Delete"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Hapus Data:"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "${data.materialname} ?",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                FlatButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Cancel')),
-                FlatButton(
-                    onPressed: () {
-                      vm.delete(data.id);
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Delete',
-                        style: TextStyle(color: Colors.red[600]))),
-              ],
-            ));
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Delete"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Hapus Data:"),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${data.materialname} ?",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                vm.delete(data.id);
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete', style: TextStyle(color: Colors.red[600]))),
+        ],
+      ),
+    );
   }
 }

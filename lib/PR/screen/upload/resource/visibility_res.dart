@@ -20,7 +20,7 @@ class VisibilityRes {
   );
 
   Future<UploadModel> init() async {
-    if(await needSync() || await _detailDao.isNeedSync()){
+    if(await _dao.isNeedSyncOnly() || await _detailDao.isNeedSyncOnly()){
       _model.status = UPLOAD_STATUS.NEED_SYNC;
       _model.message = "Data belum di upload";
     }else{
@@ -46,15 +46,30 @@ class VisibilityRes {
     }
 
     var results = List<UploadData>();
-    await Future.wait(listData.map((row) async {
+
+    for(var x in listData){
       var data = UploadData(status: false, type: _model.getType());
+
+      var list = await _dao.needSync();
+      var row = list.first;
+
       try {
         var res = await _repo.add(row);
 
         if (res.status) {
-          await _detailDao.updateIdParent(id: row["id"], newId: res.data.id);
           await _dao.delete(row["id"], local: true);
-          await _dao.insert(res.data);
+
+          var dataExist = await _dao.getById(res.data.id);
+          if(dataExist != null){
+            // INSERT Data Existing
+            dataExist.id = null; // Set ID to NULL, New Insert
+            var idex = await _dao.insert(dataExist);
+            await _detailDao.updateIdParent(id: dataExist.id, newId: idex);
+          }
+
+          // INSERT Data From SERVER
+          var id = await _dao.insert(res.data);
+          await _detailDao.updateIdParent(id: row["id"], newId: id);
 
           data.status = true;
           data.message = res.message;
@@ -66,7 +81,7 @@ class VisibilityRes {
         print("$runtimeType uploadInsert ERROR: $e");
       }
       results.add(data);
-    }));
+    }
 
     var success = results.indexWhere((e) => e.status == false) == -1;
 

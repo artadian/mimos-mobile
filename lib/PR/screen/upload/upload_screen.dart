@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mimos/PR/dao/db_dao.dart';
 import 'package:mimos/PR/model/default/upload_model.dart';
 import 'package:mimos/PR/screen/upload/upload_vm.dart';
 import 'package:mimos/utils/widget/circle_icon.dart';
@@ -28,6 +29,11 @@ class _UploadScreenState extends State<UploadScreen> {
         child: Scaffold(
       appBar: AppBar(
         title: Text("Upload Data"),
+        actions: [
+          IconButton(icon: Icon(Icons.delete_sweep), onPressed: (){
+            _dialogClearDB();
+          })
+        ],
       ),
       body: _initProvider(),
     ));
@@ -157,6 +163,43 @@ class _UploadScreenState extends State<UploadScreen> {
         ),
       ],
     );
+  }
+
+  _dialogClearDB() {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Truncate"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Hapus semua data ?",
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _clearDb();
+              },
+              child: Text('Hapus', style: TextStyle(color: Colors.red[600]))),
+        ],
+      ),
+    );
+  }
+
+  _clearDb() async {
+    var dbDao = DbDao();
+    await dbDao.truncateAll();
   }
 
   _dialogError(String message) {

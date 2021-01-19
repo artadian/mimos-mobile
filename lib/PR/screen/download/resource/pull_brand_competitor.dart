@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:mimos/PR/dao/brand_competitor_pr_dao.dart';
+import 'package:mimos/PR/dao/brand_competitor_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
 import 'package:mimos/PR/repo/master_data_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullBrandCompetitor {
-  var _dao = BrandCompetitorPRDao();
+  var _dao = BrandCompetitorDao();
   var _repo = MasterDataRepo();
   var _model = DownloadModel();
 

@@ -23,6 +23,7 @@ class TextInputField extends StatelessWidget {
   final Widget prefix;
   final Widget prefixIcon;
   final bool enabled;
+  final Function onChanged;
 
   TextInputField({
     this.controller,
@@ -45,6 +46,7 @@ class TextInputField extends StatelessWidget {
     this.prefix,
     this.prefixIcon,
     this.enabled = true,
+    this.onChanged,
   });
 
   @override
@@ -86,6 +88,7 @@ class TextInputField extends StatelessWidget {
               : (String val) {
                   return null;
                 },
+      onChanged: onChanged,
       onTap: onTap,
     );
   }

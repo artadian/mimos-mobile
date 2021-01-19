@@ -94,7 +94,7 @@ class StokFormVM with ChangeNotifier {
     }
 
     var material =
-        await _materialPriceDao.getByMaterialId(int.parse(materialid));
+        await _materialPriceDao.getByMaterialId(materialid);
 
     var bal = (this.stockDetail.bal ?? 0) * material.slof * material.pac;
     var slof = (this.stockDetail.slof ?? 0) * material.pac;

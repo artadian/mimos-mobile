@@ -50,8 +50,9 @@ const REPORT_SCREEN_PR = '/reportPR';
 const Color warnaAwalGradien = Color(0xff0096ff);
 const Color warnaAkhirGradien = Color(0xff6610f2);
 const Color warnaBackground = Color(0xFF54C5F8);
- const apiURL = 'http://192.168.43.225/apimimos/index.php/api';
-//const apiURL = 'https://api.wim-bms.com/apimimos/index.php/api';
+// const apiURL = 'http://192.168.43.225/apimimos/index.php/api';
+// const apiURL = 'http://172.27.8.241/apimimos/index.php/api';
+const apiURL = 'https://api.wim-bms.com/apimimos/index.php/api';
 
 class MyPalette {
   static Color ijoMimos = Color.fromRGBO(0, 153, 130, 1.0);

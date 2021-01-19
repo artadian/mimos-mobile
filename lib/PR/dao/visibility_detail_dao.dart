@@ -51,7 +51,12 @@ class VisibilityDetailDao extends BaseDao {
   }
 
   Future<VisibilityDetail> getById(int id) async {
-    return VisibilityDetail.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return VisibilityDetail.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<List<VisibilityDetail>> getByParent({@required int visibilityid}) async {
@@ -59,6 +64,7 @@ class VisibilityDetailDao extends BaseDao {
     var query = '''
       SELECT * FROM $table
       WHERE visibilityid = $visibilityid
+      AND isDelete = 0
     ''';
 
     var maps = await db.rawQuery(query);

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
 import 'package:mimos/PR/model/customer_pr.dart';
-import 'package:mimos/PR/screen/transaction/penjualan/penjualan_screen.dart';
 import 'package:mimos/PR/screen/transaction/transaction_vm.dart';
 import 'package:mimos/helper/extension.dart';
 import 'package:mimos/utils/widget/button/button_card.dart';
 import 'package:mimos/utils/widget/button/button_rect_color.dart';
 import 'package:mimos/utils/widget/dialog/default_dialog.dart';
-import 'package:mimos/utils/widget/my_toast.dart';
 import 'package:mimos/utils/widget/text_icon.dart';
 import 'package:provider/provider.dart';
 
@@ -123,15 +121,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
 
   Widget _buildMenuItem(TransactionVM vm) {
     return Container(
-        margin: EdgeInsets.fromLTRB(16, 0, 16, 20),
         child: GridView.builder(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             physics: ClampingScrollPhysics(),
             shrinkWrap: true,
             itemCount: vm.listMenu.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: widthScreen ~/ 100,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 5),
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8),
             itemBuilder: (c, i) {
               var menu = vm.listMenu[i];
               return ButtonRectColor(

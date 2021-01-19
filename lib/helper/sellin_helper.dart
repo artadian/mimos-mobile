@@ -16,7 +16,7 @@ class SellinHelper {
     var _materialPriceDao = MaterialPriceDao();
 
     var material = await _materialPriceDao
-        .getByMaterialId(int.parse(sellinDetail.materialid));
+        .getByMaterialId(sellinDetail.materialid);
 
     var bal = (sellinDetail.bal ?? 0) * material.slof * material.pac;
     var slof = (sellinDetail.slof ?? 0) * material.pac;

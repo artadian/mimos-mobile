@@ -51,7 +51,12 @@ class StockDao extends BaseDao {
   }
 
   Future<Stock> getById(int id) async {
-    return Stock.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return Stock.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<Stock> getByVisit({

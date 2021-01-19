@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 class VisibilityDao extends BaseDao {
   VisibilityDao()
       : super(
-    table: "visibility_pr",
+    table: "visibility_head",
     primaryKey: "id",
   );
 
@@ -51,7 +51,12 @@ class VisibilityDao extends BaseDao {
   }
 
   Future<VisibilityModel> getById(int id) async {
-    return VisibilityModel.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return VisibilityModel.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<VisibilityModel> getByVisit({

@@ -1,7 +1,7 @@
-import 'package:mimos/PR/dao/brand_competitor_pr_dao.dart';
+import 'package:mimos/PR/dao/brand_competitor_dao.dart';
 import 'package:mimos/PR/dao/customer_introdeal_dao.dart';
 import 'package:mimos/PR/dao/customer_pr_dao.dart';
-import 'package:mimos/PR/dao/introdeal_pr_dao.dart';
+import 'package:mimos/PR/dao/introdeal_dao.dart';
 import 'package:mimos/PR/dao/lookup_dao.dart';
 import 'package:mimos/PR/dao/material_price_dao.dart';
 import 'package:mimos/PR/dao/posm_dao.dart';
@@ -17,9 +17,8 @@ import 'package:mimos/PR/dao/visit_dao.dart';
 
 class DbDao {
   var lookupDao = LookupDao();
-  var introdealDao = IntrodealPRDao();
-  var customerIntrodealDao = CustomerIntrodealDao();
-  var brandCompetitorPRDao = BrandCompetitorPRDao();
+  var introdealDao = IntrodealDao();
+  var brandCompetitorPRDao = BrandCompetitorDao();
   var materialPriceDao = MaterialPriceDao();
   var customerPRDao = CustomerPRDao();
   // Transaction
@@ -33,6 +32,7 @@ class DbDao {
   var posmDetailDao = PosmDetailDao();
   var visibilityDetailDao = VisibilityDetailDao();
   var trialDao = TrialDao();
+  var customerIntrodealDao = CustomerIntrodealDao();
 
   Future<bool> needSyncSellin() async {
     var res = await Future.wait([
@@ -88,6 +88,7 @@ class DbDao {
 
   Future<bool> needSyncTransaction() async {
     var res = await Future.wait([
+      visitDao.countNeedSync(),
       sellinDao.countNeedSync(),
       sellinDetailDao.countNeedSync(),
       stockDao.countNeedSync(),
@@ -96,6 +97,7 @@ class DbDao {
       visibilityDetailDao.countNeedSync(),
       posmDao.countNeedSync(),
       posmDetailDao.countNeedSync(),
+      customerIntrodealDao.countNeedSync(),
     ]);
 
     if (res.reduce((a, b) => a + b) > 0) {
@@ -108,7 +110,6 @@ class DbDao {
   truncateAll({bool all = true}) async {
     await lookupDao.truncate();
     await introdealDao.truncate();
-    await customerIntrodealDao.truncate();
     await brandCompetitorPRDao.truncate();
     await materialPriceDao.truncate();
     await customerPRDao.truncate();
@@ -123,6 +124,7 @@ class DbDao {
     await (all ? posmDetailDao.truncate() : posmDetailDao.truncateSync());
     await (all ? visibilityDetailDao.truncate() : visibilityDetailDao.truncateSync());
     await (all ? trialDao.truncate() : trialDao.truncateSync());
+    await (all ? customerIntrodealDao.truncate() : customerIntrodealDao.truncateSync());
   }
 
   truncateAllTransaction({bool all = true}) async {
@@ -137,5 +139,6 @@ class DbDao {
     await (all ? posmDetailDao.truncate() : posmDetailDao.truncateSync());
     await (all ? visibilityDetailDao.truncate() : visibilityDetailDao.truncateSync());
     await (all ? trialDao.truncate() : trialDao.truncateSync());
+    await (all ? customerIntrodealDao.truncate() : customerIntrodealDao.truncateSync());
   }
 }

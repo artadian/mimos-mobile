@@ -18,6 +18,25 @@ class MaterialPrice {
   String materialgroupdesc;
   int salesofficeid;
 
+  MaterialPrice({
+    this.id,
+    this.materialname,
+    this.materialgroupid,
+    this.bal,
+    this.slof,
+    this.pac,
+    this.year,
+    this.materialpriceid,
+    this.materialid,
+    this.priceid,
+    this.price,
+    this.validfrom,
+    this.validto,
+    this.materialgroupname,
+    this.materialgroupdesc,
+    this.salesofficeid,
+  });
+
   MaterialPrice.fromJson(Map<String, dynamic> map)
       : id = map["id"].toString().toInt(),
         materialname = map["materialname"].toString().clean(),

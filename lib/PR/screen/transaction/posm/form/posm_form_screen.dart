@@ -171,7 +171,7 @@ class _PosmFormScreenState extends State<PosmFormScreen> {
                   return Center(child: CircularProgressIndicator());
 
                 return DropdownButtonFormField(
-                  value: _vm.edit ? _vm.posmDetail.status : list[0].lookupvalue,
+                  value: _vm.edit ? _vm.posmDetail.condition.toString() : list[0].lookupvalue,
                   items: list.map((Lookup data) {
                     _vm.posmDetail.condition = int.parse(list[0].lookupvalue);
                     return DropdownMenuItem(

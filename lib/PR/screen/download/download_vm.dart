@@ -4,6 +4,7 @@ import 'package:mimos/PR/dao/db_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/screen/download/resource/pull_brand_competitor.dart';
 import 'package:mimos/PR/screen/download/resource/pull_customer.dart';
+import 'package:mimos/PR/screen/download/resource/pull_introdeal.dart';
 import 'package:mimos/PR/screen/download/resource/pull_lookup.dart';
 import 'package:mimos/PR/screen/download/resource/pull_material_price.dart';
 import 'package:mimos/PR/screen/download/resource/pull_posm.dart';
@@ -29,6 +30,7 @@ class DownloadVM with ChangeNotifier {
   var _visibility = PullVisibility();
   var _sellin = PullSellin();
   var _trial = PullTrial();
+  var _introdeal = PullIntrodeal();
   var _dbDao = DbDao();
 
   init() async {
@@ -42,6 +44,7 @@ class DownloadVM with ChangeNotifier {
     downloads.add(await _visibility.init());
     downloads.add(await _sellin.init());
     downloads.add(await _trial.init());
+    downloads.add(await _introdeal.init());
     notifyListeners();
 
     setTextDate();
@@ -65,9 +68,10 @@ class DownloadVM with ChangeNotifier {
   downloadAll() async {
     setStatus(true);
     var date = DateFormat("yyyy-MM-dd").format(selectedDate);
+//    var date = "2021-01-16";
     print("date: $date");
 
-    await _dbDao.truncateAllTransaction(all: true);
+    await _dbDao.truncateAllTransaction(all: false);
     await _customer.download(date: date).listen((e) {
       print("DOWNLOAD: ${e.title} - ${e.status}: ${e.message}");
       var i = downloads.indexWhere((v) => v.tag == e.tag);
@@ -132,6 +136,13 @@ class DownloadVM with ChangeNotifier {
     }).asFuture();
 
     await _trial.download(date: date).listen((e) {
+      print("DOWNLOAD: ${e.title} - ${e.status}: ${e.message}");
+      var i = downloads.indexWhere((v) => v.tag == e.tag);
+      downloads[i] = e;
+      notifyListeners();
+    }).asFuture();
+
+    await _introdeal.download(date: date).listen((e) {
       print("DOWNLOAD: ${e.title} - ${e.status}: ${e.message}");
       var i = downloads.indexWhere((v) => v.tag == e.tag);
       downloads[i] = e;

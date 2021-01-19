@@ -7,11 +7,15 @@ var dateViewFormat = DateFormat("dd MMMM yyyy");
 var dateTimeViewFormat = DateFormat("dd MMMM yyyy hh:mm:ss");
 
 extension StringExtension on String {
-  int toInt() {
+  int toInt({int defaultVal}) {
     if (this != null && this != "null") {
-      return int.parse(this);
+      try {
+        return int.parse(this);
+      }catch(e){
+        return defaultVal;
+      }
     } else {
-      return null;
+      return defaultVal;
     }
   }
 
@@ -156,6 +160,16 @@ extension StringExtension on String {
       return (this == "true") ? "Y" : "N";
     } else {
       return "N";
+    }
+  }
+}
+
+extension IntExtension on int {
+  int cekNull({int defaultVal = 0}) {
+    if (this != null) {
+      return this;
+    } else {
+      return defaultVal;
     }
   }
 }

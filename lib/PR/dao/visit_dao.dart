@@ -52,7 +52,12 @@ class VisitDao extends BaseDao {
   }
 
   Future<Visit> getById(int id) async {
-    return Visit.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return Visit.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<CustomerPR> getByIdVisit(int id) async {
@@ -71,9 +76,9 @@ class VisitDao extends BaseDao {
       WHERE v.id = $id
     ''';
     var maps = await db.rawQuery(query);
-    if(maps.isNotEmpty){
+    if (maps.isNotEmpty) {
       return CustomerPR.fromTable(maps.first);
-    }else{
+    } else {
       return null;
     }
   }

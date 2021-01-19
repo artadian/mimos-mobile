@@ -14,6 +14,7 @@ enum UPLOAD_TAG {
   VISIBILITY_DETAIL,
   POSM_DETAIL,
   TRIAL,
+  CUSTOMER_INTRODEAL,
 }
 
 class UploadModel {

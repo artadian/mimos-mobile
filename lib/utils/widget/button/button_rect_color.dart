@@ -42,6 +42,13 @@ class ButtonRectColor extends StatelessWidget {
         decoration: BoxDecoration(
           color: color ?? Colors.blue,
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 1.0), //(x,y)
+              blurRadius: 6.0,
+            ),
+          ],
         ),
       ),
     );

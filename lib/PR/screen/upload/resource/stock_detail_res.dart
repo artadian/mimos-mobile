@@ -18,7 +18,7 @@ class StockDetailRes {
   );
 
   Future<UploadModel> init() async {
-    if(await needSync()){
+    if(await _dao.isNeedSyncOnly()){
       _model.status = UPLOAD_STATUS.NEED_SYNC;
       _model.message = "Data belum di upload";
     }else{
@@ -44,14 +44,28 @@ class StockDetailRes {
     }
 
     var results = List<UploadData>();
-    await Future.wait(listData.map((row) async {
+
+    for(var x in listData){
       var data = UploadData(status: false, type: _model.getType());
+
+      var listData = await _dao.needSync();
+      var row = listData.first;
+
       try {
         var res = await _repo.add(row);
 
         if (res.status) {
           await _dao.delete(row["id"], local: true);
-          await _dao.insert(res.data);
+
+          var dataExist = await _dao.getById(res.data.id);
+          if(dataExist != null){
+            // INSERT Data Existing
+            dataExist.id = null; // Set ID to NULL, New Insert
+            var idex = await _dao.insert(dataExist);
+          }
+
+          // INSERT Data From SERVER
+          var id = await _dao.insert(res.data);
 
           data.status = true;
           data.message = res.message;
@@ -63,7 +77,7 @@ class StockDetailRes {
         print("$runtimeType uploadInsert ERROR: $e");
       }
       results.add(data);
-    }));
+    }
 
     var success = results.indexWhere((e) => e.status == false) == -1;
 

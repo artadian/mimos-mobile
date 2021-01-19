@@ -37,6 +37,7 @@ class VisitVM with ChangeNotifier {
   loadListVisit({String search}) async {
     var date = DateFormat("yyyy-MM-dd").format(DateTime.now()).toString();
     var res = await _customerDao.getCustomerVisit(date: date, search: search);
+//    var res = await _customerDao.getAll();
     listCustomer = res;
     notifyListeners();
   }

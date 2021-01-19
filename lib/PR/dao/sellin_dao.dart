@@ -51,7 +51,12 @@ class SellinDao extends BaseDao {
   }
 
   Future<Sellin> getById(int id) async {
-    return Sellin.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return Sellin.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<List<Map<String, dynamic>>> needSync({withProgress = true}) async {

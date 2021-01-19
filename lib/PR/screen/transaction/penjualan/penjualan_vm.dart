@@ -66,7 +66,7 @@ class PenjualanVM with ChangeNotifier {
 
   bool notaIsEmpty(){
     if(etNota.text.isEmpty){
-      MyToast.showToast("NOTA tidak boleh kosong",
+      MyToast.showToast("NOTA tidak boleh kosong / click simpan",
           backgroundColor: Colors.red);
       focusNode.requestFocus();
       return true;
@@ -90,6 +90,11 @@ class PenjualanVM with ChangeNotifier {
   }
 
   delete(int id) async {
+    await _sellinDetailDao.delete(id);
+    loadListSellin(sellin.id);
+  }
+
+  deleteAll(int id) async {
     await _sellinDao.delete(id);
     await _sellinDetailDao.deleteBySellin(id.toString());
     await _visitDao.setNotBuyReason(id: id, notBuyReason: "0");

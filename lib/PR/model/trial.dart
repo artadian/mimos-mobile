@@ -10,10 +10,12 @@ class Trial {
   String phone;
   int age;
   String materialid;
+  String materialname;
   int qty;
   double price;
   double amount;
   int competitorbrandid;
+  String competitorbrandname;
   String knowing;
   String taste;
   String packaging;
@@ -31,10 +33,12 @@ class Trial {
     this.phone,
     this.age,
     this.materialid,
+    this.materialname,
     this.qty,
     this.price,
     this.amount,
     this.competitorbrandid,
+    this.competitorbrandname,
     this.knowing,
     this.taste,
     this.packaging,
@@ -53,10 +57,12 @@ class Trial {
         phone = map["phone"].toString().clean(),
         age = map["age"].toString().toInt(),
         materialid = map["materialid"].toString().clean(),
+        materialname = map["materialname"].toString().clean(),
         qty = map["qty"].toString().toInt(),
         price = map["price"].toString().toDouble(),
         amount = map["amount"].toString().toDouble(),
         competitorbrandid = map["competitorbrandid"].toString().toInt(),
+        competitorbrandname = map["competitorbrandname"].toString().clean(),
         knowing = map["knowing"].toString().clean(),
         taste = map["taste"].toString().clean(),
         packaging = map["packaging"].toString().clean(),
@@ -75,10 +81,12 @@ class Trial {
     data['phone'] = phone;
     data['age'] = age;
     data['materialid'] = materialid;
+    data['materialname'] = materialname;
     data['qty'] = qty;
     data['price'] = price;
     data['amount'] = amount;
     data['competitorbrandid'] = competitorbrandid;
+    data['competitorbrandname'] = competitorbrandname;
     data['knowing'] = knowing;
     data['taste'] = taste;
     data['packaging'] = packaging;

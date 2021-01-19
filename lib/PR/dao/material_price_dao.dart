@@ -73,11 +73,15 @@ class MaterialPriceDao extends BaseDao {
   }
 
   Future<MaterialPrice> getById(int id) async {
-    var maps = await super.queryGetById(id);
-    return MaterialPrice.fromJson(maps);
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return MaterialPrice.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
-  Future<MaterialPrice> getByMaterialId(int id) async {
+  Future<MaterialPrice> getByMaterialId(String id) async {
     var db = await instance.database;
     var maps =
     await db.query(table, where: 'materialid = ?', whereArgs: ['$id']);

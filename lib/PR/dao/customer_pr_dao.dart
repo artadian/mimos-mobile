@@ -51,6 +51,15 @@ class CustomerPRDao extends BaseDao {
     return list;
   }
 
+  Future<CustomerPR> getById(int id) async {
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return CustomerPR.fromJson(res);
+    } else {
+      return null;
+    }
+  }
+
   Future<List<CustomerPR>> getAllByDate({@required String date}) async {
     var db = await instance.database;
     var query = '''

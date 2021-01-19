@@ -51,7 +51,12 @@ class SellinDetailDao extends BaseDao {
   }
 
   Future<SellinDetail> getById(int id) async {
-    return SellinDetail.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return SellinDetail.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<int> updateIdParent({@required int id, @required int newId}) async {
@@ -65,6 +70,7 @@ class SellinDetailDao extends BaseDao {
     var query = '''
       SELECT * FROM $table
       WHERE sellinid = $sellinid
+      AND isDelete = 0
     ''';
 
     var maps = await db.rawQuery(query);
@@ -82,6 +88,24 @@ class SellinDetailDao extends BaseDao {
       WHERE sellinid = $sellinid
       AND materialid = '$materialid'
       AND isDelete = 0
+    """;
+
+    var maps = await db.rawQuery(query);
+    List<SellinDetail> list = maps.isNotEmpty
+        ? maps.map((item) => SellinDetail.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
+  Future<List<SellinDetail>> getByMaterialAndCustomer(
+      {@required String materialid, @required String customerno}) async {
+    var db = await instance.database;
+    var query = """
+      SELECT sd.*, s.customerno FROM $table sd
+      JOIN sellin s ON sd.sellinid = s.id
+      WHERE materialid = '$materialid'
+      AND s.customerno = '$customerno'
+      AND sd.isDelete = 0
     """;
 
     var maps = await db.rawQuery(query);

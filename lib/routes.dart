@@ -10,7 +10,7 @@ import 'package:mimos/PR/screen/transaction/penjualan/penjualan_screen.dart';
 import 'package:mimos/PR/screen/transaction/posm/posm_screen.dart';
 import 'package:mimos/PR/screen/transaction/stok/form/stock_form_screen.dart';
 import 'package:mimos/PR/screen/transaction/stok/stock_screen.dart';
-import 'package:mimos/PR/screen/trial/form/trial_form_pr_screen.dart';
+import 'package:mimos/PR/screen/trial/form/trial_form_screen.dart';
 import 'package:mimos/PR/screen/trial/trial_screen.dart';
 import 'package:mimos/Screen/splashscreen.dart';
 import 'package:mimos/Screen/loginscreen.dart';
@@ -77,7 +77,7 @@ class Routes {
             new DownloadScreen(),
         UPLOAD_SCREEN_PR: (BuildContext context) => new UploadScreen(),
         TRIAL_SCREEN_PR: (BuildContext context) => new TrialScreen(),
-        TRIAL_FROM_SCREEN_PR: (BuildContext context) => new TrialFormPRScreen(),
+        TRIAL_FROM_SCREEN_PR: (BuildContext context) => new TrialFormScreen(),
         // TRANSACTION
         DISPLAY_SCREEN_PR: (BuildContext context) => new DisplayScreen(),
         STOK_SCREEN_PR: (BuildContext context) => new StokScreen(),

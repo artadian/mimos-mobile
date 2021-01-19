@@ -52,7 +52,12 @@ class PosmDetailDao extends BaseDao {
   }
 
   Future<PosmDetail> getById(int id) async {
-    return PosmDetail.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return PosmDetail.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<int> updateIdParent({@required int id, @required int newId}) async {
@@ -75,6 +80,7 @@ class PosmDetailDao extends BaseDao {
       LEFT JOIN lookup s ON s.lookupvalue = pd.status AND s.lookupkey = 'posm_status'
       LEFT JOIN lookup c ON c.lookupvalue = pd.condition AND c.lookupkey = 'posm_condition'
       WHERE pd.id = $id
+      AND pd.isDelete = 0
     ''';
 
     var maps = await db.rawQuery(query);
@@ -99,6 +105,7 @@ class PosmDetailDao extends BaseDao {
       LEFT JOIN lookup s ON s.lookupvalue = pd.status AND s.lookupkey = 'posm_status'
       LEFT JOIN lookup c ON c.lookupvalue = pd.condition AND c.lookupkey = 'posm_condition'
       WHERE posmid = $posmid
+      AND pd.isDelete = 0
     ''';
 
     var maps = await db.rawQuery(query);

@@ -32,12 +32,12 @@ class HomeScreen extends StatefulWidget {
 
   HomeScreen(
       {Key key,
-        this.userName,
-        this.userId,
-        this.userRoleID,
-        this.roleName,
-        this.salesOfficeId,
-        this.salesOfficeName})
+      this.userName,
+      this.userId,
+      this.userRoleID,
+      this.roleName,
+      this.salesOfficeId,
+      this.salesOfficeName})
       : super(key: key);
   // HomeScreen({Key key, this.userName, this.userId}) : super(key: key);
   @override
@@ -60,96 +60,96 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     // userRoleID = widget.userId;
     _getRoleUserID().then((val) => setState(() {
-      userRoleID = val;
-      // userrole 1 Taskforce
-      // userrole 2 Promotor
-      // userrole 3 Frontliner
-      if (userRoleID == "1") {
-        // listMenuHome = listMenuItemTF;
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.cloud_download,
-            warna: MyPalette.biru,
-            judul: "DOWNLOAD",
-            itemid: "11"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.person_pin_circle,
-            warna: MyPalette.ijoMimos,
-            judul: "KUNJUNGAN",
-            itemid: "12"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.description,
-            warna: MyPalette.ijoMimos,
-            judul: "RINGKASAN",
-            itemid: "13"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.cloud_upload,
-            warna: Colors.orange,
-            judul: "UPLOAD",
-            itemid: "14"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.exit_to_app,
-            warna: MyPalette.merah,
-            judul: "LOGOUT",
-            itemid: "0"));
-      } else if (userRoleID == "5") {
-        //listMenuHome = listMenuItemTF;
-      } else if (userRoleID == "2") {
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.cloud_download,
-            warna: Colors.blue,
-            judul: "DOWNLOAD",
-            itemid: "101"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.person_pin_circle,
-            warna: Colors.deepPurple,
-            judul: "KUNJUNGAN",
-            itemid: "102"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.mobile_screen_share,
-            warna: Colors.purple,
-            judul: "TRIAL",
-            itemid: "103"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.assignment,
-            warna: Colors.green,
-            judul: "RINGKASAN",
-            itemid: "104"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.cloud_upload,
-            warna: Colors.orange,
-            judul: "UPLOAD",
-            itemid: "105"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.exit_to_app,
-            warna: Colors.red,
-            judul: "LOGOUT",
-            itemid: "0"));
-      } else if (userRoleID == "6") {
-        //listMenuHome = listMenuItemPromotorL;
-      } else if (userRoleID == "3") {
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.cloud_download,
-            warna: Colors.lightBlueAccent,
-            judul: "DOWNLOAD",
-            itemid: "31"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.person_add_alt,
-            warna: Colors.lightBlueAccent,
-            judul: "TRIAL",
-            itemid: "32"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.cloud_upload,
-            warna: Colors.lightBlueAccent,
-            judul: "UPLOAD",
-            itemid: "33"));
-        _myServiceList.add(new MyMenuItem(
-            lambang: Icons.exit_to_app,
-            warna: Colors.lightBlueAccent,
-            judul: "LOGOUT",
-            itemid: "0"));
-        //listMenuHome = listMenuItemFL;
-      }
-    }));
+          userRoleID = val;
+          // userrole 1 Taskforce
+          // userrole 2 Promotor
+          // userrole 3 Frontliner
+          if (userRoleID == "1") {
+            // listMenuHome = listMenuItemTF;
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.cloud_download,
+                warna: MyPalette.biru,
+                judul: "DOWNLOAD",
+                itemid: "11"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.person_pin_circle,
+                warna: MyPalette.ijoMimos,
+                judul: "KUNJUNGAN",
+                itemid: "12"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.description,
+                warna: MyPalette.ijoMimos,
+                judul: "RINGKASAN",
+                itemid: "13"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.cloud_upload,
+                warna: Colors.orange,
+                judul: "UPLOAD",
+                itemid: "14"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.exit_to_app,
+                warna: MyPalette.merah,
+                judul: "LOGOUT",
+                itemid: "0"));
+          } else if (userRoleID == "5") {
+            //listMenuHome = listMenuItemTF;
+          } else if (userRoleID == "2") {
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.cloud_download,
+                warna: Colors.blue,
+                judul: "DOWNLOAD",
+                itemid: "101"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.person_pin_circle,
+                warna: Colors.deepPurple,
+                judul: "KUNJUNGAN",
+                itemid: "102"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.mobile_screen_share,
+                warna: Colors.purple,
+                judul: "TRIAL",
+                itemid: "103"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.assignment,
+                warna: Colors.green,
+                judul: "RINGKASAN",
+                itemid: "104"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.cloud_upload,
+                warna: Colors.orange,
+                judul: "UPLOAD",
+                itemid: "105"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.exit_to_app,
+                warna: Colors.red,
+                judul: "LOGOUT",
+                itemid: "0"));
+          } else if (userRoleID == "6") {
+            //listMenuHome = listMenuItemPromotorL;
+          } else if (userRoleID == "3") {
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.cloud_download,
+                warna: Colors.lightBlueAccent,
+                judul: "DOWNLOAD",
+                itemid: "31"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.person_add_alt,
+                warna: Colors.lightBlueAccent,
+                judul: "TRIAL",
+                itemid: "32"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.cloud_upload,
+                warna: Colors.lightBlueAccent,
+                judul: "UPLOAD",
+                itemid: "33"));
+            _myServiceList.add(new MyMenuItem(
+                lambang: Icons.exit_to_app,
+                warna: Colors.lightBlueAccent,
+                judul: "LOGOUT",
+                itemid: "0"));
+            //listMenuHome = listMenuItemFL;
+          }
+        }));
   }
 
   @override
@@ -163,16 +163,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
     //--- new home
     return SafeArea(
-        child: new Scaffold(
-            body: Container(
-              child: new ListView(
-                physics: ClampingScrollPhysics(),
-                children: <Widget>[
-                  _buildHeaderMenu(widthScreen),
-                  _buildMenuItem(widthScreen),
-                ],
-              ),
-            )));
+        child: WillPopScope(
+          onWillPop: () async {
+            var res = await _dialogExitApps();
+            print(res.toString());
+            return res;
+          },
+          child: new Scaffold(
+              body: Container(
+      child: new ListView(
+          physics: ClampingScrollPhysics(),
+          children: <Widget>[
+            _buildHeaderMenu(widthScreen),
+            _buildMenuItem(widthScreen),
+          ],
+      ),
+    )),
+        ));
     //--- end new home
   }
 
@@ -368,24 +375,135 @@ class _HomeScreenState extends State<HomeScreen> {
         } else if (mymenuitem.itemid.toString() == "105") {
           Navigator.of(context).pushNamed(UPLOAD_SCREEN_PR);
         } else {
-          _logOut();
+          _dialogLogout();
         }
       },
     );
   }
 
+  _dialogLogout() {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Logout"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Logout dari aplikasi ?",
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (userRoleID == "2") {
+                  _logOutPR();
+                } else {
+                  _logOut();
+                }
+              },
+              child: Text('Logout', style: TextStyle(color: Colors.red[600]))),
+        ],
+      ),
+    );
+  }
+
   _logOut() async {
     session.destroy();
-    await _clearDb();
 
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) => LogInScreen()),
-            (Route<dynamic> route) => false);
+        (Route<dynamic> route) => false);
   }
 
-  _clearDb() async {
+  _logOutPR() async {
     var dbDao = DbDao();
+
+    if (await dbDao.needSyncTransaction()) {
+      _dialogCannotLogout();
+      return;
+    }
+
+    session.destroy();
     await dbDao.truncateAll();
+
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (BuildContext context) => LogInScreen()),
+        (Route<dynamic> route) => false);
   }
 
+  _dialogCannotLogout() {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Gagal"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Masih ada data yang belum terupload ke server.",
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Silahkan upload data terlebih dahulu.",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed(UPLOAD_SCREEN_PR);
+              },
+              child: Text('Ok')),
+        ],
+      ),
+    );
+  }
+
+  _dialogExitApps() async {
+    var data = await showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Keluar"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Keluar dari Aplikasi MIMOS ?",
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text('Keluar', style: TextStyle(color: Colors.red[600]))),
+        ],
+      ),
+    );
+    return data;
+  }
 }

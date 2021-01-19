@@ -50,6 +50,11 @@ class MaterialPRDao extends BaseDao {
   }
 
   Future<MaterialPR> getById(int id) async {
-    return MaterialPR.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return MaterialPR.fromJson(res);
+    } else {
+      return null;
+    }
   }
 }

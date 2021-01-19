@@ -51,7 +51,12 @@ class PosmDao extends BaseDao {
   }
 
   Future<Posm> getById(int id) async {
-    return Posm.fromJson(await super.queryGetById(id));
+    var res = await super.queryGetById(id);
+    if (res != null) {
+      return Posm.fromJson(res);
+    } else {
+      return null;
+    }
   }
 
   Future<Posm> getByVisit({

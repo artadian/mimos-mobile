@@ -54,7 +54,7 @@ class PosmFormVM with ChangeNotifier {
   }
 
   Future<List<Lookup>> getType() async {
-    return await _lookupDao.getType();
+    return await _lookupDao.getPosmType();
   }
 
   Future<List<Lookup>> getStatus() async {
@@ -66,6 +66,11 @@ class PosmFormVM with ChangeNotifier {
   }
 
   changeStatus(String val) {
+    posmDetail.status = val;
+    notifyListeners();
+  }
+
+  changeCondition(String val) {
     posmDetail.status = val;
     notifyListeners();
   }
@@ -118,7 +123,7 @@ class PosmFormVM with ChangeNotifier {
 
     var model = PosmDetail.createFromJson(posmDetail.toJson());
     if (edit) {
-      this.posmDetail.isLocal = false;
+      model.isLocal = false;
       await _posmDetailDao.update(model);
     } else {
       await _posmDetailDao.insert(model);

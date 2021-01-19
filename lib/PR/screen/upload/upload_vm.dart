@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/PR/model/default/upload_model.dart';
+import 'package:mimos/PR/screen/upload/resource/cust_introdeal_res.dart';
 import 'package:mimos/PR/screen/upload/resource/posm_detail_res.dart';
 import 'package:mimos/PR/screen/upload/resource/posm_res.dart';
 import 'package:mimos/PR/screen/upload/resource/sellin_detail_res.dart';
@@ -27,6 +28,7 @@ class UploadVM with ChangeNotifier {
   var _visibilityRes = VisibilityRes();
   var _visibilityDetailRes = VisibilityDetailRes();
   var _trialRes = TrialRes();
+  var _custIntrodealRes = CustomerIntrodealRes();
 
   init() async {
     uploads.clear();
@@ -36,6 +38,7 @@ class UploadVM with ChangeNotifier {
     uploads.add(await _sellinRes.init());
     uploads.add(await _posmRes.init());
     uploads.add(await _visibilityRes.init());
+    uploads.add(await _custIntrodealRes.init());
     notifyListeners();
   }
 
@@ -135,6 +138,13 @@ class UploadVM with ChangeNotifier {
         notifyListeners();
       }).asFuture();
     }
+    // Customer Introdeal
+    await _custIntrodealRes.insert().listen((e) {
+      print("UPLOAD: ${e.title} - ${e.status}: ${e.message}");
+      var i = uploads.indexWhere((v) => v.group == e.group);
+      uploads[i] = e;
+      notifyListeners();
+    }).asFuture();
 
   }
 
@@ -209,6 +219,13 @@ class UploadVM with ChangeNotifier {
       uploads[i] = e;
       notifyListeners();
     }).asFuture();
+    // Customer Introdeal
+    await _custIntrodealRes.update().listen((e) {
+      print("UPLOAD: ${e.title} - ${e.status}: ${e.message}");
+      var i = uploads.indexWhere((v) => v.group == e.group);
+      uploads[i] = e;
+      notifyListeners();
+    }).asFuture();
   }
 
   syncDelete() async {
@@ -277,6 +294,13 @@ class UploadVM with ChangeNotifier {
     }).asFuture();
     // Visibility Detail
     await _visibilityDetailRes.delete().listen((e) {
+      print("UPLOAD: ${e.title} - ${e.status}: ${e.message}");
+      var i = uploads.indexWhere((v) => v.group == e.group);
+      uploads[i] = e;
+      notifyListeners();
+    }).asFuture();
+    // Customer Introdeal
+    await _custIntrodealRes.delete().listen((e) {
       print("UPLOAD: ${e.title} - ${e.status}: ${e.message}");
       var i = uploads.indexWhere((v) => v.group == e.group);
       uploads[i] = e;
