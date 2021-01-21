@@ -256,7 +256,7 @@ abstract class BaseDao {
     var result = List<int>();
     await Future.wait(rows.map((row) async {
       try {
-        if (row["isLocal"])
+        if (row["isLocal"] == 1)
           await _deleteLocal(row['$primaryKey']);
         else
           await _deleteServer(row['$primaryKey']);

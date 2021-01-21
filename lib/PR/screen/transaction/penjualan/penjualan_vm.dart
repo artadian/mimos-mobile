@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mimos/PR/dao/customer_introdeal_dao.dart';
 import 'package:mimos/PR/dao/sellin_dao.dart';
 import 'package:mimos/PR/dao/sellin_detail_dao.dart';
 import 'package:mimos/PR/dao/visit_dao.dart';
@@ -19,14 +20,17 @@ class PenjualanVM with ChangeNotifier {
   var _sellinDao = SellinDao();
   var _sellinDetailDao = SellinDetailDao();
   var _visitDao = VisitDao();
+  var _custIntrodealDao = CustomerIntrodealDao();
   var focusNode = FocusNode();
   BuildContext _context;
   double amount = 0.0;
+  bool loading = true;
 
   init(BuildContext context, CustomerPR customer) async {
     this._context = context;
     this.customer = customer;
     await loadSellinHead();
+    loading = false;
     notifyListeners();
   }
 
@@ -44,7 +48,6 @@ class PenjualanVM with ChangeNotifier {
         userid: customer.userid,
         customerno: customer.customerno,
         sellindate: customer.tanggalkunjungan);
-    print("$runtimeType loadSellinHead: $res}");
     if (res != null) {
       sellin = res;
       etNota.text = res.sellinno;
@@ -66,7 +69,7 @@ class PenjualanVM with ChangeNotifier {
 
   bool notaIsEmpty(){
     if(etNota.text.isEmpty){
-      MyToast.showToast("NOTA tidak boleh kosong / click simpan",
+      MyToast.showToast("NOTA tidak boleh kosong",
           backgroundColor: Colors.red);
       focusNode.requestFocus();
       return true;
@@ -91,12 +94,14 @@ class PenjualanVM with ChangeNotifier {
 
   delete(int id) async {
     await _sellinDetailDao.delete(id);
+    await _custIntrodealDao.deleteBySellinDetail(id);
     loadListSellin(sellin.id);
   }
 
   deleteAll(int id) async {
-    await _sellinDao.delete(id);
     await _sellinDetailDao.deleteBySellin(id.toString());
+    await _custIntrodealDao.deleteBySellin(id);
+    await _sellinDao.delete(id);
     await _visitDao.setNotBuyReason(id: id, notBuyReason: "0");
     loadSellinHead();
     Navigator.of(_context).pop("refresh");

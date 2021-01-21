@@ -5,6 +5,7 @@ class CustomerIntrodeal {
   String customerno;
   int introdealid;
   String materialid;
+  int sellindetailid;
   bool needSync;
   bool isDelete;
   bool isLocal;
@@ -14,6 +15,7 @@ class CustomerIntrodeal {
         this.customerno = map["customerno"].toString().clean(),
         this.introdealid = map["introdealid"].toString().toInt(),
         this.materialid = map["materialid"].toString().clean(),
+        this.sellindetailid = map["sellindetailid"].toString().toInt(),
         this.needSync = map["needSync"].toString().toBool(),
         this.isDelete = map["isDelete"].toString().toBool(),
         this.isLocal = map["isLocal"].toString().toBool();
@@ -23,16 +25,18 @@ class CustomerIntrodeal {
         this.customerno = map["customerno"].toString().clean(),
         this.introdealid = map["introdealid"].toString().toInt(),
         this.materialid = map["materialid"].toString().clean(),
-        this.needSync = true,
+        this.sellindetailid = map["sellindetailid"].toString().toInt(),
+        this.needSync = false,
         this.isDelete = false,
         this.isLocal = true;
 
-  CustomerIntrodeal.create({String customerno, int introdealid, String materialid})
+  CustomerIntrodeal.create({String customerno, int introdealid, String materialid, int sellindetailid})
       : this.id = null,
         this.customerno = customerno,
         this.introdealid = introdealid,
         this.materialid = materialid,
-        this.needSync = true,
+        this.sellindetailid = sellindetailid,
+        this.needSync = false,
         this.isDelete = false,
         this.isLocal = true;
 
@@ -42,6 +46,7 @@ class CustomerIntrodeal {
     data['customerno'] = this.customerno;
     data['introdealid'] = this.introdealid;
     data['materialid'] = this.materialid;
+    data['sellindetailid'] = this.sellindetailid;
     data['needSync'] = this.needSync;
     data['isDelete'] = this.isDelete;
     data['isLocal'] = this.isLocal;

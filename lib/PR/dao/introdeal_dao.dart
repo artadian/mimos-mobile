@@ -89,4 +89,27 @@ class IntrodealDao extends BaseDao {
       return null;
     }
   }
+
+  Future<Introdeal> getBySellinDetail(int id) async {
+    var db = await instance.database;
+
+    var query = '''
+      SELECT i.*, ci.customerno 
+      FROM introdeal_master i
+      LEFT JOIN customer_introdeal_tr ci
+      ON ci.introdealid = i.id
+      WHERE ci.sellindetailid = $id
+    ''';
+
+    var maps = await db.rawQuery(query);
+    print("introdeal: $maps");
+    List<Introdeal> list = maps.isNotEmpty
+        ? maps.map((item) => Introdeal.fromJson(item)).toList()
+        : [];
+    if (maps.isNotEmpty) {
+      return list.first;
+    } else {
+      return null;
+    }
+  }
 }

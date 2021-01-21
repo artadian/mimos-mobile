@@ -441,6 +441,7 @@ class DatabaseProvider {
         customerno TEXT, 
         introdealid INTEGER, 
         materialid TEXT, 
+        sellindetailid INTEGER, 
         needSync INTEGER NOT NULL DEFAULT 0,
         isDelete INTEGER NOT NULL DEFAULT 0,
         isLocal INTEGER NOT NULL DEFAULT 0

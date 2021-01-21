@@ -12,7 +12,7 @@ class BlockTransparentScreen extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        color: Colors.transparent,
+        color: Colors.black.withOpacity(0.2),
       ),
     );
   }

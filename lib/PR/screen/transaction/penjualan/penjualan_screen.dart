@@ -29,7 +29,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     return WillPopScope(
       onWillPop: () async {
         if (_vm.sellin.sellinno == null) {
-          MyToast.showToast("NOTA tidak boleh kosong",
+          MyToast.showToast("NOTA tidak boleh kosong / Pilih Simpan",
               backgroundColor: Colors.red);
           _vm.focusNode.requestFocus();
           return false;
@@ -42,17 +42,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
             title: Text("PENJUALAN"),
             shadowColor: Colors.transparent,
           ),
-          body: Stack(
-            children: [
-              _initProvider(customer),
-              if (!_vm.sellin.needSync)
-                BlockTransparentScreen(
-                  onTap: () {
-                    _dialogBlock();
-                  },
-                ),
-            ],
-          ),
+          body: _initProvider(customer),
         ),
       ),
     );
@@ -62,7 +52,24 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
     return ChangeNotifierProvider<PenjualanVM>(
       create: (_) => _vm,
       child: Consumer<PenjualanVM>(
-        builder: (c, vm, _) => _initWidget(),
+        builder: (c, vm, _) {
+          if (_vm.loading)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+
+          return Stack(
+            children: [
+              _initWidget(),
+              if (!_vm.sellin.needSync)
+                BlockTransparentScreen(
+                  onTap: () {
+                    _dialogBlock();
+                  },
+                ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -386,7 +393,7 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
               height: 10,
             ),
             Text(
-              "Harap hubungi admin untuk perubahan data",
+              "Harap hubungi admin untuk merubah data penjualan",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],

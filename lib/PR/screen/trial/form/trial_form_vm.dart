@@ -37,10 +37,19 @@ class TrialFormVM with ChangeNotifier {
   List<BrandCompetitor> listBrandCompetitor = [];
   bool edit = false;
   bool typeSwitching = false;
+  List<Map<String, dynamic>> listType = [];
+  List<Map<String, dynamic>> listKnowing = [];
+  List<Map<String, dynamic>> listTaste = [];
+  List<Map<String, dynamic>> listPackaging = [];
+  var autovalidateMode = AutovalidateMode.disabled;
 
   init() async {
     await loadProducts();
     await loadBrandCompetitor();
+    await getType();
+    await getKnowing();
+    await getTaste();
+    await getPackaging();
     notifyListeners();
   }
 
@@ -56,20 +65,28 @@ class TrialFormVM with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Lookup>> getType() async {
-    return await _lookupDao.getTrialType();
+  getType() async {
+    var res = await _lookupDao.getTrialType();
+    listType = res.map((e) => e.toJson()).toList();
+    notifyListeners();
   }
 
-  Future<List<Lookup>> getKnowing() async {
-    return await _lookupDao.getKnowing();
+  getKnowing() async {
+    var res = await _lookupDao.getKnowing();
+    listKnowing = res.map((e) => e.toJson()).toList();
+    notifyListeners();
   }
 
-  Future<List<Lookup>> getTaste() async {
-    return await _lookupDao.getTaste();
+  getTaste() async {
+    var res = await _lookupDao.getTaste();
+    listTaste = res.map((e) => e.toJson()).toList();
+    notifyListeners();
   }
 
-  Future<List<Lookup>> getPackaging() async {
-    return await _lookupDao.getPackaging();
+  getPackaging() async {
+    var res = await _lookupDao.getPackaging();
+    listPackaging = res.map((e) => e.toJson()).toList();
+    notifyListeners();
   }
 
   onChangeQty(String val) async {
@@ -85,6 +102,35 @@ class TrialFormVM with ChangeNotifier {
       typeSwitching = false;
     }
     notifyListeners();
+  }
+
+  setForm() {
+    product.text = model.materialname;
+    location.text = model.location;
+    name.text = model.name;
+    phone.text = model.phone;
+    age.text = model.age.toString();
+    type.text = model.trialtype;
+    qty.text = model.qty.toString();
+    price.text = model.price.toString().toMoney();
+    amount.text = model.amount.toString().toMoney();
+    brandBefore.text = model.competitorbrandname;
+    knowProduct.text = model.knowing;
+    taste.text = model.taste;
+    packaging.text = model.packaging;
+    outletName.text = model.outletname;
+    outletAddress.text = model.outletaddress;
+    notes.text = model.notes;
+  }
+
+  save() async {
+    if (keyForm.currentState.validate()) {
+      autovalidateMode = AutovalidateMode.disabled;
+      keyForm.currentState.save();
+      print("$runtimeType save: ${model.toJson()}");
+    } else {
+      autovalidateMode = AutovalidateMode.always;
+    }
   }
 
   materialPick(MaterialPrice data) {

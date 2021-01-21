@@ -12,8 +12,9 @@ class TrialVM with ChangeNotifier {
   List<Trial> listTrial = [];
   var _trialDao = TrialDao();
 
-  init(CustomerPR customer) async {
+  init() async {
     this.customer = customer;
+    loadListTrial();
 //    trial = Trial.createFromJson(customer.toJsonView());
 //    await loadTrialHead();
     notifyListeners();
@@ -21,30 +22,14 @@ class TrialVM with ChangeNotifier {
 
   onRefresh() {
     print("onRefresh");
-    if (trial.id != null) {
-//      loadListTrial(trial.id);
-      refreshController.refreshCompleted();
-    }
+    refreshController.refreshCompleted();
   }
 
-//  loadTrialHead() async {
-//    var res = await _trialDao.getByVisit(
-//        userid: customer.userid,
-//        customerno: customer.customerno,
-//        trialdate: customer.tanggalkunjungan);
-//    print("$runtimeType loadTrialHead: $res");
-//    if (res != null) {
-//      trial = res;
-//      await loadListTrial(res.id);
-//    }
-//    notifyListeners();
-//  }
-//
-//  loadListTrial(int id) async {
-//    var res = await _trialDao.getByParent(trialid: id);
-//    listTrial = res;
-//    notifyListeners();
-//  }
+  loadListTrial() async {
+    var res = await _trialDao.getAll();
+    listTrial = res;
+    notifyListeners();
+  }
 
   delete(int id) async {
     await _trialDao.delete(id);

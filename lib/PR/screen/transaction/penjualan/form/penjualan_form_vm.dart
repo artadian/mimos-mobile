@@ -100,14 +100,9 @@ class PenjualanFormVM with ChangeNotifier {
   }
 
   getIntrodeal({String materialid}) async {
-    var sellinDetail = await _sellinDetailDao.getByMaterialAndCustomer(
-      materialid: materialid,
-      customerno: sellin.customerno,
-    );
-
     var introdeal;
-    if (edit && this.sellinDetail.qtyintrodeal != 0) {
-      introdeal = await _introdealDao.getByMaterial(materialid);
+    if (edit) {
+      introdeal = await _introdealDao.getBySellinDetail(sellinDetail.id);
     } else {
       introdeal = await _introdealDao.getByMaterial(
         materialid,
@@ -176,35 +171,35 @@ class PenjualanFormVM with ChangeNotifier {
     this.sellinDetail.price = price;
     this.sellinDetail.qty = qty;
     this.sellinDetail.sellinvalue = qty * price;
-    this.sellinDetail.qtyintrodeal = 0;
+    this.sellinDetail.qtyintrodeal = etIntrodeal.text.toInt(defaultVal: 0);
 
-    //save introdeal
-    if (introdeal != null) {
-      var custIntrodeal = CustomerIntrodeal.create(
-          customerno: sellin.customerno,
-          introdealid: introdeal.id,
-          materialid: materialPrice.materialid);
-      if (edit) {
-        var res = await _custIntrodealDao.getByIntrodealCustMaterial(
-            materialid: materialPrice.materialid,
-            customerno: sellin.customerno,
-            introdealid: introdeal.id);
-        custIntrodeal.id = res.id;
-        _custIntrodealDao.update(custIntrodeal);
-      } else {
-        _custIntrodealDao.insert(custIntrodeal);
-      }
-      this.sellinDetail.qtyintrodeal = etIntrodeal.text.toInt(defaultVal: 0);
+    if (qty <= 0) {
+      MyToast.showToast("Masukkan jumlah pesanan (PAC/SLOF/BAL)",
+          backgroundColor: Colors.red);
+      return;
     }
 
     if (edit) {
+      // save sellin detail
       this.sellinDetail.needSync = true;
       await _sellinDetailDao.update(this.sellinDetail);
     } else {
+      // save sellin detail
       this.sellinDetail.needSync = true;
       this.sellinDetail.isLocal = true;
-      await _sellinDetailDao.insert(this.sellinDetail);
+      var idSellinDetail = await _sellinDetailDao.insert(this.sellinDetail);
+
+      // save customer introdeal
+      if (introdeal != null) {
+        var custIntrodeal = CustomerIntrodeal.create(
+            customerno: sellin.customerno,
+            introdealid: introdeal.id,
+            sellindetailid: idSellinDetail,
+            materialid: materialPrice.materialid);
+        _custIntrodealDao.insert(custIntrodeal);
+      }
     }
+
     await _sellinDao.setNeedSync(sellinDetail.sellinid);
     Navigator.of(_context).pop("refresh");
   }

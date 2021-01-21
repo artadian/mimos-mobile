@@ -59,6 +59,19 @@ class CustomerIntrodealDao extends BaseDao {
     }
   }
 
+  Future<int> deleteBySellinDetail(int idSellinDetail) async {
+    var db = await instance.database;
+    return await db.delete(table, where: 'sellindetailid = ?', whereArgs: ['$idSellinDetail']);
+  }
+
+  Future<int> deleteBySellin(int idSellin) async {
+    var db = await instance.database;
+    return await db.rawDelete('''
+      DELETE FROM $table WHERE sellindetailid 
+      IN (SELECT id FROM sellin_detail WHERE sellinid = $idSellin)
+      ''');
+  }
+
   Future<CustomerIntrodeal> getByIntrodealCustMaterial({
     @required String materialid,
     @required String customerno,

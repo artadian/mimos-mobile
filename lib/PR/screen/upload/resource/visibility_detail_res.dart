@@ -10,7 +10,7 @@ class VisibilityDetailRes {
   var _model = UploadModel(
     title: "Visibility Detail",
     tag: UPLOAD_TAG.VISIBILITY_DETAIL,
-    group: UPLOAD_TAG.VISIBILITY,
+    group: UPLOAD_TAG.DISPLAY,
     status: UPLOAD_STATUS.INITIAL,
     icon: Icons.airplay,
     color: Colors.deepPurpleAccent,

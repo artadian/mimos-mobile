@@ -30,7 +30,7 @@ class _TrialScreenState extends State<TrialScreen> {
 
   Widget _initProvider() {
     return ChangeNotifierProvider<TrialVM>(
-      create: (_) => TrialVM(),
+      create: (_) => TrialVM()..init(),
       child: Consumer<TrialVM>(
         builder: (c, vm, _) => _initWidget(vm),
       ),
@@ -135,19 +135,16 @@ class _TrialScreenState extends State<TrialScreen> {
                   controller: vm.refreshController,
                   onRefresh: vm.onRefresh,
                   child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
                       itemCount: vm.listTrial.length,
-//                      separatorBuilder: (c, i) {
-//                        return Divider(
-//                          color: Colors.grey,
-//                          height: 1.0,
-//                        );
-//                      },
                       itemBuilder: (c, i) {
                         Trial data = vm.listTrial[i];
                         return TrialItem(
                           title: data.name,
+                          subtitle1: data.materialname,
+                          subtitle2: data.qty.toString(),
                         );
                       }),
                 ),
