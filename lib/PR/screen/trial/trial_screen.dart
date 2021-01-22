@@ -131,57 +131,55 @@ class _TrialScreenState extends State<TrialScreen> {
   }
 
   Widget _body() {
-    return Column(
-      children: [
-        _header(),
-        (_vm.listTrial.isEmpty)
-            ? EmptyScreen()
-            : Expanded(
-                child: SmartRefresher(
+    return SmartRefresher(
+      physics: ScrollPhysics(),
+      enablePullDown: true,
+      header: WaterDropMaterialHeader(
+        offset: 10,
+      ),
+      controller: _vm.refreshController,
+      onRefresh: _vm.onRefresh,
+      child: ListView(
+        children: [
+          _header(),
+          (_vm.listTrial.isEmpty)
+              ? EmptyScreen()
+              : ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  enablePullDown: true,
-                  header: WaterDropHeader(
-                    waterDropColor: Colors.blue,
-                  ),
-                  controller: _vm.refreshController,
-                  onRefresh: _vm.onRefresh,
-                  child: ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      itemCount: _vm.listTrial.length,
-                      itemBuilder: (c, i) {
-                        Trial data = _vm.listTrial[i];
-                        return TrialItem(
-                          title: data.name,
-                          titleEnd: SpanText(
-                            data.lookupdesc,
-                            fontWeight: FontWeight.bold,
-                            color: data.lookupdesc.toLowerCase() == "switching"
-                                ? Colors.blue
-                                : Colors.green,
-                          ),
-                          subtitle1: data.outletname,
-                          subtitle2Left: data.materialname,
-                          subtitle2Right: " : (${data.qty} Pack)",
-                          footer1: data.location,
-                          onTap: () {
-                            _gotoForm(id: data.id);
-                          },
-                          trailing: InkWell(
-                            onTap: () {
-                              _dialogDeleteConfirm(data);
-                            },
-                            child: Icon(
-                              Icons.delete_forever,
-                              color: Colors.red,
-                            ),
-                          ),
-                        );
-                      }),
-                ),
-              ),
-      ],
+                  itemCount: _vm.listTrial.length,
+                  itemBuilder: (c, i) {
+                    Trial data = _vm.listTrial[i];
+                    return TrialItem(
+                      title: data.name,
+                      titleEnd: SpanText(
+                        data.lookupdesc,
+                        fontWeight: FontWeight.bold,
+                        color: data.lookupdesc.toLowerCase() == "switching"
+                            ? Colors.blue
+                            : Colors.green,
+                      ),
+                      subtitle1: data.outletname,
+                      subtitle2Left: data.materialname,
+                      subtitle2Right: " : (${data.qty} Pack)",
+                      footer1: data.location,
+                      onTap: () {
+                        _gotoForm(id: data.id);
+                      },
+                      trailing: InkWell(
+                        onTap: () {
+                          _dialogDeleteConfirm(data);
+                        },
+                        child: Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ),
+                      ),
+                    );
+                  })
+        ],
+      ),
     );
   }
 
