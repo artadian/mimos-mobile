@@ -101,7 +101,7 @@ class SellinItem extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.orange),
+                        color: Colors.orange[600]),
                   ),
                 ],
               )

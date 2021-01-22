@@ -53,6 +53,7 @@ class UploadVM with ChangeNotifier {
     await syncUpdate();
     await syncDelete();
 
+    init();
     loading = false;
     notifyListeners();
   }
