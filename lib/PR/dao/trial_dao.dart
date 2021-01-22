@@ -49,6 +49,22 @@ class TrialDao extends BaseDao {
     return list;
   }
 
+  Future<List<Trial>> getAllTrial() async {
+    var db = await instance.database;
+    var query = """
+      SELECT t.*, l.lookupdesc
+      FROM trial AS t 
+      LEFT JOIN lookup AS l ON t.trialtype = l.lookupvalue AND l.lookupkey = 'trial_type'
+      WHERE isDelete = 0
+    """;
+
+    var maps = await db.rawQuery(query);
+    List<Trial> list = maps.isNotEmpty
+        ? maps.map((item) => Trial.fromJson(item)).toList()
+        : [];
+    return list;
+  }
+
   Future<Trial> getById(int id) async {
     var res = await super.queryGetById(id);
     if (res != null) {

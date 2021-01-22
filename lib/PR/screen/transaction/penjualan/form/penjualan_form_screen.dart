@@ -42,7 +42,8 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
 
   Widget _initProvider() {
     return ChangeNotifierProvider<PenjualanFormVM>(
-      create: (_) => PenjualanFormVM()..init(context, widget.sellin, widget.id, widget.priceid),
+      create: (_) => PenjualanFormVM()
+        ..init(context, widget.sellin, widget.id, widget.priceid),
       child: Consumer<PenjualanFormVM>(
         builder: (c, vm, _) => _initWidget(vm),
       ),
@@ -74,109 +75,116 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
   }
 
   _formInput(PenjualanFormVM vm) {
-    return ListView(
-      padding: const EdgeInsets.all(10.0),
-      children: [
-        DropdownTextFormField(
-          controller: vm.etProduct,
-          labelText: "Pilih Barang",
-          prefixIcon: Icon(Icons.shopping_basket),
-          onSaved: (val) => vm.sellinDetail.materialname = val,
-          enabled: !vm.edit,
-          validator: (val) {
-            if (val.length < 1)
-              return 'Filed is required';
-            else
-              return null;
-          },
-          onTap: () {
-            _dialogProductChoice(vm);
-          },
-        ),
-        TextInputField(
-          controller: vm.etPrice,
-          keyboardType: TextInputType.number,
-          enabled: false,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.price = val.clearMoney().toDouble() ?? 0.0;
-            }else{
-              return vm.sellinDetail.price = 0.0;
-            }
-          },
-          labelText: "Harga",
-          prefixText: "Rp. ",
-          suffixText: "/ Pac",
-          prefixIcon: Icon(Icons.monetization_on_rounded),
-        ),
-        TextInputField(
-          controller: vm.etPac,
-          keyboardType: TextInputType.number,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.pac = val.toInt() ?? 0;
-            }else{
-              return vm.sellinDetail.pac = 0;
-            }
-          },
-          labelText: "Jumlah Pac",
-          suffixText: "Pac",
-          prefixIcon: Icon(Icons.ad_units),
-          onChanged: (String val){
-            vm.onChangeQty(val, tag: "PAC");
-          },
-        ),
-        TextInputField(
-          controller: vm.etSlof,
-          keyboardType: TextInputType.number,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.slof = val.toInt() ?? 0;
-            }else{
-              return vm.sellinDetail.slof = 0;
-            }
-          },
-          labelText: "Jumlah Slof",
-          suffixText: "Slof",
-          prefixIcon: Icon(Icons.apps),
-          onChanged: (String val){
-            vm.onChangeQty(val, tag: "SLOF");
-          },
-        ),
-        TextInputField(
-          controller: vm.etBal,
-          keyboardType: TextInputType.number,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.bal = val.toInt() ?? 0;
-            }else{
-              return vm.sellinDetail.bal = 0;
-            }
-          },
-          labelText: "Jumlah Bal",
-          suffixText: "Bal",
-          prefixIcon: Icon(Icons.archive),
-          onChanged: (String val){
-            vm.onChangeQty(val, tag: "BAL");
-          },
-        ),
-        TextInputField(
-          controller: vm.etIntrodeal,
-          keyboardType: TextInputType.number,
-          enabled: false,
-          onSaved: (String val) {
-            if(val.isNotEmpty){
-              return vm.sellinDetail.qtyintrodeal = val.toInt() ?? 0;
-            }else{
-              return vm.sellinDetail.qtyintrodeal = 0;
-            }
-          },
-          labelText: "Introdeal",
-          prefixText: "Bonus: ",
-          suffixText: "Pac",
-          prefixIcon: Icon(Icons.add_box),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          DropdownTextFormField(
+            controller: vm.etProduct,
+            labelText: "Pilih Barang",
+            prefixIcon: Icon(Icons.shopping_basket),
+            onSaved: (val) => vm.sellinDetail.materialname = val,
+            enabled: !vm.edit,
+            validator: (val) {
+              if (val.length < 1)
+                return 'Filed is required';
+              else
+                return null;
+            },
+            onTap: () {
+              _dialogProductChoice(vm);
+            },
+          ),
+          TextInputField(
+            controller: vm.etPrice,
+            keyboardType: TextInputType.number,
+            enabled: false,
+            onSaved: (String val) {
+              if (val.isNotEmpty) {
+                return vm.sellinDetail.price =
+                    val.clearMoney().toDouble() ?? 0.0;
+              } else {
+                return vm.sellinDetail.price = 0.0;
+              }
+            },
+            labelText: "Harga",
+            prefixText: "Rp. ",
+            suffixText: "/ Pac",
+            prefixIcon: Icon(Icons.monetization_on_rounded),
+          ),
+          TextInputField(
+            controller: vm.etPac,
+            keyboardType: TextInputType.number,
+            onSaved: (String val) {
+              if (val.isNotEmpty) {
+                return vm.sellinDetail.pac = val.toInt() ?? 0;
+              } else {
+                return vm.sellinDetail.pac = 0;
+              }
+            },
+            labelText: "Jumlah Pac",
+            suffixText: "Pac",
+            prefixIcon: Icon(Icons.ad_units),
+            onChanged: (String val) {
+              vm.onChangeQty(val, tag: "PAC");
+            },
+          ),
+          TextInputField(
+            controller: vm.etSlof,
+            keyboardType: TextInputType.number,
+            onSaved: (String val) {
+              if (val.isNotEmpty) {
+                return vm.sellinDetail.slof = val.toInt() ?? 0;
+              } else {
+                return vm.sellinDetail.slof = 0;
+              }
+            },
+            labelText: "Jumlah Slof",
+            suffixText: "Slof",
+            prefixIcon: Icon(Icons.apps),
+            onChanged: (String val) {
+              vm.onChangeQty(val, tag: "SLOF");
+            },
+          ),
+          TextInputField(
+            controller: vm.etBal,
+            keyboardType: TextInputType.number,
+            onSaved: (String val) {
+              if (val.isNotEmpty) {
+                return vm.sellinDetail.bal = val.toInt() ?? 0;
+              } else {
+                return vm.sellinDetail.bal = 0;
+              }
+            },
+            labelText: "Jumlah Bal",
+            suffixText: "Bal",
+            prefixIcon: Icon(Icons.archive),
+            onChanged: (String val) {
+              vm.onChangeQty(val, tag: "BAL");
+            },
+          ),
+          TextInputField(
+            controller: vm.etIntrodeal,
+            keyboardType: TextInputType.number,
+            enabled: false,
+            onSaved: (String val) {
+              if (val.isNotEmpty) {
+                return vm.sellinDetail.qtyintrodeal = val.toInt() ?? 0;
+              } else {
+                return vm.sellinDetail.qtyintrodeal = 0;
+              }
+            },
+            labelText: "Introdeal",
+            prefixText: "Bonus: ",
+            suffixText: "Pac",
+            prefixIcon: Icon(Icons.add_box),
+          ),
+        ]
+            .map((e) => Padding(
+                  padding: EdgeInsets.only(bottom: 5, left: 16, right: 16),
+                  child: e,
+                ))
+            .toList(),
+      ),
     );
   }
 

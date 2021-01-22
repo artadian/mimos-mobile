@@ -5,6 +5,7 @@ class Trial {
   String userid;
   String trialdate;
   String trialtype;
+  String lookupdesc;
   String location;
   String name;
   String phone;
@@ -22,6 +23,9 @@ class Trial {
   String outletname;
   String outletaddress;
   String notes;
+  bool needSync;
+  bool isDelete;
+  bool isLocal;
 
   Trial({
     this.id,
@@ -45,6 +49,9 @@ class Trial {
     this.outletname,
     this.outletaddress,
     this.notes,
+    this.needSync,
+    this.isDelete,
+    this.isLocal,
   });
 
   Trial.fromJson(Map<String, dynamic> map)
@@ -68,7 +75,12 @@ class Trial {
         packaging = map["packaging"].toString().clean(),
         outletname = map["outletname"].toString().clean(),
         outletaddress = map["outletaddress"].toString().clean(),
-        notes = map["notes"].toString().clean();
+        notes = map["notes"].toString().clean(),
+        needSync = map["needSync"].toString().toBool(),
+        isDelete = map["isDelete"].toString().toBool(),
+        isLocal = map["isLocal"].toString().toBool(),
+        // view
+        lookupdesc = map["lookupdesc"].toString().clean();
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -93,6 +105,9 @@ class Trial {
     data['outletname'] = outletname;
     data['outletaddress'] = outletaddress;
     data['notes'] = notes;
+    data['needSync'] = needSync;
+    data['isDelete'] = isDelete;
+    data['isLocal'] = isLocal;
     return data;
   }
 }

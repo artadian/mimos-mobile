@@ -31,7 +31,7 @@ class TextInputField extends StatelessWidget {
     this.validator,
     this.dataSaved,
     this.onSaved,
-    this.inputFormatters = null,
+    this.inputFormatters,
     this.textInputAction,
     this.onFieldSubmitted,
     this.labelText,
@@ -80,7 +80,7 @@ class TextInputField extends StatelessWidget {
           ? validator
           : emptyValidator
               ? (val) {
-                  if (val.length < 1 || val.toString() == "0")
+                  if (val.length < 1)
                     return 'Filed is required';
                   else
                     return null;

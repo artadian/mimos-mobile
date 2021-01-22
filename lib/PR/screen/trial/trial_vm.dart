@@ -1,39 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/PR/dao/trial_dao.dart';
-import 'package:mimos/PR/model/customer_pr.dart';
 import 'package:mimos/PR/model/trial.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TrialVM with ChangeNotifier {
   RefreshController refreshController =
   RefreshController(initialRefresh: false);
-  CustomerPR customer = CustomerPR();
   Trial trial;
   List<Trial> listTrial = [];
   var _trialDao = TrialDao();
+  var totalTrial = 0;
+  var packSold = 0;
+  var amount = 0.0;
 
   init() async {
-    this.customer = customer;
+    loadData();
+  }
+
+  loadData(){
     loadListTrial();
-//    trial = Trial.createFromJson(customer.toJsonView());
-//    await loadTrialHead();
-    notifyListeners();
+    loadResume();
   }
 
   onRefresh() {
     print("onRefresh");
+    loadData();
     refreshController.refreshCompleted();
   }
 
   loadListTrial() async {
-    var res = await _trialDao.getAll();
+    var res = await _trialDao.getAllTrial();
     listTrial = res;
+    notifyListeners();
+  }
+
+  loadResume() async {
+    var res = await _trialDao.getAllTrial();
+    totalTrial = res.length;
+    packSold = res.fold(0, (p, c) => p + c.qty);
+    amount = res.fold(0, (p, c) => p + c.amount);
     notifyListeners();
   }
 
   delete(int id) async {
     await _trialDao.delete(id);
-//    loadTrialHead();
+    loadData();
   }
 
 }

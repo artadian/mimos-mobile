@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
 import 'package:mimos/PR/model/trial.dart';
+import 'package:mimos/PR/screen/trial/form/trial_form_screen.dart';
 import 'package:mimos/PR/screen/trial/item/trial_item.dart';
 import 'package:mimos/PR/screen/trial/trial_vm.dart';
 import 'package:mimos/utils/layout/empty_screen.dart';
 import 'package:mimos/utils/widget/button/button_icon_rounded.dart';
+import 'package:mimos/utils/widget/span_text.dart';
 import 'package:mimos/utils/widget/text_icon.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:mimos/helper/extension.dart';
 
 class TrialScreen extends StatefulWidget {
   @override
@@ -16,6 +19,14 @@ class TrialScreen extends StatefulWidget {
 }
 
 class _TrialScreenState extends State<TrialScreen> {
+  var _vm = TrialVM();
+
+  @override
+  void initState() {
+    _vm.init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -30,9 +41,9 @@ class _TrialScreenState extends State<TrialScreen> {
 
   Widget _initProvider() {
     return ChangeNotifierProvider<TrialVM>(
-      create: (_) => TrialVM()..init(),
+      create: (_) => _vm,
       child: Consumer<TrialVM>(
-        builder: (c, vm, _) => _initWidget(vm),
+        builder: (c, vm, _) => _initWidget(),
       ),
     );
   }
@@ -64,7 +75,7 @@ class _TrialScreenState extends State<TrialScreen> {
     );
   }
 
-  Widget _header(TrialVM vm) {
+  Widget _header() {
     return Container(
       padding: EdgeInsets.all(10),
       child: Container(
@@ -75,7 +86,7 @@ class _TrialScreenState extends State<TrialScreen> {
             TextIcon(
               icon: Icons.monetization_on_outlined,
               iconColor: Colors.green,
-              text: "20,000,000",
+              text: _vm.amount.toString().toMoney(),
               iconSize: 26,
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -92,7 +103,7 @@ class _TrialScreenState extends State<TrialScreen> {
                 Expanded(
                   child: _headerItem(
                       title: "Total Trial",
-                      value: "100",
+                      value: _vm.totalTrial.toString().toMoney(),
                       icon: Icons.all_inbox,
                       iconColor: Colors.red),
                 ),
@@ -102,7 +113,7 @@ class _TrialScreenState extends State<TrialScreen> {
                 Expanded(
                   child: _headerItem(
                       title: "Pack Sold",
-                      value: "200",
+                      value: _vm.packSold.toString().toMoney(),
                       icon: Icons.widgets,
                       iconColor: Colors.blue),
                 ),
@@ -119,11 +130,11 @@ class _TrialScreenState extends State<TrialScreen> {
     );
   }
 
-  Widget _body(TrialVM vm) {
+  Widget _body() {
     return Column(
       children: [
-        _header(vm),
-        (vm.listTrial.isEmpty)
+        _header(),
+        (_vm.listTrial.isEmpty)
             ? EmptyScreen()
             : Expanded(
                 child: SmartRefresher(
@@ -132,19 +143,40 @@ class _TrialScreenState extends State<TrialScreen> {
                   header: WaterDropHeader(
                     waterDropColor: Colors.blue,
                   ),
-                  controller: vm.refreshController,
-                  onRefresh: vm.onRefresh,
+                  controller: _vm.refreshController,
+                  onRefresh: _vm.onRefresh,
                   child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                       shrinkWrap: true,
                       physics: ScrollPhysics(),
-                      itemCount: vm.listTrial.length,
+                      itemCount: _vm.listTrial.length,
                       itemBuilder: (c, i) {
-                        Trial data = vm.listTrial[i];
+                        Trial data = _vm.listTrial[i];
                         return TrialItem(
                           title: data.name,
-                          subtitle1: data.materialname,
-                          subtitle2: data.qty.toString(),
+                          titleEnd: SpanText(
+                            data.lookupdesc,
+                            fontWeight: FontWeight.bold,
+                            color: data.lookupdesc.toLowerCase() == "switching"
+                                ? Colors.blue
+                                : Colors.green,
+                          ),
+                          subtitle1: data.outletname,
+                          subtitle2Left: data.materialname,
+                          subtitle2Right: " : (${data.qty} Pack)",
+                          footer1: data.location,
+                          onTap: () {
+                            _gotoForm(id: data.id);
+                          },
+                          trailing: InkWell(
+                            onTap: () {
+                              _dialogDeleteConfirm(data);
+                            },
+                            child: Icon(
+                              Icons.delete_forever,
+                              color: Colors.red,
+                            ),
+                          ),
                         );
                       }),
                 ),
@@ -153,11 +185,11 @@ class _TrialScreenState extends State<TrialScreen> {
     );
   }
 
-  Widget _initWidget(TrialVM vm) {
+  Widget _initWidget() {
     return Container(
       child: Stack(
         children: [
-          _body(vm),
+          _body(),
           Positioned(
             bottom: 16,
             right: 16,
@@ -165,10 +197,57 @@ class _TrialScreenState extends State<TrialScreen> {
               icon: Icons.add_circle_outline,
               text: "Tambah Item",
               onPressed: () {
-                Navigator.of(context).pushNamed(TRIAL_FROM_SCREEN_PR);
+                _gotoForm();
               },
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  _gotoForm({int id}) async {
+    var result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TrialFormScreen(id: id)));
+
+    print("result: $result");
+    if (result != null) {
+      _vm.loadData();
+    }
+  }
+
+  _dialogDeleteConfirm(Trial data) {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Delete"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Hapus Data:"),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${data.name} ?",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                _vm.delete(data.id);
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete', style: TextStyle(color: Colors.red[600]))),
         ],
       ),
     );

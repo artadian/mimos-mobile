@@ -38,7 +38,6 @@ const VISIT_FORM_FORM_SCREEN_PR = '/visitFormPR';
 const UPLOAD_SCREEN_PR = '/uploadPR';
 const DISPLAY_SCREEN_PR = '/displayPR';
 const TRIAL_SCREEN_PR = '/trialPR';
-const TRIAL_FROM_SCREEN_PR = '/trialFormPR';
 const STOK_SCREEN_PR = '/stokPR';
 const PENJUALAN_SCREEN_PR = '/penjualanPR';
 const POSM_SCREEN_PR = '/posmPR';

@@ -19,11 +19,15 @@ extension StringExtension on String {
     }
   }
 
-  double toDouble() {
+  double toDouble({double defaultVal}) {
     if (this != null && this != "null") {
-      return double.parse(this);
+      try {
+        return double.parse(this);
+      }catch(e){
+        return defaultVal;
+      }
     } else {
-      return null;
+      return defaultVal;
     }
   }
 

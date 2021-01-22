@@ -77,7 +77,6 @@ class Routes {
             new DownloadScreen(),
         UPLOAD_SCREEN_PR: (BuildContext context) => new UploadScreen(),
         TRIAL_SCREEN_PR: (BuildContext context) => new TrialScreen(),
-        TRIAL_FROM_SCREEN_PR: (BuildContext context) => new TrialFormScreen(),
         // TRANSACTION
         DISPLAY_SCREEN_PR: (BuildContext context) => new DisplayScreen(),
         STOK_SCREEN_PR: (BuildContext context) => new StokScreen(),

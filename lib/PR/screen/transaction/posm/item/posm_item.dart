@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/utils/widget/box_text_item.dart';
+import 'package:mimos/utils/widget/span_text.dart';
 
 class PosmItem extends StatelessWidget {
   final String title;
@@ -48,21 +49,12 @@ class PosmItem extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-                          child: Text(
-                            status,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: status.toLowerCase() == "new"
-                                  ? Colors.green
-                                  : Colors.blue),
+                        SpanText(
+                          status,
+                          fontWeight: FontWeight.bold,
+                          color: status.toLowerCase() == "new"
+                              ? Colors.green
+                              : Colors.blue,
                         ),
                         SizedBox(
                           width: 10,

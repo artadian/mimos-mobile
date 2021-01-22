@@ -9,6 +9,10 @@ import 'package:provider/provider.dart';
 import 'package:mimos/helper/extension.dart';
 
 class TrialFormScreen extends StatefulWidget {
+  final int id;
+
+  TrialFormScreen({this.id});
+
   @override
   _TrialFormScreenState createState() => _TrialFormScreenState();
 }
@@ -18,7 +22,7 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
 
   @override
   void initState() {
-    _vm.init();
+    _vm.init(context, widget.id);
     super.initState();
   }
 
@@ -54,13 +58,16 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
   Widget _initProvider() {
     return ChangeNotifierProvider<TrialFormVM>(
       create: (_) => _vm,
-      child: Consumer<TrialFormVM>(
-        builder: (c, vm, _) => _initWidget(vm),
-      ),
+      child: Consumer<TrialFormVM>(builder: (c, vm, _) => _initWidget()),
     );
   }
 
-  Widget _initWidget(TrialFormVM vm) {
+  Widget _initWidget() {
+    if (_vm.loading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Form(
       key: _vm.keyForm,
       child: Stack(
@@ -69,10 +76,12 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Expanded(
-                child: _formInput(vm),
+                child: _formInput(),
               ),
               BottomAction(
-                onPressed: () {},
+                onPressed: () {
+                  _vm.save();
+                },
               ),
             ],
           ),
@@ -81,213 +90,215 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
     );
   }
 
-  _formInput(TrialFormVM vm) {
-//    var _crossAxisSpacing = 8;
-//    var _screenWidth = MediaQuery.of(context).size.width;
-//    var _crossAxisCount = _screenWidth < 600 ? 1 : 2;
-//    var _width = (_screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) /
-//        _crossAxisCount;
-//    var cellHeight = 60;
-//    var _aspectRatio = _width / cellHeight;
-
-    return ListView(padding: EdgeInsets.symmetric(horizontal: 10), children: [
-      DropdownButtonFormField(
-        value: _vm.model.trialtype,
-        items: vm.listType.map((map) {
-          Lookup data = Lookup.fromJson(map);
-          return DropdownMenuItem(
-            value: data.lookupvalue,
-            child: Text(data.lookupdesc),
-          );
-        }).toList(),
-        onChanged: _vm.onChangeType,
-        decoration: InputDecoration(
-          labelText: "Pilih Tipe",
-          prefixIcon: Icon(Icons.category),
-        ),
-        validator: (String val) {
-          if (val == null)
-            return 'Filed is required';
-          else
-            return null;
-        },
+  _formInput() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          DropdownButtonFormField(
+            value: _vm.model.trialtype,
+            items: _vm.listType.map((map) {
+              Lookup data = Lookup.fromJson(map);
+              return DropdownMenuItem(
+                value: data.lookupvalue,
+                child: Text(data.lookupdesc),
+              );
+            }).toList(),
+            onChanged: _vm.onChangeType,
+            decoration: InputDecoration(
+              labelText: "Pilih Tipe",
+              prefixIcon: Icon(Icons.category),
+            ),
+            validator: (String val) {
+              if (val == null)
+                return 'Filed is required';
+              else
+                return null;
+            },
+          ),
+          TextInputField(
+            controller: _vm.location,
+            onSaved: (val) => _vm.model.location = val,
+            prefixIcon: Icon(Icons.location_on),
+            labelText: "Location",
+            emptyValidator: true,
+          ),
+          TextInputField(
+            controller: _vm.name,
+            onSaved: (val) => _vm.model.name = val,
+            prefixIcon: Icon(Icons.person),
+            labelText: "Name",
+            emptyValidator: true,
+          ),
+          TextInputField(
+            controller: _vm.phone,
+            onSaved: (val) => _vm.model.phone = val,
+            keyboardType: TextInputType.phone,
+            prefixIcon: Icon(Icons.phone),
+            labelText: "Phone",
+            emptyValidator: true,
+          ),
+          TextInputField(
+            controller: _vm.age,
+            onSaved: (String val) => _vm.model.age = val.toInt(defaultVal: 0),
+            keyboardType: TextInputType.number,
+            prefixIcon: Icon(Icons.cake),
+            labelText: "Age",
+            emptyValidator: true,
+          ),
+          DropdownTextFormField(
+            controller: _vm.product,
+            labelText: "Pilih Barang",
+            prefixIcon: Icon(Icons.shopping_basket),
+            onSaved: (val) => _vm.model.materialname = val,
+            validator: (val) {
+              if (val.length < 1)
+                return 'Filed is required';
+              else
+                return null;
+            },
+            onTap: () {
+              _dialogProductChoice();
+            },
+          ),
+          TextInputField(
+            controller: _vm.qty,
+            onSaved: (String val) => _vm.model.qty = val.toInt(defaultVal: 0),
+            keyboardType: TextInputType.number,
+            prefixIcon: Icon(Icons.margin),
+            labelText: "Qty",
+            enabled: !_vm.typeSwitching,
+            onChanged: (String val){
+              _vm.getAmount();
+            },
+            emptyValidator: true,
+          ),
+          TextInputField(
+            controller: _vm.price,
+            enabled: false,
+            onSaved: (String val) =>
+                _vm.model.price = val.clearMoney().toDouble(defaultVal: 0.0),
+            keyboardType: TextInputType.number,
+            prefixIcon: Icon(Icons.attach_money),
+            labelText: "Price",
+            emptyValidator: true,
+          ),
+          TextInputField(
+            controller: _vm.amount,
+            enabled: false,
+            onSaved: (String val) =>
+                _vm.model.amount = val.clearMoney().toDouble(defaultVal: 0.0),
+            keyboardType: TextInputType.number,
+            prefixIcon: Icon(Icons.money),
+            labelText: "Total Price",
+            emptyValidator: true,
+          ),
+          DropdownTextFormField(
+            controller: _vm.brandBefore,
+            labelText: "Brand Before",
+            prefixIcon: Icon(Icons.label_important),
+            onSaved: (val) => _vm.model.competitorbrandname = val,
+            validator: (val) {
+              if (val.length < 1)
+                return 'Filed is required';
+              else
+                return null;
+            },
+            onTap: () {
+              _dialogBrandCompetitorChoice();
+            },
+          ),
+          DropdownButtonFormField(
+            value: _vm.model.knowing,
+            items: _vm.listKnowing.map((map) {
+              Lookup data = Lookup.fromJson(map);
+              return DropdownMenuItem(
+                value: data.lookupvalue,
+                child: Text(data.lookupdesc),
+              );
+            }).toList(),
+            onChanged: _vm.onChangeKnowing,
+            decoration: InputDecoration(
+              labelText: "Pilih Knowing",
+              prefixIcon: Icon(Icons.ad_units),
+            ),
+            validator: (String val) {
+              if (val == null)
+                return 'Filed is required';
+              else
+                return null;
+            },
+          ),
+          DropdownButtonFormField(
+            value: _vm.model.taste,
+            items: _vm.listTaste.map((map) {
+              Lookup data = Lookup.fromJson(map);
+              return DropdownMenuItem(
+                value: data.lookupvalue,
+                child: Text(data.lookupdesc),
+              );
+            }).toList(),
+            onChanged: _vm.onChangeTaste,
+            decoration: InputDecoration(
+              labelText: "Pilih Taste",
+              prefixIcon: Icon(Icons.stop_circle_sharp),
+            ),
+            validator: (String val) {
+              if (val == null)
+                return 'Filed is required';
+              else
+                return null;
+            },
+          ),
+          DropdownButtonFormField(
+            value: _vm.model.packaging,
+            items: _vm.listPackaging.map((map) {
+              Lookup data = Lookup.fromJson(map);
+              return DropdownMenuItem(
+                value: data.lookupvalue,
+                child: Text(data.lookupdesc),
+              );
+            }).toList(),
+            onChanged: _vm.onChangePackaging,
+            decoration: InputDecoration(
+              labelText: "Pilih Packaging",
+              prefixIcon: Icon(Icons.archive),
+            ),
+            validator: (String val) {
+              if (val == null)
+                return 'Filed is required';
+              else
+                return null;
+            },
+          ),
+          TextInputField(
+            controller: _vm.outletName,
+            onSaved: (val) => _vm.model.outletname = val,
+            prefixIcon: Icon(Icons.store),
+            labelText: "Outlet Name",
+            emptyValidator: true,
+          ),
+          TextInputField(
+            controller: _vm.outletAddress,
+            onSaved: (val) => _vm.model.outletaddress = val,
+            prefixIcon: Icon(Icons.assistant_navigation),
+            labelText: "Outlet Address",
+            emptyValidator: true,
+          ),
+          TextInputField(
+            controller: _vm.notes,
+            onSaved: (val) => _vm.model.notes = val,
+            prefixIcon: Icon(Icons.sticky_note_2_outlined),
+            labelText: "Notes",
+            emptyValidator: true,
+          ),
+        ]
+            .map((e) => Padding(
+                  padding: EdgeInsets.only(bottom: 5, left: 16, right: 16),
+                  child: e,
+                ))
+            .toList(),
       ),
-      TextInputField(
-        controller: _vm.location,
-        onSaved: (val) => _vm.model.location = val,
-        prefixIcon: Icon(Icons.location_on),
-        labelText: "Location",
-      ),
-      TextInputField(
-        controller: _vm.name,
-        onSaved: (val) => _vm.model.name = val,
-        prefixIcon: Icon(Icons.person),
-        labelText: "Name",
-      ),
-      TextInputField(
-        controller: _vm.phone,
-        onSaved: (val) => _vm.model.phone = val,
-        keyboardType: TextInputType.phone,
-        prefixIcon: Icon(Icons.phone),
-        labelText: "Phone",
-      ),
-      TextInputField(
-        controller: _vm.age,
-        onSaved: (val) => _vm.model.age = val,
-        keyboardType: TextInputType.number,
-        prefixIcon: Icon(Icons.cake),
-        labelText: "Age",
-      ),
-      DropdownTextFormField(
-        controller: _vm.product,
-        labelText: "Pilih Barang",
-        prefixIcon: Icon(Icons.shopping_basket),
-        onSaved: (val) => _vm.model.materialname = val,
-        enabled: !_vm.edit,
-        validator: (val) {
-          if (val.length < 1)
-            return 'Filed is required';
-          else
-            return null;
-        },
-        onTap: () {
-          _dialogProductChoice();
-        },
-      ),
-      TextInputField(
-        controller: _vm.qty,
-        onSaved: (val) => _vm.model.qty = val,
-        keyboardType: TextInputType.number,
-        prefixIcon: Icon(Icons.margin),
-        labelText: "Qty",
-        onChanged: _vm.onChangeQty,
-      ),
-      TextInputField(
-        controller: _vm.price,
-        enabled: false,
-        onSaved: (val) => _vm.model.price = val,
-        keyboardType: TextInputType.number,
-        prefixIcon: Icon(Icons.attach_money),
-        labelText: "Price",
-      ),
-      TextInputField(
-        controller: _vm.amount,
-        enabled: false,
-        onSaved: (val) => _vm.model.amount = val,
-        keyboardType: TextInputType.number,
-        prefixIcon: Icon(Icons.money),
-        labelText: "Total Price",
-      ),
-      DropdownTextFormField(
-        controller: _vm.brandBefore,
-        labelText: "Brand Before",
-        prefixIcon: Icon(Icons.label_important),
-        onSaved: (val) => _vm.model.materialname = val,
-        enabled: !_vm.edit,
-        validator: (val) {
-          if (val.length < 1)
-            return 'Filed is required';
-          else
-            return null;
-        },
-        onTap: () {
-          _dialogBrandCompetitorChoice();
-        },
-      ),
-      DropdownButtonFormField(
-        value: _vm.model.knowing,
-        items: vm.listKnowing.map((map) {
-          Lookup data = Lookup.fromJson(map);
-          return DropdownMenuItem(
-            value: data.lookupvalue,
-            child: Text(data.lookupdesc),
-          );
-        }).toList(),
-        onChanged: (String val) {
-          _vm.model.knowing = val;
-        },
-        decoration: InputDecoration(
-          labelText: "Pilih Knowing",
-          prefixIcon: Icon(Icons.ad_units),
-        ),
-        validator: (String val) {
-          if (val == null)
-            return 'Filed is required';
-          else
-            return null;
-        },
-      ),
-      DropdownButtonFormField(
-        value: _vm.model.taste,
-        items: vm.listTaste.map((map) {
-          Lookup data = Lookup.fromJson(map);
-          return DropdownMenuItem(
-            value: data.lookupvalue,
-            child: Text(data.lookupdesc),
-          );
-        }).toList(),
-        onChanged: (String val) {
-          _vm.model.taste = val;
-        },
-        decoration: InputDecoration(
-          labelText: "Pilih Taste",
-          prefixIcon: Icon(Icons.stop_circle_sharp),
-        ),
-        validator: (String val) {
-          if (val == null)
-            return 'Filed is required';
-          else
-            return null;
-        },
-      ),
-      DropdownButtonFormField(
-        value: _vm.model.packaging,
-        items: vm.listPackaging.map((map) {
-          Lookup data = Lookup.fromJson(map);
-          return DropdownMenuItem(
-            value: data.lookupvalue,
-            child: Text(data.lookupdesc),
-          );
-        }).toList(),
-        onChanged: (String val) {
-          _vm.model.packaging = val;
-        },
-        decoration: InputDecoration(
-          labelText: "Pilih Packaging",
-          prefixIcon: Icon(Icons.archive),
-        ),
-        validator: (String val) {
-          if (val == null)
-            return 'Filed is required';
-          else
-            return null;
-        },
-      ),
-      TextInputField(
-        controller: _vm.outletName,
-        onSaved: (val) => _vm.model.outletname = val,
-        prefixIcon: Icon(Icons.store),
-        labelText: "Outlet Name",
-      ),
-      TextInputField(
-        controller: _vm.outletAddress,
-        onSaved: (val) => _vm.model.outletaddress = val,
-        prefixIcon: Icon(Icons.assistant_navigation),
-        labelText: "Outlet Address",
-      ),
-      TextInputField(
-        controller: _vm.notes,
-        onSaved: (val) => _vm.model.notes = val,
-        prefixIcon: Icon(Icons.sticky_note_2_outlined),
-        labelText: "Notes",
-      ),
-    ]
-//          .map((e) => Padding(
-//                padding: EdgeInsets.only(bottom: 5),
-//                child: e,
-//              ))
-//          .toList(),
-        );
+    );
   }
 
   _dialogProductChoice() {
