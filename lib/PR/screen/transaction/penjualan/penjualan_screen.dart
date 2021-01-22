@@ -247,43 +247,44 @@ class _PenjualanScreenState extends State<PenjualanScreen> {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ButtonIconRounded(
-                    padding: EdgeInsets.fromLTRB(10, 5, 15, 5),
-                    icon: Icons.delete_forever,
-                    text: "HAPUS",
-                    color: Colors.red,
-                    onPressed: () {
-                      _clearFocus();
-                      _dialogDeleteConfirm();
-                    },
-                  ),
-                  ButtonIconRounded(
-                    padding: EdgeInsets.fromLTRB(3, 5, 8, 5),
-                    icon: Icons.add_circle_outline,
-                    text: "ITEM",
-                    color: Colors.blue,
-                    onPressed: () {
-                      _clearFocus();
-                      _gotoForm();
-                    },
-                  ),
-                  ButtonIconRounded(
-                    padding: EdgeInsets.fromLTRB(10, 5, 15, 5),
-                    icon: Icons.save,
-                    text: "SIMPAN",
-                    color: Colors.green,
-                    onPressed: () {
-                      _vm.save();
-                    },
-                  )
-                ],
-              ),
-            )
+            if (_vm.sellin.needSync)
+              Container(
+                padding: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ButtonIconRounded(
+                      padding: EdgeInsets.fromLTRB(10, 5, 15, 5),
+                      icon: Icons.delete_forever,
+                      text: "HAPUS",
+                      color: Colors.red,
+                      onPressed: () {
+                        _clearFocus();
+                        _dialogDeleteConfirm();
+                      },
+                    ),
+                    ButtonIconRounded(
+                      padding: EdgeInsets.fromLTRB(3, 5, 8, 5),
+                      icon: Icons.add_circle_outline,
+                      text: "ITEM",
+                      color: Colors.blue,
+                      onPressed: () {
+                        _clearFocus();
+                        _gotoForm();
+                      },
+                    ),
+                    ButtonIconRounded(
+                      padding: EdgeInsets.fromLTRB(10, 5, 15, 5),
+                      icon: Icons.save,
+                      text: "SIMPAN",
+                      color: Colors.green,
+                      onPressed: () {
+                        _vm.save();
+                      },
+                    )
+                  ],
+                ),
+              )
           ],
         ),
       ),

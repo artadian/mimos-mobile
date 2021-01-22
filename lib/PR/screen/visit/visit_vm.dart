@@ -8,6 +8,7 @@ import 'package:mimos/PR/model/lookup.dart';
 import 'package:mimos/PR/model/visit.dart';
 import 'package:mimos/PR/screen/transaction/transaction_screen.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class VisitVM with ChangeNotifier {
   RefreshController refreshController =

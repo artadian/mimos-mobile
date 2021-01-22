@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:mimos/helper/session_manager.dart';
 import 'package:mimos/network/api/api_service.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ApiClient {
   static Dio _dio;
@@ -35,8 +36,12 @@ class ApiClient {
       }
       print("DioResponse: ${response.data}");
       return response;
-    }, onError: (DioError e) {
+    }, onError: (DioError e) async {
       print("DioError: ${e.message}, ${e.response}");
+      await Sentry.captureException(
+        e.message,
+        stackTrace: e,
+      );
       return e;
     }));
 
@@ -67,8 +72,12 @@ class ApiClient {
       }
       print("DioResponse: ${response.data}");
       return response;
-    }, onError: (DioError e) {
+    }, onError: (DioError e) async {
       print("DioError: ${e.message}, ${e.response}");
+      await Sentry.captureException(
+        e.message,
+        stackTrace: e,
+      );
       return e;
     }));
 
