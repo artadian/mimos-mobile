@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mimos/PR/dao/db_dao.dart';
 import 'package:mimos/PR/model/default/upload_model.dart';
 import 'package:mimos/PR/screen/upload/resource/cust_introdeal_res.dart';
 import 'package:mimos/PR/screen/upload/resource/posm_detail_res.dart';
@@ -11,11 +12,13 @@ import 'package:mimos/PR/screen/upload/resource/trial_res.dart';
 import 'package:mimos/PR/screen/upload/resource/visibility_detail_res.dart';
 import 'package:mimos/PR/screen/upload/resource/visibility_res.dart';
 import 'package:mimos/PR/screen/upload/resource/visit_res.dart';
+import 'package:mimos/utils/widget/my_toast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UploadVM with ChangeNotifier {
   RefreshController refreshController =
   RefreshController(initialRefresh: false);
+  var password = TextEditingController();
   List<UploadModel> uploads = [];
   bool loading = false;
   var _visitRes = VisitRes();
@@ -56,6 +59,16 @@ class UploadVM with ChangeNotifier {
     init();
     loading = false;
     notifyListeners();
+  }
+
+  clearDb() async {
+    var dbDao = DbDao();
+    if(password.text.toString() == "12345"){
+      await dbDao.truncateAll();
+    }else{
+      MyToast.showToast("Password Salah",
+          backgroundColor: Colors.red);
+    }
   }
 
   syncInsert() async {

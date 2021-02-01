@@ -11,7 +11,7 @@ const BASE_URL =
 
 const BASE_URL_API = "$BASE_URL/api";
 
-const URL_PULL_MATERIAL_PR = "$BASE_URL_API/Material/materialFL";
+const URL_APP_VERSION = "$BASE_URL_API/App_version/getVersion";
 const URL_PULL_CUSTOMER_PR = "$BASE_URL_API/Customer/customerbyvisitday";
 const URL_PULL_LOOKUP_PR = "$BASE_URL_API/Lookup/getByUser";
 const URL_PULL_INTRODEAL_PR = "$BASE_URL_API/Introdeal/getBySalesOffice";

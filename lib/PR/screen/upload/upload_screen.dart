@@ -30,9 +30,11 @@ class _UploadScreenState extends State<UploadScreen> {
       appBar: AppBar(
         title: Text("Upload Data"),
         actions: [
-          IconButton(icon: Icon(Icons.delete_sweep), onPressed: (){
-            _dialogClearDB();
-          })
+          IconButton(
+              icon: Icon(Icons.delete_sweep),
+              onPressed: () {
+                _dialogClearDB();
+              })
         ],
       ),
       body: _initProvider(),
@@ -176,8 +178,15 @@ class _UploadScreenState extends State<UploadScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Hapus semua data ?",
+              "Semua data di Handheld akan di hapus permanent. Hapus semua data ?",
             ),
+            SizedBox(height: 10,),
+            Text(
+              "Password",
+            ),
+            TextFormField(
+              controller: _vm.password,
+            )
           ],
         ),
         actions: <Widget>[
@@ -189,7 +198,7 @@ class _UploadScreenState extends State<UploadScreen> {
           FlatButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                _clearDb();
+                _vm.clearDb();
               },
               child: Text('Hapus', style: TextStyle(color: Colors.red[600]))),
         ],
@@ -197,23 +206,28 @@ class _UploadScreenState extends State<UploadScreen> {
     );
   }
 
-  _clearDb() async {
-    var dbDao = DbDao();
-    await dbDao.truncateAll();
-  }
-
-  _dialogError(String message) {
+  _dialogConfirmTruncate() {
     AlertDialog alert = AlertDialog(
-      title: Text("Error Download"),
+      title: Text("Password"),
       content: Container(
-        child: Text(message),
+        child: TextFormField(
+          controller: _vm.password,
+        ),
       ),
       actions: [
         FlatButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Close"))
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text("Cancel"),
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            _vm.clearDb();
+          },
+          child: Text("Hapus"),
+        ),
       ],
     );
 
