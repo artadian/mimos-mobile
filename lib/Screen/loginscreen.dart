@@ -29,7 +29,7 @@ class _LogInScreenState extends State<LogInScreen>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        resizeToAvoidBottomPadding: true,
+        resizeToAvoidBottomInset: true,
         body: new ListView(
           shrinkWrap: true,
           reverse: false,

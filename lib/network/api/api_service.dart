@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 const BASE_URL =
-    "https://api.wim-bms.com/apimimos/index.php";
+    "https://api.wim-bms.com/apimimos-dev/index.php";
 //    "http://192.168.43.225/apimimos/index.php";
 //    : "http://172.27.8.241/apimimos/index.php";
 

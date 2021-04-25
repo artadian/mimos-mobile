@@ -233,10 +233,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Text(session.username().toUpperCase(),
                         style: new TextStyle(
-                          fontSize: 27,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                        )),
+                        ), overflow: TextOverflow.ellipsis,),
                     //
                   ],
                 ),
