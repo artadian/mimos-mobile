@@ -455,6 +455,30 @@ class DatabaseProvider {
         competitorbrandname TEXT
         )''');
 
+    await database.execute('''CREATE TABLE IF NOT EXISTS customer_wsp (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customerno TEXT, 
+        startdate TEXT, 
+        enddate TEXT,
+        wspclass TEXT,
+        materialgroupid TEXT, 
+        wspcode TEXT, 
+        reason TEXT
+        )''');
+
+    await database.execute('''CREATE TABLE IF NOT EXISTS stock_wsp (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        salesofficeid INTEGER, 
+        materialgroupidwsp TEXT, 
+        wspclass TEXT, 
+        materialgroupid TEXT, 
+        materialgroupname TEXT, 
+        materialgroupdesc TEXT, 
+        pac INTEGER, 
+        startdate TEXT, 
+        enddate TEXT
+        )''');
+
   }
 
 }

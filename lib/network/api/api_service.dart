@@ -21,6 +21,7 @@ const URL_PULL_MATERIAL_PRICE = "$BASE_URL_API/Material_price/getBySalesOffice";
 const URL_PULL_VISIT = "$BASE_URL_API/Visit/getByDate";
 const URL_PULL_STOCK = "$BASE_URL_API/Stock/getByDate";
 const URL_PULL_STOCK_DETAIL = "$BASE_URL_API/Stock_detail/getByHead";
+const URL_PULL_STOCK_WSP = "$BASE_URL_API/Stock_wsp/getBySalesOffice";
 const URL_PULL_SELLIN = "$BASE_URL_API/Sellin/getByDate";
 const URL_PULL_SELLIN_DETAIL = "$BASE_URL_API/Sellin_detail/getByHead";
 const URL_PULL_VISIBILITY = "$BASE_URL_API/Visibility/getByDate";
@@ -29,6 +30,7 @@ const URL_PULL_POSM = "$BASE_URL_API/Posm/getByDate";
 const URL_PULL_POSM_DETAIL = "$BASE_URL_API/Posm_detail/getByHead";
 const URL_PULL_TRIAL = "$BASE_URL_API/Trial/getByDate";
 const URL_PULL_CUST_INTRODEAL = "$BASE_URL_API/Customer_introdeal/getByUser";
+const URL_PULL_CUSTOMER_WSP = "$BASE_URL_API/Customer_wsp/getByCustomers";
 
 /// Upload Data
 // Visit

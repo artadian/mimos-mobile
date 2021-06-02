@@ -70,7 +70,6 @@ class VisitDao extends BaseDao {
       FROM customer AS c 
       LEFT JOIN visit as v ON c.customerno = v.customerno 
         AND c.tanggalkunjungan = v.visitdate 
-        AND c.userid = v.userid 
       LEFT JOIN lookup AS vl ON v.notvisitreason = vl.lookupvalue AND vl.lookupkey = 'not_visit_reason' 
       LEFT JOIN lookup AS bl ON v.notbuyreason = bl.lookupvalue AND bl.lookupkey = 'not_buy_reason' 
       WHERE v.id = $id

@@ -26,6 +26,13 @@ class _DownloadScreenState extends State<DownloadScreen> {
         child: Scaffold(
       appBar: AppBar(
         title: Text("Download Data"),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.delete_sweep),
+              onPressed: () {
+                _dialogClearDB();
+              })
+        ],
       ),
       body: _initProvider(),
     ));
@@ -178,6 +185,48 @@ class _DownloadScreenState extends State<DownloadScreen> {
       builder: (BuildContext context) {
         return alert;
       },
+    );
+  }
+
+  _dialogClearDB() {
+    showDialog(
+      context: context,
+      builder: (c) => AlertDialog(
+        title: Text("Truncate"),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Semua data di HP akan di hapus permanent. Hapus semua data ?",
+              ),
+              SizedBox(height: 10,),
+              Text(
+                "Enter Password:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextFormField(
+                controller: _vm.password,
+              )
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _vm.clearDb();
+              },
+              child: Text('Hapus', style: TextStyle(color: Colors.red[600]))),
+        ],
+      ),
     );
   }
 }

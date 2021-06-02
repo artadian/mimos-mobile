@@ -5,11 +5,14 @@ import 'package:mimos/PR/dao/introdeal_dao.dart';
 import 'package:mimos/PR/dao/material_price_dao.dart';
 import 'package:mimos/PR/dao/sellin_dao.dart';
 import 'package:mimos/PR/dao/sellin_detail_dao.dart';
+import 'package:mimos/PR/dao/stock_detail_dao.dart';
+import 'package:mimos/PR/dao/stock_wsp_dao.dart';
 import 'package:mimos/PR/model/customer_introdeal.dart';
 import 'package:mimos/PR/model/introdeal.dart';
 import 'package:mimos/PR/model/material_price.dart';
 import 'package:mimos/PR/model/sellin.dart';
 import 'package:mimos/PR/model/sellin_detail.dart';
+import 'package:mimos/PR/model/stock_wsp.dart';
 import 'package:mimos/helper/extension.dart';
 import 'package:mimos/utils/widget/my_toast.dart';
 
@@ -35,7 +38,13 @@ class PenjualanFormVM with ChangeNotifier {
   var _materialPriceDao = MaterialPriceDao();
   var _sellinDetailDao = SellinDetailDao();
   var _introdealDao = IntrodealDao();
+  var _stockWspDao = StockWspDao();
   var _custIntrodealDao = CustomerIntrodealDao();
+  var _stockDetailDao = StockDetailDao();
+  var _stockWsp = StockWsp();
+  var introdealInfo = "";
+  var stockNow = "";
+  var minimumOrder = "";
   BuildContext _context;
   var qty = 0;
   Introdeal introdeal;
@@ -58,6 +67,7 @@ class PenjualanFormVM with ChangeNotifier {
     sellinDetail = res;
     getIntrodeal(materialid: res.materialid);
     materialPrice = await _materialPriceDao.getByMaterialId(res.materialid);
+    getStockWsp(materialPrice);
     notifyListeners();
     setForm();
   }
@@ -112,6 +122,7 @@ class PenjualanFormVM with ChangeNotifier {
 
     if (introdeal == null) {
       etIntrodeal.text = "0";
+      introdealInfo = "";
       return;
     }
 
@@ -124,6 +135,7 @@ class PenjualanFormVM with ChangeNotifier {
     this.qty = 0;
     if (introdeal == null) {
       etIntrodeal.text = "0";
+      introdealInfo = "";
       return;
     }
     setBonusIntrodeal();
@@ -145,6 +157,8 @@ class PenjualanFormVM with ChangeNotifier {
 
     var bonus = (qty ~/ this.introdeal.qtyorder) * this.introdeal.qtybonus;
     etIntrodeal.text = bonus.round().toString();
+    introdealInfo =
+        "Bonus: ${this.introdeal.qtybonus} Pac, Setiap pembelian: ${this.introdeal.qtyorder} Pac";
     notifyListeners();
   }
 
@@ -162,9 +176,9 @@ class PenjualanFormVM with ChangeNotifier {
 
     var material = await _materialPriceDao.getByMaterialId(materialid);
 
-    var bal = (this.sellinDetail.bal ?? 0) * material.slof * material.pac;
-    var slof = (this.sellinDetail.slof ?? 0) * material.pac;
-    var pac = (this.sellinDetail.pac ?? 0);
+    var bal = (this.sellinDetail.bal ?? 0.0) * (material.bal / material.pac);
+    var slof = (this.sellinDetail.slof ?? 0.0) * (material.slof / material.pac);
+    var pac = (this.sellinDetail.pac ?? 0.0);
 
     var price = material.price;
     var qty = bal + slof + pac;
@@ -204,11 +218,39 @@ class PenjualanFormVM with ChangeNotifier {
     Navigator.of(_context).pop("refresh");
   }
 
+  getStockWsp(MaterialPrice data) async {
+    var resQtyStock = await _stockDetailDao.getStockCustByMGroup(
+      customerno: sellin.customerno,
+      stockdate: sellin.sellindate,
+      materialgroupid: data.materialgroupid,
+      priceid: data.priceid,
+    );
+    var res = await _stockWspDao.getByCustAndGroup(
+      materialgroupid: data.materialgroupid,
+      customerno: sellin.customerno,
+    );
+    if (res != null) {
+      print("$runtimeType: stock: $resQtyStock");
+      print("$runtimeType: wsp: ${res.pac}");
+      var minOrder = resQtyStock;
+      if(resQtyStock < res.pac) {
+        minOrder = res.pac - resQtyStock;
+        stockNow = "* Stock Toko ${data.materialgroupname}: ($resQtyStock) Pac";
+        minimumOrder = "* Mininum Order: ($minOrder) Pac";
+      }
+    } else {
+      stockNow = "";
+      minimumOrder = "";
+    }
+    notifyListeners();
+  }
+
   materialPick(MaterialPrice data) {
     this.sellinDetail.materialid = data.materialid;
     this.sellinDetail.materialname = data.materialname;
     this.materialPrice = data;
     getIntrodeal(materialid: data.materialid);
+    getStockWsp(data);
     notifyListeners();
 
     this.etProduct.text = data.materialname;

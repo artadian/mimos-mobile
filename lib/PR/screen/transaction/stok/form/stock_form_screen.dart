@@ -100,6 +100,8 @@ class _StokFormScreenState extends State<StokFormScreen> {
         TextInputField(
           controller: vm.pac,
           keyboardType: TextInputType.number,
+          onTap: () => vm.pac.selection = TextSelection(
+              baseOffset: 0, extentOffset: vm.pac.value.text.length),
           onSaved: (String val) {
             if(val.isNotEmpty){
               return vm.stockDetail.pac = val.toInt() ?? 0;
@@ -114,6 +116,8 @@ class _StokFormScreenState extends State<StokFormScreen> {
         TextInputField(
           controller: vm.slof,
           keyboardType: TextInputType.number,
+          onTap: () => vm.slof.selection = TextSelection(
+              baseOffset: 0, extentOffset: vm.slof.value.text.length),
           onSaved: (String val) {
             if(val.isNotEmpty){
               return vm.stockDetail.slof = val.toInt() ?? 0;
@@ -128,6 +132,8 @@ class _StokFormScreenState extends State<StokFormScreen> {
         TextInputField(
           controller: vm.bal,
           keyboardType: TextInputType.number,
+          onTap: () => vm.bal.selection = TextSelection(
+              baseOffset: 0, extentOffset: vm.bal.value.text.length),
           onSaved: (String val) {
             if(val.isNotEmpty){
               return vm.stockDetail.bal = val.toInt() ?? 0;

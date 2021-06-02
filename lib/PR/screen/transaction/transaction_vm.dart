@@ -67,6 +67,7 @@ class TransactionVM with ChangeNotifier {
   Future<bool> saveSellin({String idReason}) async {
     if (idReason != null) {
       _visitDao.setNotBuyReason(id: customer.idvisit, notBuyReason: idReason);
+      loadSellinHead(customer.idvisit);
       return true;
     } else {
       _visitDao.setNotBuyReason(id: customer.idvisit, notBuyReason: "0");

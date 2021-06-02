@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mimos/helper/extension.dart';
 
 class StockDetail {
@@ -8,7 +9,7 @@ class StockDetail {
   int bal;
   int slof;
   int pac;
-  int qty;
+  double qty;
   bool needSync;
   bool isDelete;
   bool isLocal;
@@ -27,6 +28,22 @@ class StockDetail {
     this.isLocal,
   });
 
+  StockDetail.create({
+    @required int stockid,
+    @required String materialid,
+    @required String materialname,
+  })  : id = null,
+        stockid = stockid,
+        materialid = materialid,
+        materialname = materialname,
+        bal = 0,
+        slof = 0,
+        pac = 0,
+        qty = 0,
+        needSync = true,
+        isDelete = false,
+        isLocal = true;
+
   StockDetail.fromJson(Map<String, dynamic> map)
       : id = map["id"].toString().toInt(),
         stockid = map["stockid"].toString().toInt(),
@@ -35,7 +52,7 @@ class StockDetail {
         bal = map["bal"].toString().toInt(),
         slof = map["slof"].toString().toInt(),
         pac = map["pac"].toString().toInt(),
-        qty = map["qty"].toString().toInt(),
+        qty = map["qty"].toString().toDouble(),
         needSync = map["needSync"].toString().toBool(),
         isDelete = map["isDelete"].toString().toBool(),
         isLocal = map["isLocal"].toString().toBool();

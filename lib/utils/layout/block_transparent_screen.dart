@@ -20,7 +20,7 @@ class BlockTransparentScreen extends StatelessWidget {
             child: Text('COMPLETE', style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.amber.withOpacity(0.2),
-              fontSize: 72
+              fontSize: 52
             ),),
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:mimos/helper/extension.dart';
 
 class VisibilityDetail {
@@ -20,6 +21,19 @@ class VisibilityDetail {
     this.isDelete,
     this.isLocal,
   });
+
+  VisibilityDetail.create({
+    @required int visibilityid,
+    @required String materialid,
+    @required String materialname,
+  })  : id = null,
+        visibilityid = visibilityid,
+        materialid = materialid,
+        materialname = materialname,
+        pac = 0,
+        needSync = true,
+        isDelete = false,
+        isLocal = true;
 
   VisibilityDetail.fromJson(Map<String, dynamic> map)
       : id = map["id"].toString().toInt(),

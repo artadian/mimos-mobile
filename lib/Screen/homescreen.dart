@@ -111,17 +111,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemid: "103"));
             _myServiceList.add(new MyMenuItem(
                 lambang: Icons.assignment,
-                warna: Colors.green,
+                warna: Colors.orange,
                 judul: "RINGKASAN",
                 itemid: "104"));
             _myServiceList.add(new MyMenuItem(
                 lambang: Icons.cloud_upload,
-                warna: Colors.orange,
+                warna: Colors.green,
                 judul: "UPLOAD",
                 itemid: "105"));
             _myServiceList.add(new MyMenuItem(
                 lambang: Icons.exit_to_app,
-                warna: Colors.red,
+                warna: Colors.grey[700],
                 judul: "LOGOUT",
                 itemid: "0"));
           } else if (userRoleID == "6") {
@@ -164,22 +164,22 @@ class _HomeScreenState extends State<HomeScreen> {
     //--- new home
     return SafeArea(
         child: WillPopScope(
-          onWillPop: () async {
-            var res = await _dialogExitApps();
-            print(res.toString());
-            return res;
-          },
-          child: new Scaffold(
-              body: Container(
-      child: new ListView(
+      onWillPop: () async {
+        var res = await _dialogExitApps();
+        print(res.toString());
+        return res;
+      },
+      child: new Scaffold(
+          body: Container(
+        child: new ListView(
           physics: ClampingScrollPhysics(),
           children: <Widget>[
             _buildHeaderMenu(widthScreen),
             _buildMenuItem(widthScreen),
           ],
-      ),
-    )),
-        ));
+        ),
+      )),
+    ));
     //--- end new home
   }
 
@@ -193,121 +193,133 @@ class _HomeScreenState extends State<HomeScreen> {
             end: FractionalOffset.bottomCenter),
         borderRadius: BorderRadius.circular(30),
       ),
-      child: new Align(
-          alignment: Alignment.topLeft,
-          child: Container(
-            margin: EdgeInsets.fromLTRB(20, 25, 20, 20),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Image(
-                      image: AssetImage('assets/images/mimos_icon.png'),
-                      height: 40,
-                      width: 40,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text("MIMO",
-                        style: new TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)),
-                  ],
+      child: Container(
+        margin: EdgeInsets.fromLTRB(20, 25, 20, 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Image(
+                  image: AssetImage('assets/images/mimos_icon.png'),
+                  height: 40,
+                  width: 40,
+                  color: Colors.white,
                 ),
                 SizedBox(
-                  height: 15,
+                  width: 15,
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    SizedBox(
-                      width: 13,
-                    ),
-                    Text(session.username().toUpperCase(),
-                        style: new TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ), overflow: TextOverflow.ellipsis,),
-                    //
-                  ],
+                Text("MIMO",
+                    style: new TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.person,
+                  color: Colors.white,
                 ),
                 SizedBox(
-                  height: 5,
+                  width: 13,
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.perm_contact_cal,
+                Container(
+                  width: xLebar - 130,
+                  child: Text(
+                    session.username().toUpperCase(),
+                    style: new TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      size: 30,
                     ),
-                    SizedBox(
-                      width: 13,
-                    ),
-                    Text(session.userId(),
-                        style: new TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        )),
-                  ],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                //
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.perm_contact_cal,
+                  color: Colors.white,
                 ),
                 SizedBox(
-                  height: 5,
+                  width: 13,
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.work,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    SizedBox(
-                      width: 13,
-                    ),
-                    Text(session.roleName(),
-                        style: new TextStyle(
-                          fontSize: 18,
-                          // fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        )),
-                    // Text(
-                    //     "Sales Office ID " + widget.salesOfficeId.toString()),
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_city,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    SizedBox(
-                      width: 13,
-                    ),
-                    Text(session.salesOfficeName(),
-                        style: new TextStyle(
-                          fontSize: 18,
-                          // fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        )),
-                  ],
+                Container(
+                  width: xLebar - 130,
+                  child: Text(session.userId(),
+                      style: new TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
                 ),
               ],
             ),
-          )),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.work,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 13,
+                ),
+                Container(
+                  width: xLebar - 130,
+                  child: Text(session.roleName(),
+                      style: new TextStyle(
+                        fontSize: 14,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                ),
+                // Text(
+                //     "Sales Office ID " + widget.salesOfficeId.toString()),
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.location_city,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 13,
+                ),
+                Container(
+                  width: xLebar - 130,
+                  child: Text(session.salesOfficeName(),
+                      style: new TextStyle(
+                        fontSize: 14,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 

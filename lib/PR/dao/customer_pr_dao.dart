@@ -73,6 +73,15 @@ class CustomerPRDao extends BaseDao {
     return list;
   }
 
+  Future<List<String>> getAllCustomerno() async {
+    var db = await instance.database;
+    var maps = await db.rawQuery("SELECT customerno FROM $table");
+    List<String> list = maps.isNotEmpty
+        ? maps.map((item) => item["customerno"] as String).toList()
+        : [];
+    return list;
+  }
+
   Future<List<CustomerPR>> getCustomerVisit({String search, @required String date}) async {
     var db = await instance.database;
     String where = "";

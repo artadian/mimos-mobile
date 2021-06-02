@@ -27,7 +27,7 @@ class _DisplayFormScreenState extends State<DisplayFormScreen> {
     super.initState();
     _vm.init(context, widget.visibilityModel, widget.id, widget.priceid);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -107,10 +107,12 @@ class _DisplayFormScreenState extends State<DisplayFormScreen> {
         TextInputField(
           controller: _vm.pac,
           keyboardType: TextInputType.number,
+          onTap: () => _vm.pac.selection = TextSelection(
+              baseOffset: 0, extentOffset: _vm.pac.value.text.length),
           onSaved: (String val) {
-            if(val.isNotEmpty){
+            if (val.isNotEmpty) {
               return _vm.visibilityDetail.pac = val.toInt() ?? 0;
-            }else{
+            } else {
               return _vm.visibilityDetail.pac = 0;
             }
           },

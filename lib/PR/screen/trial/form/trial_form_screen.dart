@@ -135,7 +135,6 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
             keyboardType: TextInputType.phone,
             prefixIcon: Icon(Icons.phone),
             labelText: "Phone",
-            emptyValidator: true,
           ),
           TextInputField(
             controller: _vm.age,
@@ -147,7 +146,7 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
           ),
           DropdownTextFormField(
             controller: _vm.product,
-            labelText: "Pilih Barang",
+            labelText: "Pilih Produk",
             prefixIcon: Icon(Icons.shopping_basket),
             onSaved: (val) => _vm.model.materialname = val,
             validator: (val) {
@@ -274,22 +273,20 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
             controller: _vm.outletName,
             onSaved: (val) => _vm.model.outletname = val,
             prefixIcon: Icon(Icons.store),
-            labelText: "Outlet Name",
+            labelText: "Customer Outlet Name",
             emptyValidator: true,
           ),
           TextInputField(
             controller: _vm.outletAddress,
             onSaved: (val) => _vm.model.outletaddress = val,
             prefixIcon: Icon(Icons.assistant_navigation),
-            labelText: "Outlet Address",
-            emptyValidator: true,
+            labelText: "Customer Outlet Address",
           ),
           TextInputField(
             controller: _vm.notes,
             onSaved: (val) => _vm.model.notes = val,
             prefixIcon: Icon(Icons.sticky_note_2_outlined),
             labelText: "Notes",
-            emptyValidator: true,
           ),
         ]
             .map((e) => Padding(
@@ -303,7 +300,7 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
 
   _dialogProductChoice() {
     var alert = DefaultDialog(
-      title: "Pilih Product",
+      title: "Pilih Produk",
       contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
       content: Container(
         width: double.maxFinite,

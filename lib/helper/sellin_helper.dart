@@ -2,7 +2,7 @@ import 'package:mimos/PR/dao/material_price_dao.dart';
 import 'package:mimos/PR/model/sellin_detail.dart';
 
 class QtyPrice {
-  int qty;
+  double qty;
   double price;
 
   QtyPrice({
@@ -18,9 +18,9 @@ class SellinHelper {
     var material = await _materialPriceDao
         .getByMaterialId(sellinDetail.materialid);
 
-    var bal = (sellinDetail.bal ?? 0) * material.slof * material.pac;
-    var slof = (sellinDetail.slof ?? 0) * material.pac;
-    var pac = (sellinDetail.pac ?? 0);
+    var bal = (sellinDetail.bal ?? 0.0) * (material.bal / material.pac);
+    var slof = (sellinDetail.slof ?? 0.0) * (material.slof / material.pac);
+    var pac = (sellinDetail.pac ?? 0.0);
 
     var price = material.price;
     var qty = bal + slof + pac;

@@ -8,6 +8,7 @@ class DefaultDialog extends StatelessWidget {
   final List<Widget> actions;
   final EdgeInsetsGeometry insetPadding;
   final EdgeInsetsGeometry titlePadding;
+  final bool withClose;
 
   DefaultDialog({
     this.content,
@@ -17,6 +18,7 @@ class DefaultDialog extends StatelessWidget {
     this.actions,
     this.insetPadding,
     this.titlePadding,
+    this.withClose = true,
   });
 
   @override
@@ -37,12 +39,12 @@ class DefaultDialog extends StatelessWidget {
               title ?? "Title",
               style: TextStyle(color: Colors.white),
             ),
-            IconButton(
+            withClose ? IconButton(
                 icon: Icon(Icons.close),
                 color: Colors.white,
                 onPressed: () {
                   Navigator.of(context).pop();
-                })
+                }) : SizedBox(height: 45,)
           ],
         ),
         decoration: BoxDecoration(

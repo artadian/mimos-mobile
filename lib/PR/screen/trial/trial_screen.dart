@@ -48,8 +48,12 @@ class _TrialScreenState extends State<TrialScreen> {
     );
   }
 
-  Widget _headerItem(
-      {String title, String value, IconData icon, Color iconColor}) {
+  Widget _headerItem({
+    String title,
+    String value,
+    IconData icon,
+    Color iconColor,
+  }) {
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(

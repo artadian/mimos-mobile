@@ -47,7 +47,6 @@ class PullIntrodeal {
     );
 
     if (response.status) {
-      print("zain. ${response.list.length}");
       if (response.list != null) {
         _introdealDao.truncate();
         _introdealDao.insertAll(response.list);

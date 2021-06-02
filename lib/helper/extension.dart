@@ -151,21 +151,6 @@ extension StringExtension on String {
     }
   }
 
-  bool ynToBool() {
-    if (this != null && this != "null") {
-      return (this.toUpperCase() == "N") ? false : true;
-    } else {
-      return false;
-    }
-  }
-
-  String boolToYN() {
-    if (this != null && this != "null") {
-      return (this == "true") ? "Y" : "N";
-    } else {
-      return "N";
-    }
-  }
 }
 
 extension IntExtension on int {
@@ -174,16 +159,6 @@ extension IntExtension on int {
       return this;
     } else {
       return defaultVal;
-    }
-  }
-}
-
-extension BoolExtension on bool {
-  String boolToYN() {
-    if (this != null) {
-      return (this) ? "Y" : "N";
-    } else {
-      return "N";
     }
   }
 }

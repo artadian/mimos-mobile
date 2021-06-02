@@ -31,7 +31,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Cek STOCK"),
+          title: Text("Cek DISPLAY"),
           shadowColor: Colors.transparent,
         ),
         body: _initProvider(),
@@ -121,9 +121,10 @@ class _DisplayScreenState extends State<DisplayScreen> {
                     onTap: () {
                       _gotoForm(id: data.id);
                     },
-                    onDelete: () {
-                      _dialogDeleteConfirm(data);
-                    },
+                    withDelete: false,
+                    // onDelete: () {
+                    //   _dialogDeleteConfirm(data);
+                    // },
                   );
                 }),
           ),
@@ -137,17 +138,17 @@ class _DisplayScreenState extends State<DisplayScreen> {
       child: Stack(
         children: [
           _body(),
-          Positioned(
-            bottom: 16,
-            right: 16,
-            child: ButtonIconRounded(
-              icon: Icons.add_circle_outline,
-              text: "Tambah Item",
-              onPressed: () {
-                _gotoForm();
-              },
-            ),
-          )
+          // Positioned(
+          //   bottom: 16,
+          //   right: 16,
+          //   child: ButtonIconRounded(
+          //     icon: Icons.add_circle_outline,
+          //     text: "Tambah Item",
+          //     onPressed: () {
+          //       _gotoForm();
+          //     },
+          //   ),
+          // )
         ],
       ),
     );

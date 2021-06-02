@@ -112,12 +112,14 @@ class _StokScreenState extends State<StokScreen> {
                           pac: data.pac,
                           slof: data.slof,
                           bal: data.bal,
+                          qty: data.qty,
                           onTap: () {
                             _gotoForm(vm, id: data.id);
                           },
-                          onDelete: () {
-                            _dialogDeleteConfirm(vm, data);
-                          },
+                          withDelete: false,
+                          // onDelete: () {
+                          //   _dialogDeleteConfirm(vm, data);
+                          // },
                         );
                       }),
                 ),
@@ -131,17 +133,17 @@ class _StokScreenState extends State<StokScreen> {
       child: Stack(
         children: [
           _body(vm),
-          Positioned(
-            bottom: 16,
-            right: 16,
-            child: ButtonIconRounded(
-              icon: Icons.add_circle_outline,
-              text: "Tambah Item",
-              onPressed: () {
-                _gotoForm(vm);
-              },
-            ),
-          )
+          // Positioned(
+          //   bottom: 16,
+          //   right: 16,
+          //   child: ButtonIconRounded(
+          //     icon: Icons.add_circle_outline,
+          //     text: "Tambah Item",
+          //     onPressed: () {
+          //       _gotoForm(vm);
+          //     },
+          //   ),
+          // )
         ],
       ),
     );
@@ -149,10 +151,11 @@ class _StokScreenState extends State<StokScreen> {
 
   _gotoForm(StokVM vm, {int id}) async {
     var result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => StokFormScreen(
-                stock: vm.stock, id: id, priceid: vm.customer.priceid)));
+      context,
+      MaterialPageRoute(
+          builder: (context) => StokFormScreen(
+              stock: vm.stock, id: id, priceid: vm.customer.priceid)),
+    );
 
     print("result: $result");
     if (result != null) {

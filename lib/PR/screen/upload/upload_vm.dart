@@ -69,6 +69,7 @@ class UploadVM with ChangeNotifier {
       MyToast.showToast("Password Salah",
           backgroundColor: Colors.red);
     }
+    password.text = "";
   }
 
   syncInsert() async {

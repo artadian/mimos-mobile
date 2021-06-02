@@ -25,21 +25,17 @@ abstract class BaseDao {
   Future<List<int>> queryInsertAll(List<Map<String, dynamic>> rows,
       {ConflictAlgorithm conflictAlgorithm}) async {
     var db = await instance.database;
-    var result = List<int>();
-    await Future.wait(rows.map((row) async {
-      try {
-        var res = await db.insert(
-          table,
-          row,
-          conflictAlgorithm: conflictAlgorithm ?? ConflictAlgorithm.replace,
-        );
-        result.add(res);
-      } catch (e) {
-        result.add(0);
-        print("$runtimeType queryInsertAll ERROR: $e");
-      }
-    }));
-    return result;
+    Batch batch = db.batch();
+    rows.forEach((row) {
+      batch.insert(
+        table,
+        row,
+        conflictAlgorithm: conflictAlgorithm ?? ConflictAlgorithm.replace,
+      );
+    });
+
+    final results = (await batch.commit(continueOnError: true)).cast<int>();
+    return results;
   }
 
   Future<int> queryUpdate(Map<String, dynamic> row) async {
@@ -49,21 +45,17 @@ abstract class BaseDao {
         .update(table, row, where: '$primaryKey = ?', whereArgs: ['$id']);
   }
 
-  Future<List<int>> queryUpdateAll(List<Map<String, dynamic>> rows) async {
+  Future<List<int>> queryUpdateAll(List<Map<String, dynamic>> rows,
+      {ConflictAlgorithm conflictAlgorithm}) async {
     var db = await instance.database;
-    var result = List<int>();
-    await Future.wait(rows.map((row) async {
-      try {
-        int id = row[primaryKey];
-        var res = await db
-            .update(table, row, where: '$primaryKey = ?', whereArgs: ['$id']);
-        result.add(res);
-      } catch (e) {
-        result.add(0);
-        print("$runtimeType queryUpdateAll ERROR: $e");
-      }
-    }));
-    return result;
+    Batch batch = db.batch();
+    rows.forEach((row) {
+      int id = row[primaryKey];
+      batch.update(table, row, where: '$primaryKey = ?', whereArgs: ['$id']);
+    });
+
+    final results = (await batch.commit(continueOnError: true)).cast<int>();
+    return results;
   }
 
   Future<Map<String, dynamic>> queryGetById(int id) async {

@@ -36,6 +36,7 @@ class CustomerPR {
   int year;
   int cycle;
   int week;
+  int nourut;
 
   CustomerPR({
     this.id,
@@ -73,6 +74,7 @@ class CustomerPR {
     this.year,
     this.cycle,
     this.week,
+    this.nourut,
   });
 
   factory CustomerPR.fromTable(Map<String, dynamic> _map) {
@@ -111,6 +113,7 @@ class CustomerPR {
       year: _map["year"].toString().toInt(),
       cycle: _map["cycle"].toString().toInt(),
       week: _map["week"].toString().toInt(),
+      nourut: _map["nourut"].toString().toInt(),
     );
   }
 
@@ -153,6 +156,7 @@ class CustomerPR {
       idvisit: _map["idvisit"].toString().toInt(),
       wspclass: _map["wspclass"].toString(),
       ycw: _map["ycw"].toString(),
+      nourut: _map["nourut"].toString().toInt(),
       year: _year,
       cycle: _cycle,
       week: _week,
@@ -183,9 +187,11 @@ class CustomerPR {
       "userroleid": this.userroleid,
       "regionid": this.regionid,
       "tanggalkunjungan": this.tanggalkunjungan,
+      "wspclass": this.wspclass,
       "year": this.year,
       "cycle": this.cycle,
       "week": this.week,
+      "nourut": this.nourut,
     };
   }
 
@@ -226,6 +232,7 @@ class CustomerPR {
       "year": this.year,
       "cycle": this.cycle,
       "week": this.week,
+      "nourut": this.nourut,
     };
   }
 }

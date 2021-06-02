@@ -79,19 +79,29 @@ class _VisitScreenState extends State<VisitScreen> {
                       itemBuilder: (c, i) {
                         var data = _vm.listCustomer[i];
                         return VisitItem(
-                          leading: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              child: Icon(
-                                Icons.person_pin,
-                                color: (data.idvisit != null &&
-                                        (data.notvisitreason != null &&
-                                            data.notvisitreason != "0"))
-                                    ? Colors.red
-                                    : data.idvisit != null
-                                        ? Colors.green
-                                        : Colors.blue,
-                                size: 32,
-                              )),
+                          no: i+1,
+                          // leading: Container(
+                          //   padding: EdgeInsets.symmetric(horizontal: 10),
+                          //   child: Icon(
+                          //     Icons.person_pin,
+                          //     color: (data.idvisit != null &&
+                          //             (data.notvisitreason != null &&
+                          //                 data.notvisitreason != "0"))
+                          //         ? Colors.red
+                          //         : data.idvisit != null
+                          //             ? Colors.green
+                          //             : Colors.blue,
+                          //     size: 32,
+                          //   ),
+                          // ),
+                          wsp: data.wspclass.toUpperCase(),
+                          color: (data.idvisit != null &&
+                              (data.notvisitreason != null &&
+                                  data.notvisitreason != "0"))
+                              ? Colors.red
+                              : data.idvisit != null
+                              ? Colors.green
+                              : null,
                           title: data.name,
                           subtitle1: "${data.customerno} [${data.priceid}]",
                           subtitle2: data.tanggalkunjungan.dateView(),

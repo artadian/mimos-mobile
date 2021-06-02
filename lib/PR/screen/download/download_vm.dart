@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:mimos/PR/dao/db_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
@@ -13,6 +15,7 @@ import 'package:mimos/PR/screen/download/resource/pull_stock.dart';
 import 'package:mimos/PR/screen/download/resource/pull_trial.dart';
 import 'package:mimos/PR/screen/download/resource/pull_visibility.dart';
 import 'package:mimos/PR/screen/download/resource/pull_visit.dart';
+import 'package:mimos/PR/screen/download/sync_resource.dart';
 import 'package:mimos/utils/widget/my_toast.dart';
 
 class DownloadVM with ChangeNotifier {
@@ -32,8 +35,11 @@ class DownloadVM with ChangeNotifier {
   var _trial = PullTrial();
   var _introdeal = PullIntrodeal();
   var _dbDao = DbDao();
+  var _sync = SyncResource();
+  var password = TextEditingController();
 
   init() async {
+    downloads.clear();
     downloads.add(await _customer.init());
     downloads.add(await _materialPrice.init());
     downloads.add(await _lookup.init());
@@ -50,7 +56,19 @@ class DownloadVM with ChangeNotifier {
     setTextDate();
   }
 
-  selectDate(DateTime picked){
+  clearDb() async {
+    var dbDao = DbDao();
+    if(password.text.toString() == "12345"){
+      await dbDao.truncateAll();
+      await init();
+    }else{
+      MyToast.showToast("Password Salah",
+          backgroundColor: Colors.red);
+    }
+    password.text = "";
+  }
+
+  selectDate(DateTime picked) {
     etDate.text = DateFormat("dd MMMM yyyy").format(picked);
     selectedDate = picked;
     notifyListeners();
@@ -71,6 +89,9 @@ class DownloadVM with ChangeNotifier {
 //    var date = "2021-01-16";
     print("date: $date");
 
+    MyToast.showToast("Preparing to download, Please wait...",
+        toastLength: Toast.LENGTH_LONG);
+    await _sync.upload();
     await _dbDao.truncateAllTransaction(all: false);
     await _customer.download(date: date).listen((e) {
       print("DOWNLOAD: ${e.title} - ${e.status}: ${e.message}");

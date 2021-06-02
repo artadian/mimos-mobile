@@ -172,22 +172,25 @@ class _UploadScreenState extends State<UploadScreen> {
       context: context,
       builder: (c) => AlertDialog(
         title: Text("Truncate"),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Semua data di Handheld akan di hapus permanent. Hapus semua data ?",
-            ),
-            SizedBox(height: 10,),
-            Text(
-              "Password",
-            ),
-            TextFormField(
-              controller: _vm.password,
-            )
-          ],
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Semua data di HP akan di hapus permanent. Hapus semua data ?",
+              ),
+              SizedBox(height: 10,),
+              Text(
+                "Enter Password:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextFormField(
+                controller: _vm.password,
+              )
+            ],
+          ),
         ),
         actions: <Widget>[
           FlatButton(

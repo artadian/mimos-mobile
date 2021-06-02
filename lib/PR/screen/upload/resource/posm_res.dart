@@ -59,12 +59,13 @@ class PosmRes {
         if (res.status) {
           await _dao.delete(row["id"], local: true);
 
-          var dataExist = await _dao.getById(res.data.id);
+          var idServer = res.data.id;
+          var dataExist = await _dao.getById(idServer);
           if(dataExist != null){
             // INSERT Data Existing
             dataExist.id = null; // Set ID to NULL, New Insert
             var idex = await _dao.insert(dataExist);
-            await _detailDao.updateIdParent(id: dataExist.id, newId: idex);
+            await _detailDao.updateIdParent(id: idServer, newId: idex);
           }
 
           // INSERT Data From SERVER

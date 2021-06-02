@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mimos/Constant/Constant.dart';
-import 'package:mimos/Screen/splashscreen.dart';
+import 'package:mimos/Screen/splashscreen/splashscreen.dart';
 import 'package:mimos/helper/session_manager.dart';
 import 'package:mimos/routes.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';

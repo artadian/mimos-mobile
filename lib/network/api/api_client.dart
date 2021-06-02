@@ -8,8 +8,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ApiClient {
   static Dio _dio;
-  static const connectTimeout = 15000;
-  static const receiveTimeout = 15000;
+  static const connectTimeout = 40000;
+  static const receiveTimeout = 40000;
 
   Dio instance() {
     if (_dio != null) return _dio;
@@ -30,7 +30,7 @@ class ApiClient {
       return options;
     }, onResponse: (Response response) {
       try {
-        response.data = removeAllHtml(response.data);
+        response.data = clean(response.data);
       } catch (e) {
         print("ApiClient: $e");
       }
@@ -66,7 +66,7 @@ class ApiClient {
       print(response);
       print("----------------");
       try {
-        response.data = removeAllHtml(response.data);
+        response.data = clean(response.data);
       } catch (e) {
         print(e);
       }
@@ -84,10 +84,10 @@ class ApiClient {
     return _dio;
   }
 
-  static Map<String, dynamic> removeAllHtml(dynamic data) {
+  static dynamic clean(dynamic data) {
     try {
       RegExp exp = RegExp(r"<[^>].*>", multiLine: true, caseSensitive: true);
-      var res = data.toString().replaceAll(exp, '');
+      var res = data.toString().replaceAll('\",\"', '\",\n\"').replaceAll(exp, '');
       return json.decode(res);
     } catch (e) {
       print("ApiClient removeAllHtml: $e");

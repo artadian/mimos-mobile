@@ -1,18 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mimos/PR/dao/customer_wsp_dao.dart';
 import 'package:mimos/PR/dao/stock_dao.dart';
 import 'package:mimos/PR/dao/stock_detail_dao.dart';
+import 'package:mimos/PR/dao/stock_wsp_dao.dart';
 import 'package:mimos/PR/model/default/download_model.dart';
 import 'package:mimos/PR/model/response/list_response.dart';
 import 'package:mimos/PR/repo/stock_detail_repo.dart';
 import 'package:mimos/PR/repo/stock_repo.dart';
+import 'package:mimos/PR/repo/stock_wsp_repo.dart';
 import 'package:mimos/helper/session_manager.dart';
 
 class PullStock {
   var _stockDao = StockDao();
   var _stockDetailDao = StockDetailDao();
+  var _stockWspDao = StockWspDao();
   var _stockRepo = StockRepo();
   var _stockDetailRepo = StockDetailRepo();
+  var _stockWspRepo = StockWspRepo();
   var _model = DownloadModel();
 
   Future<DownloadModel> init() async {
@@ -34,6 +39,7 @@ class PullStock {
 
     if(resStock.status){
       var resStockDetail = await pullStockDetail();
+      var resStockWsp = await pullStockWsp();
       yield await _success(resStock);
     }else{
       yield _failed(resStock.message);
@@ -68,6 +74,31 @@ class PullStock {
       if (response.list != null) {
         _stockDetailDao.truncate();
         _stockDetailDao.insertAll(response.list);
+
+        return response;
+      } else {
+        return response;
+      }
+    } else {
+      return response;
+    }
+  }
+
+  Future<ListResponse> pullStockWsp() async {
+    var _daoCustWsp = CustomerWspDao();
+    var custWsp = await _daoCustWsp.getAll();
+    var wspclass = custWsp.map((e) => e.wspclass).toList();
+    var materialgroupids = custWsp.map((e) => e.materialgroupid).toList();
+    var response = await _stockWspRepo.pull(
+      salesofficeid: session.salesOfficeId(),
+      wspclass: wspclass.isEmpty ? null : wspclass,
+      materialgroup_ids: materialgroupids.isEmpty ? null : materialgroupids,
+    );
+
+    if (response.status) {
+      if (response.list != null) {
+        _stockWspDao.truncate();
+        _stockWspDao.insertAll(response.list);
 
         return response;
       } else {

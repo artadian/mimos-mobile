@@ -114,6 +114,8 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
           TextInputField(
             controller: vm.etPac,
             keyboardType: TextInputType.number,
+            onTap: () => vm.etPac.selection = TextSelection(
+                baseOffset: 0, extentOffset: vm.etPac.value.text.length),
             onSaved: (String val) {
               if (val.isNotEmpty) {
                 return vm.sellinDetail.pac = val.toInt() ?? 0;
@@ -131,6 +133,8 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
           TextInputField(
             controller: vm.etSlof,
             keyboardType: TextInputType.number,
+            onTap: () => vm.etSlof.selection = TextSelection(
+                baseOffset: 0, extentOffset: vm.etSlof.value.text.length),
             onSaved: (String val) {
               if (val.isNotEmpty) {
                 return vm.sellinDetail.slof = val.toInt() ?? 0;
@@ -148,6 +152,8 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
           TextInputField(
             controller: vm.etBal,
             keyboardType: TextInputType.number,
+            onTap: () => vm.etBal.selection = TextSelection(
+                baseOffset: 0, extentOffset: vm.etBal.value.text.length),
             onSaved: (String val) {
               if (val.isNotEmpty) {
                 return vm.sellinDetail.bal = val.toInt() ?? 0;
@@ -177,6 +183,44 @@ class _PenjualanFormScreenState extends State<PenjualanFormScreen> {
             prefixText: "Bonus: ",
             suffixText: "Pac",
             prefixIcon: Icon(Icons.add_box),
+          ),
+          if (vm.introdealInfo != null && vm.introdealInfo.isNotEmpty)
+            Container(
+              width: double.maxFinite,
+              child: Text(
+                vm.introdealInfo,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+          Container(
+            padding: EdgeInsets.only(top: 16),
+            width: double.maxFinite,
+            child: Text(
+              vm.stockNow,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+          Container(
+            width: double.maxFinite,
+            child: Text(
+              vm.minimumOrder,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontStyle: FontStyle.italic,
+                color: Colors.red,
+                fontSize: 16,
+              ),
+            ),
           ),
         ]
             .map((e) => Padding(
