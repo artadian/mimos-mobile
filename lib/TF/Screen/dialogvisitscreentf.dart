@@ -264,7 +264,7 @@ class _DialogVisitScreenTFState extends State<DialogVisitScreenTF> {
                                       //backgroundColor: Colors.red,
                                       textColor: Colors.green,
                                       fontSize: 16.0,
-                                      timeInSecForIos: 3);
+                                      timeInSecForIosWeb: 3);
 
                                   /// open screen
                                   //Navigator.of(context).pushNamed(VisitingScreenTF(customerno:"widget.customerno",customername:"widget.customername",tglkunjungan:"widget.tglkunjungan",userid:"_userID"));
@@ -302,7 +302,7 @@ class _DialogVisitScreenTFState extends State<DialogVisitScreenTF> {
                                         //backgroundColor: Colors.red,
                                         textColor: Colors.green,
                                         fontSize: 16.0,
-                                        timeInSecForIos: 3);
+                                        timeInSecForIosWeb: 3);
 
                                     /// open screen
                                     // Navigator.of(context).pop(VISIT_SCREEN_TF);
@@ -319,7 +319,7 @@ class _DialogVisitScreenTFState extends State<DialogVisitScreenTF> {
                                         //backgroundColor: Colors.red,
                                         textColor: Colors.red,
                                         fontSize: 16.0,
-                                        timeInSecForIos: 1);
+                                        timeInSecForIosWeb: 1);
                                   }
                                 }
                               }),

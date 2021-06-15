@@ -380,12 +380,12 @@ class _TrialFormScreenState extends State<TrialFormScreen> {
           ],
         ),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
               child: Text('Cancel')),
-          FlatButton(
+          TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },

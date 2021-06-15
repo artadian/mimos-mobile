@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mimos/PR/model/app_version.dart';
 import 'package:mimos/PR/repo/auth_repo.dart';
@@ -17,9 +19,13 @@ class SplashScreenVM with ChangeNotifier {
   init(BuildContext context) async {
     this.context = context;
     packageInfo = await PackageInfo.fromPlatform();
+    cekVersionApps();
+  }
+
+  cekToken() async {
     if (await isLogin()) {
-      // CEK VERSION
-      cekVersionApps();
+      // HOME
+      _gotoHome();
     } else {
       // LOGIN
       var root = MaterialPageRoute(builder: (context) => LogInScreen());
@@ -37,15 +43,16 @@ class SplashScreenVM with ChangeNotifier {
 
   cekVersionApps() async {
     var res = await authRepo.appVersion(await session.getUserId());
+    var versionCode = await packageInfo.buildNumber.toInt(defaultVal: 0);
     if (res.status) {
-      print("$runtimeType: ${res.data.toJson()}");
-      if (res.data.version_code > packageInfo.version.toInt(defaultVal: 0)) {
+      print("$runtimeType: ${res.data.toJson()}, versionCode: $versionCode");
+      if (res.data.version_code > versionCode) {
         _dialogNewApps(res.data);
       } else {
-        _gotoHome();
+        cekToken();
       }
     } else {
-      _gotoHome();
+      cekToken();
     }
   }
 
@@ -71,28 +78,35 @@ class SplashScreenVM with ChangeNotifier {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 3,),
-            Text(data.release_log),
+            Text(data.release_log ?? "-"),
           ],
         ),
       ),
       actions: [
         if (!data.force_update)
-          OutlineButton(
+          OutlinedButton(
             onPressed: () {
               Navigator.of(context).pop();
-              _gotoHome();
+              cekToken();
             },
             child: Text(
               "CLOSE",
               style: TextStyle(color: Colors.blue),
             ),
           ),
-        RaisedButton(
+        ElevatedButton(
           onPressed: () {
-            _launchDownload(data.link);
+            Navigator.pop(context);
+            if (Platform.isAndroid) {
+              _launchDownload(data.linkAndroid ?? "-");
+            } else if (Platform.isIOS) {
+              _launchDownload(data.linkIos ?? "-");
+            }
           },
           child: Text("UPDATE"),
-          color: Colors.green,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+          ),
         ),
       ],
     );
@@ -101,7 +115,10 @@ class SplashScreenVM with ChangeNotifier {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return alert;
+        return WillPopScope(
+          onWillPop: () => Future.value(false),
+          child: alert,
+        );
       },
     );
   }
@@ -109,6 +126,7 @@ class SplashScreenVM with ChangeNotifier {
   _launchDownload(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
+      cekVersionApps();
     } else {
       _gotoHome();
     }

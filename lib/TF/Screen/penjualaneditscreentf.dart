@@ -344,7 +344,7 @@ Fluttertoast.showToast(
                                             //backgroundColor: Colors.red,
                                             textColor: Colors.red,
                                             fontSize: 16.0,
-                                            timeInSecForIos: 1);
+                                            timeInSecForIosWeb: 1);
                       }else{
                         if (_qtybonus > 0) {
                 if ((int.parse(balController.value.text) * _bal2Pac) +

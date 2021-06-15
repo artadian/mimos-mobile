@@ -15,6 +15,6 @@ class MyToast {
         backgroundColor: backgroundColor ?? Colors.indigo,
         textColor: textColor ?? Colors.white,
         fontSize: 16.0,
-        timeInSecForIos: 1);
+        timeInSecForIosWeb: 1);
   }
 }

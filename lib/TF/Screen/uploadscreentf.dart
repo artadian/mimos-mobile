@@ -111,7 +111,7 @@ class _UploadScreenTFState extends State<UploadScreenTF> {
                         // backgroundColor: Colors.green,
                         textColor: Colors.black,
                         fontSize: 16.0,
-                        timeInSecForIos: 1);
+                        timeInSecForIosWeb: 1);
                     _uploadHeadPenjualan();
                     Fluttertoast.showToast(
                         msg: "Upload Data Sellin Selesai",
@@ -120,7 +120,7 @@ class _UploadScreenTFState extends State<UploadScreenTF> {
                         // backgroundColor: Colors.green,
                         textColor: Colors.black,
                         fontSize: 16.0,
-                        timeInSecForIos: 1);
+                        timeInSecForIosWeb: 1);
                     _uploadHeadPosm();
                     Fluttertoast.showToast(
                         msg: "Upload Data Posm Selesai",
@@ -129,7 +129,7 @@ class _UploadScreenTFState extends State<UploadScreenTF> {
                         // backgroundColor: Colors.green,
                         textColor: Colors.black,
                         fontSize: 16.0,
-                        timeInSecForIos: 1);
+                        timeInSecForIosWeb: 1);
                     _uploadHeadStock();
                     Fluttertoast.showToast(
                         msg: "Upload Data Stock Selesai",
@@ -138,7 +138,7 @@ class _UploadScreenTFState extends State<UploadScreenTF> {
                         // backgroundColor: Colors.green,
                         textColor: Colors.black,
                         fontSize: 16.0,
-                        timeInSecForIos: 1);
+                        timeInSecForIosWeb: 1);
                     _uploadHeadVisibility();
                     Fluttertoast.showToast(
                         msg: "Upload Data Cek Display Selesai",
@@ -147,7 +147,7 @@ class _UploadScreenTFState extends State<UploadScreenTF> {
                         // backgroundColor: Colors.green,
                         textColor: Colors.black,
                         fontSize: 16.0,
-                        timeInSecForIos: 1);
+                        timeInSecForIosWeb: 1);
 
                         Fluttertoast.showToast(
                         msg: "Upload Selesai",
@@ -156,7 +156,7 @@ class _UploadScreenTFState extends State<UploadScreenTF> {
                         // backgroundColor: Colors.green,
                         textColor: Colors.black,
                         fontSize: 16.0,
-                        timeInSecForIos: 1);
+                        timeInSecForIosWeb: 1);
                   } else if (data.tampilan.toString() == "121") {
                     Navigator.of(context).pushNamed(CHECK_SELLIN_UPLOAD_SCREEN);
                   } else if (data.tampilan.toString() == "122") {

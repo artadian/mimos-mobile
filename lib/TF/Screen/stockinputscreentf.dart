@@ -222,7 +222,7 @@ class _InputStockScreenTFState extends State<InputStockScreenTF> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         } else if (!(slofController.value.text
                                 .trim()
                                 .toString()
@@ -236,7 +236,7 @@ class _InputStockScreenTFState extends State<InputStockScreenTF> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         } else if (!(pacController.value.text
                                 .trim()
                                 .toString()
@@ -250,7 +250,7 @@ class _InputStockScreenTFState extends State<InputStockScreenTF> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         } else {
                           //
 
@@ -273,7 +273,7 @@ class _InputStockScreenTFState extends State<InputStockScreenTF> {
                                           //backgroundColor: Colors.red,
                                           textColor: Colors.red,
                                           fontSize: 16.0,
-                                          timeInSecForIos: 1);
+                                          timeInSecForIosWeb: 1);
                                     } else {
                                       //print("tidak ada");
                                       int _totQty;
@@ -316,7 +316,7 @@ class _InputStockScreenTFState extends State<InputStockScreenTF> {
                             //backgroundColor: Colors.red,
                             textColor: Colors.red,
                             fontSize: 16.0,
-                            timeInSecForIos: 1);
+                            timeInSecForIosWeb: 1);
                       }
                     },
                     child: new Text(

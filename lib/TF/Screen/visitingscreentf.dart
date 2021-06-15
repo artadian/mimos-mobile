@@ -258,7 +258,7 @@ class _VisitingScreenTFState extends State<VisitingScreenTF> {
                           //backgroundColor: Colors.red,
                           textColor: Colors.red,
                           fontSize: 16.0,
-                          timeInSecForIos: 1);
+                          timeInSecForIosWeb: 1);
                     } else {
                       // cek input display
                       if (_dataInputVisibilityDone) {
@@ -269,7 +269,7 @@ class _VisitingScreenTFState extends State<VisitingScreenTF> {
                             //backgroundColor: Colors.red,
                             textColor: Colors.red,
                             fontSize: 16.0,
-                            timeInSecForIos: 1);
+                            timeInSecForIosWeb: 1);
                       } else {
 // cek apakah sudah inputan dialogpenjualan
                         // print(_datadialogpenjualan);

@@ -141,7 +141,7 @@ class _LogInScreenState extends State<LogInScreen>
                                             //backgroundColor: Colors.red,
                                             textColor: Colors.red,
                                             fontSize: 16.0,
-                                            timeInSecForIos: 1);
+                                            timeInSecForIosWeb: 1);
                                       } else if (!(passwordController.value.text
                                               .trim()
                                               .toString()
@@ -153,7 +153,7 @@ class _LogInScreenState extends State<LogInScreen>
                                             gravity: ToastGravity.CENTER,
                                             backgroundColor: Colors.red,
                                             textColor: Colors.white,
-                                            timeInSecForIos: 1);
+                                            timeInSecForIosWeb: 1);
                                       } else {
                                         /* Fluttertoast.showToast(
                                               msg:
@@ -162,7 +162,7 @@ class _LogInScreenState extends State<LogInScreen>
                                                       .toString(),
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.CENTER,
-                                              timeInSecForIos: 1);
+                                              timeInSecForIosWeb: 1);
 */
                                         // email_controller.clear();
                                         //password_controller.clear();

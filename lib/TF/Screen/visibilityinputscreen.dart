@@ -201,7 +201,7 @@ class _VisibilityInputScreenState extends State<VisibilityInputScreen> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         } else {
                           //
 
@@ -224,7 +224,7 @@ class _VisibilityInputScreenState extends State<VisibilityInputScreen> {
                                           //backgroundColor: Colors.red,
                                           textColor: Colors.red,
                                           fontSize: 16.0,
-                                          timeInSecForIos: 1);
+                                          timeInSecForIosWeb: 1);
                                     } else {
                                       // if((int.parse(pacController.value.text)) > maxWSP){
                                       //   Fluttertoast.showToast(
@@ -235,7 +235,7 @@ class _VisibilityInputScreenState extends State<VisibilityInputScreen> {
                                       //     //backgroundColor: Colors.red,
                                       //     textColor: Colors.red,
                                       //     fontSize: 16.0,
-                                      //     timeInSecForIos: 1);
+                                      //     timeInSecForIosWeb: 1);
                                       // } else {
                                         //print("tidak ada");
                                       // int _totQty;
@@ -275,7 +275,7 @@ class _VisibilityInputScreenState extends State<VisibilityInputScreen> {
                             //backgroundColor: Colors.red,
                             textColor: Colors.red,
                             fontSize: 16.0,
-                            timeInSecForIos: 1);
+                            timeInSecForIosWeb: 1);
                       }
                     },
                     child: new Text(

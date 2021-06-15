@@ -379,7 +379,7 @@ class _PenjualanInputScreenTFState extends State<PenjualanInputScreenTF> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         } else if (!(slofController.value.text
                                 .trim()
                                 .toString()
@@ -393,7 +393,7 @@ class _PenjualanInputScreenTFState extends State<PenjualanInputScreenTF> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         } else if (!(pacController.value.text
                                 .trim()
                                 .toString()
@@ -407,7 +407,7 @@ class _PenjualanInputScreenTFState extends State<PenjualanInputScreenTF> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         } else {
                           //
                           _cekDataPenjualanMaterial(
@@ -426,7 +426,7 @@ class _PenjualanInputScreenTFState extends State<PenjualanInputScreenTF> {
                                           //backgroundColor: Colors.red,
                                           textColor: Colors.red,
                                           fontSize: 16.0,
-                                          timeInSecForIos: 1);
+                                          timeInSecForIosWeb: 1);
                                     } else {
                                       //print("tidak ada");
                                       String _fixIntrodeal;
@@ -449,7 +449,7 @@ class _PenjualanInputScreenTFState extends State<PenjualanInputScreenTF> {
                                             //backgroundColor: Colors.red,
                                             textColor: Colors.red,
                                             fontSize: 16.0,
-                                            timeInSecForIos: 1);
+                                            timeInSecForIosWeb: 1);
                                       } else {
                                         if (_qtybonus > 0) {
                                           if ((int.parse(balController
@@ -506,7 +506,7 @@ class _PenjualanInputScreenTFState extends State<PenjualanInputScreenTF> {
                             //backgroundColor: Colors.red,
                             textColor: Colors.red,
                             fontSize: 16.0,
-                            timeInSecForIos: 1);
+                            timeInSecForIosWeb: 1);
                       }
                     },
                     child: new Text(

@@ -423,7 +423,7 @@ class _POSMInputScreenTFState extends State<POSMInputScreenTF> {
                                 //backgroundColor: Colors.red,
                                 textColor: Colors.red,
                                 fontSize: 16.0,
-                                timeInSecForIos: 1);
+                                timeInSecForIosWeb: 1);
                           } else {
                             bool _isDataKomplite = true;
                             if (_isStatusNew) {
@@ -445,7 +445,7 @@ class _POSMInputScreenTFState extends State<POSMInputScreenTF> {
                                       //backgroundColor: Colors.red,
                                       textColor: Colors.red,
                                       fontSize: 16.0,
-                                      timeInSecForIos: 1);
+                                      timeInSecForIosWeb: 1);
                                 } 
                               } else {
                                 _isDataKomplite = false;
@@ -457,7 +457,7 @@ class _POSMInputScreenTFState extends State<POSMInputScreenTF> {
                                     //backgroundColor: Colors.red,
                                     textColor: Colors.red,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
                               }
                             }
                             if (_isDataKomplite) {
@@ -479,7 +479,7 @@ class _POSMInputScreenTFState extends State<POSMInputScreenTF> {
                                                   Color(0xff0096ff),
                                               //textColor: Color(0xff0096ff),
                                               fontSize: 27.0,
-                                              timeInSecForIos: 1);
+                                              timeInSecForIosWeb: 1);
                                         } else {
                                           if (widget.trx == "new") {
                                             _insertDataPOSM(
@@ -535,7 +535,7 @@ class _POSMInputScreenTFState extends State<POSMInputScreenTF> {
                               //backgroundColor: Colors.red,
                               textColor: Colors.red,
                               fontSize: 16.0,
-                              timeInSecForIos: 1);
+                              timeInSecForIosWeb: 1);
                         }
                       } else {
                         Fluttertoast.showToast(
@@ -546,7 +546,7 @@ class _POSMInputScreenTFState extends State<POSMInputScreenTF> {
                             //backgroundColor: Colors.red,
                             textColor: Colors.red,
                             fontSize: 16.0,
-                            timeInSecForIos: 1);
+                            timeInSecForIosWeb: 1);
                       }
                     } else {
                       Fluttertoast.showToast(
@@ -556,7 +556,7 @@ class _POSMInputScreenTFState extends State<POSMInputScreenTF> {
                           //backgroundColor: Colors.red,
                           textColor: Colors.red,
                           fontSize: 16.0,
-                          timeInSecForIos: 1);
+                          timeInSecForIosWeb: 1);
                     }
                   },
                   child: new Text(

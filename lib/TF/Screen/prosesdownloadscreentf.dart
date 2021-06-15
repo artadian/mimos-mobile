@@ -168,7 +168,7 @@ String _statusDownload ="";
                                 //backgroundColor: Colors.red,
                                 textColor: Colors.red,
                                 fontSize: 16.0,
-                                timeInSecForIos: 1);
+                                timeInSecForIosWeb: 1);
                           } else if (!(isDate(_tglAwal.value.text))) {
                             Fluttertoast.showToast(
                                 msg: "Format Tgl Awal Salah",
@@ -177,7 +177,7 @@ String _statusDownload ="";
                                 //backgroundColor: Colors.red,
                                 textColor: Colors.red,
                                 fontSize: 16.0,
-                                timeInSecForIos: 1);
+                                timeInSecForIosWeb: 1);
                           }  else {
                             var _tglAwalRange =
                                 DateTime.parse(_tglAwal.value.text);
@@ -222,7 +222,7 @@ String _statusDownload ="";
                                     // backgroundColor: Colors.green,
                                     textColor: Colors.black,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
                                 // proses download material
                                 _downloadAPIMaterialTF(prefUserid);
                                 Fluttertoast.showToast(
@@ -232,7 +232,7 @@ String _statusDownload ="";
                                     // backgroundColor: Colors.green,
                                     textColor: Colors.black,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
                                 // proses download harga
                                 _downloadDataPrice(
                                     prefUserid,
@@ -249,7 +249,7 @@ String _statusDownload ="";
                                     // backgroundColor: Colors.green,
                                     textColor: Colors.black,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
 
                                 _downloadDataIntrodeal(
                                     prefUserid,
@@ -266,7 +266,7 @@ String _statusDownload ="";
                                     // backgroundColor: Colors.green,
                                     textColor: Colors.black,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
 // downloag customer_introdeal
                                 _downloadDataCustomerIntrodeal(
                                     prefUserid,
@@ -283,7 +283,7 @@ String _statusDownload ="";
                                     // backgroundColor: Colors.green,
                                     textColor: Colors.black,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
                                 // download lookup
                                 _downloadDataLookup(prefUserid);
                                 Fluttertoast.showToast(
@@ -293,7 +293,7 @@ String _statusDownload ="";
                                     // backgroundColor: Colors.green,
                                     textColor: Colors.black,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
                                     //  download data defalut visibility
                                 //      _downloadDataVisibility(prefUserid,DateFormat("yyyy-MM-dd")
                                 //         .format(_tglAwalRange)
@@ -305,7 +305,7 @@ String _statusDownload ="";
                                 //     // backgroundColor: Colors.green,
                                 //     textColor: Colors.black,
                                 //     fontSize: 16.0,
-                                //     timeInSecForIos: 1);
+                                //     timeInSecForIosWeb: 1);
 
                                 // download visibility wsp
                                  _downloadDataVisibilityWSP(prefUserid,DateFormat("yyyy-MM-dd")
@@ -318,7 +318,7 @@ String _statusDownload ="";
                                     // backgroundColor: Colors.green,
                                     textColor: Colors.black,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
 
                                 //
                               });
@@ -330,7 +330,7 @@ String _statusDownload ="";
                                   // backgroundColor: Colors.green,
                                   textColor: Colors.black,
                                   fontSize: 16.0,
-                                  timeInSecForIos: 1);
+                                  timeInSecForIosWeb: 1);
                             }
                           }
                         }),

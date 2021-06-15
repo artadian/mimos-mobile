@@ -230,7 +230,7 @@ class _DialogPenjualanScreenTFState extends State<DialogPenjualanScreenTF> {
                                   //backgroundColor: Colors.red,
                                   textColor: Colors.green,
                                   fontSize: 16.0,
-                                  timeInSecForIos: 3);
+                                  timeInSecForIosWeb: 3);
 
                               /// open screen penjualan
                               var root = MaterialPageRoute(
@@ -259,7 +259,7 @@ class _DialogPenjualanScreenTFState extends State<DialogPenjualanScreenTF> {
                                     gravity: ToastGravity.CENTER,
                                     textColor: Colors.green,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 3);
+                                    timeInSecForIosWeb: 3);
                                 goToParent();
                               } else {
                                 Fluttertoast.showToast(
@@ -268,7 +268,7 @@ class _DialogPenjualanScreenTFState extends State<DialogPenjualanScreenTF> {
                                     gravity: ToastGravity.CENTER,
                                     textColor: Colors.red,
                                     fontSize: 16.0,
-                                    timeInSecForIos: 1);
+                                    timeInSecForIosWeb: 1);
                               }
                             }
                           }),

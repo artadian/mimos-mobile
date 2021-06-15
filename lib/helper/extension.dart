@@ -2,9 +2,9 @@ import 'package:intl/intl.dart';
 
 var money = NumberFormat("###,###,###", "en_us");
 var dateFormat = DateFormat("yyyy-MM-dd");
-var dateTimeFormat = DateFormat("yyyy-MM-dd hh:mm:ss");
+var dateTimeFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 var dateViewFormat = DateFormat("dd MMMM yyyy");
-var dateTimeViewFormat = DateFormat("dd MMMM yyyy hh:mm:ss");
+var dateTimeViewFormat = DateFormat("dd MMMM yyyy HH:mm:ss");
 
 extension StringExtension on String {
   int toInt({int defaultVal}) {

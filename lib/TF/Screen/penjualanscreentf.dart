@@ -409,7 +409,7 @@ class _PenjualanScreenTFState extends State<PenjualanScreenTF> {
                                           //backgroundColor: Colors.red,
                                           textColor: Colors.red,
                                           fontSize: 16.0,
-                                          timeInSecForIos: 1);
+                                          timeInSecForIosWeb: 1);
                                     } else {
                                        _dialogDeleteNota(context);
                                     }}));
@@ -459,7 +459,7 @@ class _PenjualanScreenTFState extends State<PenjualanScreenTF> {
                           //backgroundColor: Colors.red,
                           textColor: Colors.red,
                           fontSize: 16.0,
-                          timeInSecForIos: 1);
+                          timeInSecForIosWeb: 1);
                     } else {
                       _updateDataVisit(
                           widget.customerno,

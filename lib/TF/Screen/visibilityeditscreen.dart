@@ -175,7 +175,7 @@ class _VisibilityEditScreenState extends State<VisibilityEditScreen> {
                     //backgroundColor: Colors.red,
                     textColor: Colors.red,
                     fontSize: 16.0,
-                    timeInSecForIos: 1);
+                    timeInSecForIosWeb: 1);
               } else {
                 // if ((int.parse(pacController.value.text)) > maxWSP) {
                 //   Fluttertoast.showToast(
@@ -186,7 +186,7 @@ class _VisibilityEditScreenState extends State<VisibilityEditScreen> {
                 //       //backgroundColor: Colors.red,
                 //       textColor: Colors.red,
                 //       fontSize: 16.0,
-                //       timeInSecForIos: 1);
+                //       timeInSecForIosWeb: 1);
                 // } else {
                   // int _totQty;
                   // _totQty = (int.parse(balController.value.text) * _bal2Pac) +
