@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mimos/PR/model/app_version.dart';
 import 'package:mimos/PR/repo/auth_repo.dart';
 import 'package:mimos/Screen/homescreen.dart';
+import 'package:mimos/Screen/login/login_screen.dart';
 import 'package:mimos/Screen/loginscreen.dart';
 import 'package:mimos/helper/session_manager.dart';
 import 'package:mimos/utils/widget/dialog/default_dialog.dart';
@@ -28,7 +29,7 @@ class SplashScreenVM with ChangeNotifier {
       _gotoHome();
     } else {
       // LOGIN
-      var root = MaterialPageRoute(builder: (context) => LogInScreen());
+      var root = MaterialPageRoute(builder: (context) => LoginScreen());
       Navigator.pushReplacement(context, root);
     }
   }
